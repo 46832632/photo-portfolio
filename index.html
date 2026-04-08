@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光影集 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，记录城市光影与自然之美">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-soft: #141414;
+      --text: #f5f5f5;
+      --text-dim: #888;
+      --accent: #c9a84c;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent);
+      backdrop-filter: blur(10px);
+    }
+    
+    .logo {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--text);
+    }
+    
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      background: url('images/hero-01.jpg') center/cover;
+      filter: brightness(0.7);
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, 
+        rgba(10,10,10,0.3) 0%, 
+        rgba(10,10,10,0.1) 50%, 
+        rgba(10,10,10,0.8) 100%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+    
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+    
+    .scroll-hint {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+    
+    /* Gallery Section */
+    .gallery {
+      padding: 8rem 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+    
+    /* Masonry Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--bg-soft);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease, filter 0.3s;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .gallery-item:hover::after {
+      opacity: 1;
+    }
+    
+    .gallery-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      z-index: 2;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .gallery-item:hover .gallery-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .gallery-title {
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    
+    .gallery-meta {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: transparent;
+      border: 1px solid var(--text-dim);
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .lightbox-close:hover {
+      border-color: var(--text);
+      background: rgba(255,255,255,0.1);
+    }
+    
+    /* About Section */
+    .about {
+      padding: 8rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .about-text {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      line-height: 2;
+      font-weight: 300;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .footer-text {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .gallery {
+        padding: 4rem 1rem;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="logo">光影集</a>
+    <ul class="nav-links">
+      <li><a href="#gallery">作品</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Photography Portfolio</p>
+      <h1 class="hero-title">光影集</h1>
+      <p class="hero-subtitle">捕捉瞬间，留存永恒</p>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <span>↓</span>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <div class="section-header">
+      <p class="section-tag">Selected Works</p>
+      <h2 class="section-title">精选作品</h2>
+    </div>
+    
+    <div class="gallery-grid">
+      <!-- Placeholder items - will be populated with your photos -->
+      <div class="gallery-item" onclick="openLightbox('images/hero-01.jpg')">
+        <img src="images/hero-01.jpg" alt="城市夜景" loading="lazy">
+        <div class="gallery-info">
+          <h3 class="gallery-title">城市脉搏</h3>
+          <p class="gallery-meta">建筑 · 夜景</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-dim);">
+          <span style="font-size:0.8rem;letter-spacing:0.2em;">等待上传...</span>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-dim);">
+          <span style="font-size:0.8rem;letter-spacing:0.2em;">等待上传...</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="section-header">
+      <p class="section-tag">About</p>
+      <h2 class="section-title">关于</h2>
+    </div>
+    <p class="about-text">
+      用镜头记录世界的光影变化，<br>
+      在平凡中发现不平凡的美。<br>
+      每一次快门，都是与时间的对话。
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p class="footer-text">© 2025 光影集 · Photography Portfolio</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="event.stopPropagation(); closeLightbox()">×</button>
+    <img src="" alt="" id="lightbox-img">
+  </div>
+
+  <script>
+    // Lightbox functionality
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+    
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
