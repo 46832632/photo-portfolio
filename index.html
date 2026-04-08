@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>光影集 | Photography Portfolio</title>
-  <meta name="description" content="个人摄影作品集，记录城市光影与自然之美">
+  <title>风月无边 情欲相远 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，风月无边，情欲相远">
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
   
   <style>
     :root {
       --bg: #ffffff;
-      --bg-soft: #f8f8f8;
       --text: #1a1a1a;
       --text-dim: #666;
       --accent: #c9a84c;
@@ -27,6 +26,7 @@
     
     html {
       scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
     }
     
     body {
@@ -55,9 +55,9 @@
     
     .logo {
       font-family: 'Noto Serif SC', serif;
-      font-size: 1.2rem;
-      font-weight: 300;
-      letter-spacing: 0.2em;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
       color: var(--text);
       text-decoration: none;
     }
@@ -81,61 +81,52 @@
       color: var(--text);
     }
     
-    /* Hero Section */
-    .hero {
+    /* Full Page Sections */
+    .page {
       height: 100vh;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
+      scroll-snap-align: start;
+      background: var(--bg);
     }
     
-    .hero-image {
-      position: absolute;
-      inset: 0;
-      background: url('images/hero-01.jpg') center/cover;
-      filter: brightness(0.8);
-    }
-    
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, 
-        rgba(0,0,0,0.2) 0%, 
-        rgba(0,0,0,0.1) 50%, 
-        rgba(255,255,255,1) 100%);
+    /* Hero Page - No background image */
+    .hero-page {
+      background: var(--bg);
+      flex-direction: column;
     }
     
     .hero-content {
-      position: relative;
-      z-index: 2;
       text-align: center;
       padding: 2rem;
     }
     
     .hero-tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      color: rgba(255,255,255,0.8);
-      margin-bottom: 1.5rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
       text-transform: uppercase;
     }
     
     .hero-title {
       font-family: 'Noto Serif SC', serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-size: clamp(3rem, 10vw, 6rem);
       font-weight: 300;
-      letter-spacing: 0.15em;
-      margin-bottom: 1rem;
-      color: #fff;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      color: var(--text);
     }
     
     .hero-subtitle {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.9);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.2rem;
+      color: var(--text-dim);
       font-weight: 300;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
     }
     
     .scroll-hint {
@@ -147,7 +138,7 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      color: rgba(255,255,255,0.8);
+      color: var(--text-dim);
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       animation: bounce 2s infinite;
@@ -158,188 +149,155 @@
       50% { transform: translateX(-50%) translateY(10px); }
     }
     
-    /* Gallery Section */
-    .gallery {
-      padding: 8rem 2rem;
-      max-width: 1600px;
-      margin: 0 auto;
+    /* Photo Pages */
+    .photo-page {
+      padding: 4rem;
       background: var(--bg);
     }
     
-    .section-header {
-      text-align: center;
-      margin-bottom: 4rem;
+    .photo-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
     }
     
-    .section-tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
+    .photo-wrapper {
+      flex: 1;
+      max-width: 70%;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .photo-wrapper img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    
+    .photo-info {
+      width: 280px;
+      padding: 2rem 0;
+    }
+    
+    .photo-number {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
       color: var(--text-dim);
-      text-transform: uppercase;
       margin-bottom: 1rem;
     }
     
-    .section-title {
+    .photo-title {
       font-family: 'Noto Serif SC', serif;
-      font-size: 2rem;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: var(--text);
-    }
-    
-    /* Masonry Grid */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 2rem;
-    }
-    
-    .gallery-item {
-      position: relative;
-      aspect-ratio: 4/3;
-      overflow: hidden;
-      cursor: pointer;
-      background: var(--bg-soft);
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    
-    .gallery-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    }
-    
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    
-    .gallery-item:hover img {
-      transform: scale(1.03);
-    }
-    
-    .gallery-item::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .gallery-item:hover::after {
-      opacity: 1;
-    }
-    
-    .gallery-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 1.5rem;
-      z-index: 2;
-      transform: translateY(10px);
-      opacity: 0;
-      transition: all 0.3s;
-    }
-    
-    .gallery-item:hover .gallery-info {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    
-    .gallery-title {
-      font-size: 0.9rem;
+      font-size: 1.8rem;
       font-weight: 400;
-      margin-bottom: 0.3rem;
-      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
     }
     
-    .gallery-meta {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.8);
-    }
-    
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.95);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .lightbox.active {
-      display: flex;
-      opacity: 1;
-    }
-    
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-    }
-    
-    .lightbox-close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .lightbox-close:hover {
-      border-color: #fff;
-      background: rgba(255,255,255,0.1);
-    }
-    
-    /* About Section */
-    .about {
-      padding: 8rem 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      background: var(--bg-soft);
-    }
-    
-    .about-text {
-      font-size: 1.1rem;
+    .photo-meta {
+      font-size: 0.9rem;
       color: var(--text-dim);
-      line-height: 2;
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .photo-desc {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.8;
       font-weight: 300;
     }
     
-    /* Footer */
-    footer {
-      padding: 4rem 2rem;
-      text-align: center;
-      border-top: 1px solid rgba(0,0,0,0.05);
+    /* Footer Page */
+    .footer-page {
       background: var(--bg);
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .footer-content {
+      max-width: 600px;
+      padding: 2rem;
+    }
+    
+    .footer-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
     }
     
     .footer-text {
-      font-size: 0.8rem;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      line-height: 2.2;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+    
+    .footer-copy {
+      font-size: 0.75rem;
       color: var(--text-dim);
       letter-spacing: 0.1em;
     }
     
+    /* Page Indicators */
+    .page-indicator {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 99;
+    }
+    
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .indicator.active {
+      background: var(--text);
+      transform: scale(1.3);
+    }
+    
     /* Responsive */
+    @media (max-width: 1024px) {
+      .photo-container {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .photo-wrapper {
+        max-width: 90%;
+        height: 60%;
+      }
+      
+      .photo-info {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+      }
+      
+      .page-indicator {
+        display: none;
+      }
+    }
+    
     @media (max-width: 768px) {
       nav {
         padding: 1rem 1.5rem;
@@ -349,13 +307,13 @@
         display: none;
       }
       
-      .gallery {
-        padding: 4rem 1rem;
+      .photo-page {
+        padding: 2rem;
       }
       
-      .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+      .photo-wrapper {
+        max-width: 100%;
+        height: 50%;
       }
     }
   </style>
@@ -363,22 +321,40 @@
 <body>
   <!-- Navigation -->
   <nav>
-    <a href="#" class="logo">光影集</a>
+    <a href="#" class="logo">风月无边</a>
     <ul class="nav-links">
-      <li><a href="#gallery">作品</a></li>
+      <li><a href="#photo1">作品</a></li>
       <li><a href="#about">关于</a></li>
-      <li><a href="#contact">联系</a></li>
     </ul>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-image"></div>
-    <div class="hero-overlay"></div>
+  <!-- Page Indicators -->
+  <div class="page-indicator">
+    <div class="indicator active" onclick="scrollToPage(0)"></div>
+    <div class="indicator" onclick="scrollToPage(1)"></div>
+    <div class="indicator" onclick="scrollToPage(2)"></div>
+    <div class="indicator" onclick="scrollToPage(3)"></div>
+    <div class="indicator" onclick="scrollToPage(4)"></div>
+    <div class="indicator" onclick="scrollToPage(5)"></div>
+    <div class="indicator" onclick="scrollToPage(6)"></div>
+    <div class="indicator" onclick="scrollToPage(7)"></div>
+    <div class="indicator" onclick="scrollToPage(8)"></div>
+    <div class="indicator" onclick="scrollToPage(9)"></div>
+    <div class="indicator" onclick="scrollToPage(10)"></div>
+    <div class="indicator" onclick="scrollToPage(11)"></div>
+    <div class="indicator" onclick="scrollToPage(12)"></div>
+    <div class="indicator" onclick="scrollToPage(13)"></div>
+    <div class="indicator" onclick="scrollToPage(14)"></div>
+    <div class="indicator" onclick="scrollToPage(15)"></div>
+    <div class="indicator" onclick="scrollToPage(16)"></div>
+  </div>
+
+  <!-- Hero Page -->
+  <section class="page hero-page" id="hero">
     <div class="hero-content">
       <p class="hero-tag">Photography Portfolio</p>
-      <h1 class="hero-title">光影集</h1>
-      <p class="hero-subtitle">捕捉瞬间，留存永恒</p>
+      <h1 class="hero-title">风月无边</h1>
+      <p class="hero-subtitle">情欲相远</p>
     </div>
     <div class="scroll-hint">
       <span>SCROLL</span>
@@ -386,179 +362,287 @@
     </div>
   </section>
 
-  <!-- Gallery Section -->
-  <section class="gallery" id="gallery">
-    <div class="section-header">
-      <p class="section-tag">Selected Works</p>
-      <h2 class="section-title">精选作品</h2>
-    </div>
-    
-    <div class="gallery-grid">
-      <div class="gallery-item" onclick="openLightbox('images/hero-01.jpg')">
-        <img src="images/hero-01.jpg" alt="城市夜景" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">城市脉搏</h3>
-          <p class="gallery-meta">建筑 · 夜景</p>
-        </div>
+  <!-- Photo 1 -->
+  <section class="page photo-page" id="photo1">
+    <div class="photo-container">
+      <div class="photo-wrapper">
+        <img src="images/hero-01.jpg" alt="城市脉搏" loading="lazy">
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-02.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">01 / 15</p>
+        <h2 class="photo-title">城市脉搏</h2>
+        <p class="photo-meta">建筑 · 夜景</p>
+        <p class="photo-desc">夜幕下的城市建筑，灯光勾勒出都市的轮廓，仿佛能感受到城市的心跳与呼吸。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 2 -->
+  <section class="page photo-page" id="photo2">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-02.jpg" alt="几何光影" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">几何光影</h3>
-          <p class="gallery-meta">建筑 · 黑白</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-03.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">02 / 15</p>
+        <h2 class="photo-title">几何光影</h2>
+        <p class="photo-meta">建筑 · 黑白</p>
+        <p class="photo-desc">建筑的几何线条在光影中交错，黑白之间展现纯粹的形式美学。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 3 -->
+  <section class="page photo-page" id="photo3">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-03.jpg" alt="暖光空间" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">暖光空间</h3>
-          <p class="gallery-meta">室内 · 光影</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-04.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">03 / 15</p>
+        <h2 class="photo-title">暖光空间</h2>
+        <p class="photo-meta">室内 · 光影</p>
+        <p class="photo-desc">温暖的灯光洒落在空间中，营造出宁静而舒适的氛围。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 4 -->
+  <section class="page photo-page" id="photo4">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-04.jpg" alt="夜色街景" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">夜色街景</h3>
-          <p class="gallery-meta">街景 · 夜景</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-05.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">04 / 15</p>
+        <h2 class="photo-title">夜色街景</h2>
+        <p class="photo-meta">街景 · 夜景</p>
+        <p class="photo-desc">街灯在湿润的地面上投下倒影，夜色中的街道别有一番韵味。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 5 -->
+  <section class="page photo-page" id="photo5">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-05.jpg" alt="霓虹夜色" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">霓虹夜色</h3>
-          <p class="gallery-meta">街景 · 霓虹</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-06.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">05 / 15</p>
+        <h2 class="photo-title">霓虹夜色</h2>
+        <p class="photo-meta">街景 · 霓虹</p>
+        <p class="photo-desc">霓虹灯的光芒在夜色中闪烁，城市的繁华与孤独在此交织。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 6 -->
+  <section class="page photo-page" id="photo6">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-06.jpg" alt="光影结构" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">光影结构</h3>
-          <p class="gallery-meta">室内 · 建筑</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-07.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">06 / 15</p>
+        <h2 class="photo-title">光影结构</h2>
+        <p class="photo-meta">室内 · 建筑</p>
+        <p class="photo-desc">建筑内部的结构与光影相互映衬，展现出空间的力量与美感。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 7 -->
+  <section class="page photo-page" id="photo7">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-07.jpg" alt="建筑光影" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">建筑光影</h3>
-          <p class="gallery-meta">室内 · 灯光</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-08.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">07 / 15</p>
+        <h2 class="photo-title">建筑光影</h2>
+        <p class="photo-meta">室内 · 灯光</p>
+        <p class="photo-desc">精心设计的灯光照亮建筑的细节，每一处都彰显着设计师的匠心。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 8 -->
+  <section class="page photo-page" id="photo8">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-08.jpg" alt="空间韵律" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">空间韵律</h3>
-          <p class="gallery-meta">室内 · 结构</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-09.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">08 / 15</p>
+        <h2 class="photo-title">空间韵律</h2>
+        <p class="photo-meta">室内 · 结构</p>
+        <p class="photo-desc">空间的线条与结构形成独特的韵律，引导视线在其中游走。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 9 -->
+  <section class="page photo-page" id="photo9">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-09.jpg" alt="光影交错" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">光影交错</h3>
-          <p class="gallery-meta">室内 · 光影</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-10.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">09 / 15</p>
+        <h2 class="photo-title">光影交错</h2>
+        <p class="photo-meta">室内 · 光影</p>
+        <p class="photo-desc">光与影在室内交错重叠，创造出层次丰富的视觉效果。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 10 -->
+  <section class="page photo-page" id="photo10">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-10.jpg" alt="都市夜色" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">都市夜色</h3>
-          <p class="gallery-meta">城市 · 夜景</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-11.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">10 / 15</p>
+        <h2 class="photo-title">都市夜色</h2>
+        <p class="photo-meta">城市 · 夜景</p>
+        <p class="photo-desc">从高处俯瞰都市夜景，万家灯火如繁星点点，璀璨而宁静。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 11 -->
+  <section class="page photo-page" id="photo11">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-11.jpg" alt="暖光之境" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">暖光之境</h3>
-          <p class="gallery-meta">室内 · 暖光</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-12.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">11 / 15</p>
+        <h2 class="photo-title">暖光之境</h2>
+        <p class="photo-meta">室内 · 暖光</p>
+        <p class="photo-desc">温暖的灯光营造出舒适的氛围，让人感受到家的温馨与安宁。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 12 -->
+  <section class="page photo-page" id="photo12">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-12.jpg" alt="水岸夜景" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">水岸夜景</h3>
-          <p class="gallery-meta">城市 · 夜景</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-13.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">12 / 15</p>
+        <h2 class="photo-title">水岸夜景</h2>
+        <p class="photo-meta">城市 · 夜景</p>
+        <p class="photo-desc">水边的城市夜景，灯光在水面上形成倒影，如梦似幻。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 13 -->
+  <section class="page photo-page" id="photo13">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-13.jpg" alt="静谧空间" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">静谧空间</h3>
-          <p class="gallery-meta">室内 · 暖光</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-14.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">13 / 15</p>
+        <h2 class="photo-title">静谧空间</h2>
+        <p class="photo-meta">室内 · 暖光</p>
+        <p class="photo-desc">静谧的空间中，只有光线在静静流淌，时间仿佛在此停滞。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 14 -->
+  <section class="page photo-page" id="photo14">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-14.jpg" alt="璀璨都市" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">璀璨都市</h3>
-          <p class="gallery-meta">城市 · 夜景</p>
-        </div>
       </div>
-      
-      <div class="gallery-item" onclick="openLightbox('images/gallery-15.jpg')">
+      <div class="photo-info">
+        <p class="photo-number">14 / 15</p>
+        <h2 class="photo-title">璀璨都市</h2>
+        <p class="photo-meta">城市 · 夜景</p>
+        <p class="photo-desc">繁华的都市在夜色中绽放光彩，每一盏灯都诉说着一个故事。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 15 -->
+  <section class="page photo-page" id="photo15">
+    <div class="photo-container">
+      <div class="photo-wrapper">
         <img src="images/gallery-15.jpg" alt="光影之舞" loading="lazy">
-        <div class="gallery-info">
-          <h3 class="gallery-title">光影之舞</h3>
-          <p class="gallery-meta">室内 · 光影</p>
-        </div>
+      </div>
+      <div class="photo-info">
+        <p class="photo-number">15 / 15</p>
+        <h2 class="photo-title">光影之舞</h2>
+        <p class="photo-meta">室内 · 光影</p>
+        <p class="photo-desc">光与影在空间中翩翩起舞，演绎着一场无声的芭蕾。</p>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section class="about" id="about">
-    <div class="section-header">
-      <p class="section-tag">About</p>
-      <h2 class="section-title">关于</h2>
+  <!-- Footer Page -->
+  <section class="page footer-page" id="about">
+    <div class="footer-content">
+      <p class="footer-tag">About</p>
+      <p class="footer-text">
+        风月无边，情欲相远。<br>
+        用镜头记录世界的光影变化，<br>
+        在平凡中发现不平凡的美。<br>
+        每一次快门，都是与时间的对话。
+      </p>
+      <p class="footer-copy">© 2025 风月无边 · Photography Portfolio</p>
     </div>
-    <p class="about-text">
-      用镜头记录世界的光影变化，<br>
-      在平凡中发现不平凡的美。<br>
-      每一次快门，都是与时间的对话。
-    </p>
   </section>
-
-  <!-- Footer -->
-  <footer id="contact">
-    <p class="footer-text">© 2025 光影集 · Photography Portfolio</p>
-  </footer>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="event.stopPropagation(); closeLightbox()">×</button>
-    <img src="" alt="" id="lightbox-img">
-  </div>
 
   <script>
-    // Lightbox functionality
-    function openLightbox(src) {
-      const lightbox = document.getElementById('lightbox');
-      const img = document.getElementById('lightbox-img');
-      img.src = src;
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
+    // Page scroll with indicators
+    const pages = document.querySelectorAll('.page');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    function scrollToPage(index) {
+      pages[index].scrollIntoView({ behavior: 'smooth' });
     }
     
-    function closeLightbox() {
-      const lightbox = document.getElementById('lightbox');
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
+    // Update indicators on scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5
+    };
     
-    // Close lightbox with Escape key
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Array.from(pages).indexOf(entry.target);
+          indicators.forEach((ind, i) => {
+            ind.classList.toggle('active', i === index);
+          });
+        }
+      });
+    }, observerOptions);
+    
+    pages.forEach(page => observer.observe(page));
+    
+    // Keyboard navigation
+    let currentPage = 0;
+    
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        currentPage = Math.min(currentPage + 1, pages.length - 1);
+        pages[currentPage].scrollIntoView({ behavior: 'smooth' });
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        currentPage = Math.max(currentPage - 1, 0);
+        pages[currentPage].scrollIntoView({ behavior: 'smooth' });
+      }
     });
     
     // Smooth scroll for navigation
