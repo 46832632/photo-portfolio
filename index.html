@@ -7,7 +7,6 @@
   <meta name="description" content="个人摄影作品集，人闲桂花落，夜静春山空">
   <meta name="theme-color" content="#ffffff">
   
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
@@ -46,7 +45,6 @@
       -webkit-font-smoothing: antialiased;
     }
     
-    /* Header */
     header {
       position: fixed;
       top: 0;
@@ -92,7 +90,6 @@
     
     .nav-links a:hover { color: var(--text); }
     
-    /* Mobile Menu */
     .menu-btn {
       display: none;
       flex-direction: column;
@@ -163,7 +160,6 @@
     .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav a:hover { color: var(--text); }
     
-    /* Hero */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -220,7 +216,6 @@
       50% { transform: translateY(8px); opacity: 1; }
     }
     
-    /* Photo Section */
     .photo-section {
       min-height: 100vh;
       display: flex;
@@ -272,17 +267,31 @@
     
     .photo-title {
       font-family: 'Noto Serif SC', serif;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 400;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       letter-spacing: 0.08em;
     }
     
-    .photo-meta {
-      font-size: 0.85rem;
+    .photo-subtitle {
+      font-size: 0.9rem;
       color: var(--accent);
-      margin-bottom: 2rem;
-      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.15em;
+      font-style: italic;
+    }
+    
+    .photo-meta {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+    }
+    
+    .photo-meta span {
+      display: inline-block;
+      margin-right: 1.5rem;
     }
     
     .photo-desc {
@@ -292,7 +301,12 @@
       font-weight: 300;
     }
     
-    /* Lightbox */
+    .camera-icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+      opacity: 0.6;
+    }
+    
     .lightbox {
       position: fixed;
       top: 0;
@@ -344,7 +358,6 @@
       border-color: rgba(255,255,255,0.6);
     }
     
-    /* Footer */
     .footer {
       min-height: 70vh;
       display: flex;
@@ -387,7 +400,6 @@
       letter-spacing: 0.15em;
     }
     
-    /* Progress Bar */
     .progress-bar {
       position: fixed;
       top: 60px;
@@ -399,7 +411,6 @@
       transition: width 0.1s;
     }
     
-    /* Page Dots */
     .page-dots {
       position: fixed;
       right: 2rem;
@@ -426,7 +437,6 @@
       transform: scale(1.4);
     }
     
-    /* Responsive */
     @media (max-width: 1024px) {
       .photo-container {
         flex-direction: column;
@@ -446,10 +456,6 @@
       .photo-info {
         flex: none;
         max-width: 100%;
-      }
-      
-      .photo-meta {
-        margin-bottom: 1rem;
       }
     }
     
@@ -478,8 +484,10 @@
         max-height: 45vh;
       }
       
-      .photo-title { font-size: 1.5rem; }
-      .photo-meta { font-size: 0.8rem; }
+      .photo-title { font-size: 1.6rem; }
+      .photo-subtitle { font-size: 0.85rem; }
+      .photo-meta { font-size: 0.75rem; }
+      .photo-meta span { display: block; margin-right: 0; margin-bottom: 0.3rem; }
       .photo-desc { font-size: 0.85rem; }
       
       .page-dots { display: none; }
@@ -490,7 +498,6 @@
       .footer-text { font-size: 1rem; }
     }
     
-    /* Animations */
     .fade-in {
       opacity: 0;
       transform: translateY(30px);
@@ -502,7 +509,6 @@
       transform: translateY(0);
     }
     
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -546,13 +552,11 @@
   
   <div class="page-dots" id="pageDots"></div>
   
-  <!-- Lightbox -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
     <button class="lightbox-close" onclick="closeLightbox()">×</button>
     <img src="" alt="" id="lightboxImg">
   </div>
   
-  <!-- Hero -->
   <section class="hero" id="hero">
     <p class="hero-tag">Photography Portfolio</p>
     <h1 class="hero-title">人闲桂花落</h1>
@@ -567,13 +571,20 @@
   <section class="photo-section fade-in" id="photo1">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/hero-01.jpg" alt="城市脉搏" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/hero-01.jpg" alt="万家灯火" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">01 / 15</p>
-        <h2 class="photo-title">城市脉搏</h2>
-        <p class="photo-meta">建筑 · 夜景</p>
-        <p class="photo-desc">夜幕下的城市建筑，灯光勾勒出都市的轮廓，仿佛能感受到城市的心跳与呼吸。</p>
+        <p class="photo-number">壹 / 拾伍</p>
+        <h2 class="photo-title">万家灯火</h2>
+        <p class="photo-subtitle">Ten Thousand Lights</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 15s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">夜幕低垂，高楼林立如森林，每一扇亮着的窗，都是一盏人间灯火。那是归家的期盼，是平凡生活的温度。</p>
       </div>
     </div>
   </section>
@@ -582,13 +593,20 @@
   <section class="photo-section fade-in" id="photo2">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-02.jpg" alt="几何光影" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-02.jpg" alt="线的诗学" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">02 / 15</p>
-        <h2 class="photo-title">几何光影</h2>
-        <p class="photo-meta">建筑 · 黑白</p>
-        <p class="photo-desc">建筑的几何线条在光影中交错，黑白之间展现纯粹的形式美学。</p>
+        <p class="photo-number">贰 / 拾伍</p>
+        <h2 class="photo-title">线的诗学</h2>
+        <p class="photo-subtitle">Poetics of Lines</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 1/125s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">建筑是凝固的音乐，线条是它的语言。垂直与水平的交错，刚硬与柔和的对话，构成了城市最理性的诗意。</p>
       </div>
     </div>
   </section>
@@ -597,13 +615,20 @@
   <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-03.jpg" alt="暖光空间" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-03.jpg" alt="人间烟火" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">03 / 15</p>
-        <h2 class="photo-title">暖光空间</h2>
-        <p class="photo-meta">室内 · 光影</p>
-        <p class="photo-desc">温暖的灯光洒落在空间中，营造出宁静而舒适的氛围。</p>
+        <p class="photo-number">叁 / 拾伍</p>
+        <h2 class="photo-title">人间烟火</h2>
+        <p class="photo-subtitle">Worldly Warmth</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/60s</span>
+          <span>ISO 800</span>
+        </p>
+        <p class="photo-desc">最暖的光，是家的方向。一盏台灯，一杯热茶，喧嚣之外的角落，藏着最踏实的安宁。</p>
       </div>
     </div>
   </section>
@@ -612,13 +637,20 @@
   <section class="photo-section fade-in" id="photo4">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-04.jpg" alt="夜色街景" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-04.jpg" alt="雨夜归途" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">04 / 15</p>
-        <h2 class="photo-title">夜色街景</h2>
-        <p class="photo-meta">街景 · 夜景</p>
-        <p class="photo-desc">街灯在湿润的地面上投下倒影，夜色中的街道别有一番韵味。</p>
+        <p class="photo-number">肆 / 拾伍</p>
+        <h2 class="photo-title">雨夜归途</h2>
+        <p class="photo-subtitle">Rainy Night Journey</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 28mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 8s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">雨打湿了街道，灯光晕染成一片朦胧。有人在伞下匆匆走过，有人站在檐下等待。每一条路，都通向某个人的归处。</p>
       </div>
     </div>
   </section>
@@ -627,13 +659,20 @@
   <section class="photo-section fade-in" id="photo5">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-05.jpg" alt="霓虹夜色" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-05.jpg" alt="流光溢彩" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">05 / 15</p>
-        <h2 class="photo-title">霓虹夜色</h2>
-        <p class="photo-meta">街景 · 霓虹</p>
-        <p class="photo-desc">霓虹灯的光芒在夜色中闪烁，城市的繁华与孤独在此交织。</p>
+        <p class="photo-number">伍 / 拾伍</p>
+        <h2 class="photo-title">流光溢彩</h2>
+        <p class="photo-subtitle">Glowing Nights</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/5.6</span>
+          <span>快门 10s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">霓虹是城市的另一张面孔，五光十色里藏着欲望与梦想。每一盏灯都在诉说，属于这座不夜城的秘密。</p>
       </div>
     </div>
   </section>
@@ -642,13 +681,20 @@
   <section class="photo-section fade-in" id="photo6">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-06.jpg" alt="光影结构" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-06.jpg" alt="秩序之美" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">06 / 15</p>
-        <h2 class="photo-title">光影结构</h2>
-        <p class="photo-meta">室内 · 建筑</p>
-        <p class="photo-desc">建筑内部的结构与光影相互映衬，展现出空间的力量与美感。</p>
+        <p class="photo-number">陆 / 拾伍</p>
+        <h2 class="photo-title">秩序之美</h2>
+        <p class="photo-subtitle">Beauty of Order</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 4s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">在钢筋水泥的丛林里，秩序是一种美学。重复的线条，规则的排列，让人在混乱中找到片刻的平静。</p>
       </div>
     </div>
   </section>
@@ -657,13 +703,20 @@
   <section class="photo-section fade-in" id="photo7">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-07.jpg" alt="建筑光影" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-07.jpg" alt="光与石" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">07 / 15</p>
-        <h2 class="photo-title">建筑光影</h2>
-        <p class="photo-meta">室内 · 灯光</p>
-        <p class="photo-desc">精心设计的灯光照亮建筑的细节，每一处都彰显着设计师的匠心。</p>
+        <p class="photo-number">柒 / 拾伍</p>
+        <h2 class="photo-title">光与石</h2>
+        <p class="photo-subtitle">Light and Stone</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 2.5s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">建筑是光与石的协奏曲。当光线穿透缝隙，在墙面投下明暗交错的纹路，那是时间书写的诗行。</p>
       </div>
     </div>
   </section>
@@ -672,13 +725,20 @@
   <section class="photo-section fade-in" id="photo8">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-08.jpg" alt="空间韵律" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-08.jpg" alt="留白" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">08 / 15</p>
-        <h2 class="photo-title">空间韵律</h2>
-        <p class="photo-meta">室内 · 结构</p>
-        <p class="photo-desc">空间的线条与结构形成独特的韵律，引导视线在其中游走。</p>
+        <p class="photo-number">捌 / 拾伍</p>
+        <h2 class="photo-title">留白</h2>
+        <p class="photo-subtitle">Negative Space</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 1/200s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">中国画讲究留白，摄影亦然。有时候，空即是满，少即是多。给视觉留一点呼吸的空间。</p>
       </div>
     </div>
   </section>
@@ -687,13 +747,20 @@
   <section class="photo-section fade-in" id="photo9">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-09.jpg" alt="光影交错" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-09.jpg" alt="影的独白" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">09 / 15</p>
-        <h2 class="photo-title">光影交错</h2>
-        <p class="photo-meta">室内 · 光影</p>
-        <p class="photo-desc">光与影在室内交错重叠，创造出层次丰富的视觉效果。</p>
+        <p class="photo-number">玖 / 拾伍</p>
+        <h2 class="photo-title">影的独白</h2>
+        <p class="photo-subtitle">Monologue of Shadows</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.8</span>
+          <span>快门 1/500s</span>
+          <span>ISO 1600</span>
+        </p>
+        <p class="photo-desc">光与影是一对恋人，此生彼死，此起彼伏。影子从不说谎，它只是默默记录着光的轨迹。</p>
       </div>
     </div>
   </section>
@@ -702,13 +769,20 @@
   <section class="photo-section fade-in" id="photo10">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-10.jpg" alt="都市夜色" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-10.jpg" alt="星海" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">10 / 15</p>
-        <h2 class="photo-title">都市夜色</h2>
-        <p class="photo-meta">城市 · 夜景</p>
-        <p class="photo-desc">从高处俯瞰都市夜景，万家灯火如繁星点点，璀璨而宁静。</p>
+        <p class="photo-number">拾 / 拾伍</p>
+        <h2 class="photo-title">星海</h2>
+        <p class="photo-subtitle">Sea of Stars</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 16mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 25s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">站在高处俯瞰，万家灯火如同银河倾泻。每一盏灯都是一个故事，每一扇窗都是一程人生。</p>
       </div>
     </div>
   </section>
@@ -717,13 +791,20 @@
   <section class="photo-section fade-in" id="photo11">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-11.jpg" alt="暖光之境" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-11.jpg" alt="炉火" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">11 / 15</p>
-        <h2 class="photo-title">暖光之境</h2>
-        <p class="photo-meta">室内 · 暖光</p>
-        <p class="photo-desc">温暖的灯光营造出舒适的氛围，让人感受到家的温馨与安宁。</p>
+        <p class="photo-number">拾壹 / 拾伍</p>
+        <h2 class="photo-title">炉火</h2>
+        <p class="photo-subtitle">Hearthside</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/1.8</span>
+          <span>快门 1/80s</span>
+          <span>ISO 1200</span>
+        </p>
+        <p class="photo-desc">昏黄的灯光，总让人想起家的方向。无论走多远，总有一盏灯为你留着。</p>
       </div>
     </div>
   </section>
@@ -732,13 +813,20 @@
   <section class="photo-section fade-in" id="photo12">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-12.jpg" alt="水岸夜景" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-12.jpg" alt="倒影" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">12 / 15</p>
-        <h2 class="photo-title">水岸夜景</h2>
-        <p class="photo-meta">城市 · 夜景</p>
-        <p class="photo-desc">水边的城市夜景，灯光在水面上形成倒影，如梦似幻。</p>
+        <p class="photo-number">拾贰 / 拾伍</p>
+        <h2 class="photo-title">倒影</h2>
+        <p class="photo-subtitle">Reflections</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 20s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">水是最诚实的镜子，照见城市的繁华，也照见天空的深邃。真实与虚幻，在这一刻合而为一。</p>
       </div>
     </div>
   </section>
@@ -747,13 +835,20 @@
   <section class="photo-section fade-in" id="photo13">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-13.jpg" alt="静谧空间" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-13.jpg" alt="一隅" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">13 / 15</p>
-        <h2 class="photo-title">静谧空间</h2>
-        <p class="photo-meta">室内 · 暖光</p>
-        <p class="photo-desc">静谧的空间中，只有光线在静静流淌，时间仿佛在此停滞。</p>
+        <p class="photo-number">拾叁 / 拾伍</p>
+        <h2 class="photo-title">一隅</h2>
+        <p class="photo-subtitle">A Quiet Corner</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 1/250s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">世界喧嚣，我只想安静地待着。一个角落，一束光，一段留白，便是全部。</p>
       </div>
     </div>
   </section>
@@ -762,13 +857,20 @@
   <section class="photo-section fade-in" id="photo14">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-14.jpg" alt="璀璨都市" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-14.jpg" alt="繁城" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">14 / 15</p>
-        <h2 class="photo-title">璀璨都市</h2>
-        <p class="photo-meta">城市 · 夜景</p>
-        <p class="photo-desc">繁华的都市在夜色中绽放光彩，每一盏灯都诉说着一个故事。</p>
+        <p class="photo-number">拾肆 / 拾伍</p>
+        <h2 class="photo-title">繁城</h2>
+        <p class="photo-subtitle">City of Abundance</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 14mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 30s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">繁华深处是寂寥，灯火尽头是归途。城市从不睡眠，只是偶尔打个盹，等待下一个黎明。</p>
       </div>
     </div>
   </section>
@@ -777,18 +879,24 @@
   <section class="photo-section fade-in" id="photo15">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-15.jpg" alt="光影之舞" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-15.jpg" alt="探戈" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <p class="photo-number">15 / 15</p>
-        <h2 class="photo-title">光影之舞</h2>
-        <p class="photo-meta">室内 · 光影</p>
-        <p class="photo-desc">光与影在空间中翩翩起舞，演绎着一场无声的芭蕾。</p>
+        <p class="photo-number">拾伍 / 拾伍</p>
+        <h2 class="photo-title">探戈</h2>
+        <p class="photo-subtitle">Tango of Light</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/400s</span>
+          <span>ISO 2000</span>
+        </p>
+        <p class="photo-desc">光与影跳着永恒的探戈，时而贴近，时而分离。它们不知疲倦，因为彼此就是全部的意义。</p>
       </div>
     </div>
   </section>
   
-  <!-- Footer -->
   <section class="footer" id="about">
     <p class="footer-tag">About</p>
     <p class="footer-text">
@@ -802,13 +910,11 @@
   </section>
   
   <script>
-    // Mobile Menu
     function toggleMenu() {
       document.querySelector('.menu-btn').classList.toggle('active');
       document.getElementById('mobileNav').classList.toggle('active');
     }
     
-    // Progress Bar
     window.addEventListener('scroll', () => {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -816,7 +922,6 @@
       document.getElementById('progressBar').style.width = progress + '%';
     });
     
-    // Page Dots
     const sections = document.querySelectorAll('.hero, .photo-section, .footer');
     const dotsContainer = document.getElementById('pageDots');
     
@@ -827,7 +932,6 @@
       dotsContainer.appendChild(dot);
     });
     
-    // Intersection Observer for dots
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -841,7 +945,6 @@
     
     sections.forEach(s => observer.observe(s));
     
-    // Fade-in Animation
     const fadeObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -852,7 +955,6 @@
     
     document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
     
-    // Lightbox
     function openLightbox(src) {
       document.getElementById('lightboxImg').src = src;
       document.getElementById('lightbox').classList.add('active');
@@ -868,7 +970,6 @@
       if (e.key === 'Escape') closeLightbox();
     });
     
-    // Smooth scroll for nav links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
