@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -259,28 +259,26 @@
     }
     
     .photo-number {
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
       color: var(--text-light);
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.2rem;
     }
     
     .photo-title {
       font-family: 'Noto Serif SC', serif;
-      font-size: 1.4rem;
+      font-size: 2.2rem;
       font-weight: 400;
-      margin-bottom: 0.2rem;
-      letter-spacing: 0.15em;
-      display: inline;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.08em;
     }
     
     .photo-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.9rem;
       color: var(--accent);
-      margin-left: 0.5rem;
-      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.15em;
       font-style: italic;
-      display: inline;
     }
     
     .photo-meta {
@@ -527,75 +525,7 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(0,0,0,0.2);
     }
-
-    .photo-overlay {
-      display: none;
-      position: absolute;
-      bottom: 0.8rem;
-      right: 0.8rem;
-      font-size: 0.6rem;
-      color: #fff;
-      background: rgba(0,0,0,0.5);
-      padding: 0.25rem 0.5rem;
-      letter-spacing: 0.08em;
-    }
-    @media (max-width: 768px) {
-      .photo-overlay { display: block; }
-      .photo-info { display: none; }
-      .photo-wrapper { position: relative; }
-    }
-
-  
-    /* Mobile: Photo info overlay on image */
-    @media (max-width: 768px) {
-      .photo-section {
-        padding: 5rem 1.5rem 3rem;
-      }
-      
-      .photo-container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .photo-wrapper {
-        width: 100%;
-        flex: none;
-        position: relative;
-      }
-      
-      .photo-wrapper img {
-        max-height: 60vh;
-      }
-      
-      .photo-info {
-        position: absolute;
-        bottom: 0.8rem;
-        right: 0.8rem;
-        max-width: none;
-        flex: none;
-        background: rgba(255,255,255,0.95);
-        padding: 0.5rem 0.8rem;
-        border-radius: 4px;
-        text-align: right;
-      }
-      
-      .photo-number {
-        display: none;
-      }
-      
-      .photo-title {
-        font-size: 0.9rem;
-        display: inline-block;
-      }
-      
-      .photo-subtitle {
-        font-size: 0.65rem;
-        display: block;
-        margin-left: 0;
-        margin-top: 0.15rem;
-      }
-    }
-</style>
+  </style>
 </head>
 <body>
   
@@ -631,7 +561,6 @@
     <p class="hero-tag">Photography Portfolio</p>
     <h1 class="hero-title">人闲桂花落</h1>
     <p class="hero-subtitle">夜静春山空</p>
-    <p class="hero-copy">photo by liscn</p>
     <div class="scroll-hint">
       <span>SCROLL</span>
       <span>↓</span>
@@ -643,10 +572,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/hero-01.jpg" alt="万家灯火" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">壹 / 拾伍</p><h2 class="photo-title">静</h2><p class="photo-subtitle">Stillness · 万籁俱寂，唯有灯火未眠。</p>
+        <p class="photo-number">壹 / 拾伍</p>
+        <h2 class="photo-title">静</h2>
+        <p class="photo-subtitle">Stillness</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 15s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
       </div>
     </div>
   </section>
@@ -656,10 +594,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-02.jpg" alt="线的诗学" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">贰 / 拾伍</p><h2 class="photo-title">痕</h2><p class="photo-subtitle">Trace · 线过留痕，痕即永恒。</p>
+        <p class="photo-number">贰 / 拾伍</p>
+        <h2 class="photo-title">痕</h2>
+        <p class="photo-subtitle">Trace</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 1/125s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">线过留痕，痕即永恒。</p>
       </div>
     </div>
   </section>
@@ -669,10 +616,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-03.jpg" alt="人间烟火" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">叁 / 拾伍</p><h2 class="photo-title">暖</h2><p class="photo-subtitle">Warmth · 一点微光，温暖人间。</p>
+        <p class="photo-number">叁 / 拾伍</p>
+        <h2 class="photo-title">暖</h2>
+        <p class="photo-subtitle">Warmth</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/60s</span>
+          <span>ISO 800</span>
+        </p>
+        <p class="photo-desc">一点微光，温暖人间。</p>
       </div>
     </div>
   </section>
@@ -682,10 +638,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-04.jpg" alt="雨夜归途" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">肆 / 拾伍</p><h2 class="photo-title">湿</h2><p class="photo-subtitle">Wet · 润物细无声。</p>
+        <p class="photo-number">肆 / 拾伍</p>
+        <h2 class="photo-title">湿</h2>
+        <p class="photo-subtitle">Wet</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 28mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 8s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">润物细无声。</p>
       </div>
     </div>
   </section>
@@ -695,10 +660,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-05.jpg" alt="流光溢彩" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">伍 / 拾伍</p><h2 class="photo-title">流</h2><p class="photo-subtitle">Flow · 色即是空，空即是色。</p>
+        <p class="photo-number">伍 / 拾伍</p>
+        <h2 class="photo-title">流</h2>
+        <p class="photo-subtitle">Flow</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/5.6</span>
+          <span>快门 10s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">色即是空，空即是色。</p>
       </div>
     </div>
   </section>
@@ -708,10 +682,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-06.jpg" alt="秩序之美" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">陆 / 拾伍</p><h2 class="photo-title">齐</h2><p class="photo-subtitle">Order · 不齐不立，大道至简。</p>
+        <p class="photo-number">陆 / 拾伍</p>
+        <h2 class="photo-title">齐</h2>
+        <p class="photo-subtitle">Order</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 4s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">不齐不立，大道至简。</p>
       </div>
     </div>
   </section>
@@ -721,10 +704,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-07.jpg" alt="光与石" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">柒 / 拾伍</p><h2 class="photo-title">寂</h2><p class="photo-subtitle">Silence · 石不言，光不语。</p>
+        <p class="photo-number">柒 / 拾伍</p>
+        <h2 class="photo-title">寂</h2>
+        <p class="photo-subtitle">Silence</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 2.5s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">石不言，光不语。</p>
       </div>
     </div>
   </section>
@@ -734,10 +726,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-08.jpg" alt="留白" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">捌 / 拾伍</p><h2 class="photo-title">留白</h2><p class="photo-subtitle">Negative Space · 中国画讲究留白，摄影亦然。有时候，空即是满，少即是多。给视觉留一点呼吸的空间。</p>
+        <p class="photo-number">捌 / 拾伍</p>
+        <h2 class="photo-title">留白</h2>
+        <p class="photo-subtitle">Negative Space</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 1/200s</span>
+          <span>ISO 200</span>
+        </p>
+        <p class="photo-desc">中国画讲究留白，摄影亦然。有时候，空即是满，少即是多。给视觉留一点呼吸的空间。</p>
       </div>
     </div>
   </section>
@@ -747,10 +748,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-09.jpg" alt="影的独白" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">玖 / 拾伍</p><h2 class="photo-title">影</h2><p class="photo-subtitle">Shadow · 形影相随，不离不弃。</p>
+        <p class="photo-number">玖 / 拾伍</p>
+        <h2 class="photo-title">影</h2>
+        <p class="photo-subtitle">Shadow</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.8</span>
+          <span>快门 1/500s</span>
+          <span>ISO 1600</span>
+        </p>
+        <p class="photo-desc">形影相随，不离不弃。</p>
       </div>
     </div>
   </section>
@@ -760,10 +770,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-10.jpg" alt="星海" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾 / 拾伍</p><h2 class="photo-title">渊</h2><p class="photo-subtitle">Abyss · 星沉海底，雨过天青。</p>
+        <p class="photo-number">拾 / 拾伍</p>
+        <h2 class="photo-title">渊</h2>
+        <p class="photo-subtitle">Abyss</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 16mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 25s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">星沉海底，雨过天青。</p>
       </div>
     </div>
   </section>
@@ -773,10 +792,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-11.jpg" alt="炉火" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾壹 / 拾伍</p><h2 class="photo-title">微</h2><p class="photo-subtitle">Subtle · 微光处，是归处。</p>
+        <p class="photo-number">拾壹 / 拾伍</p>
+        <h2 class="photo-title">微</h2>
+        <p class="photo-subtitle">Subtle</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/1.8</span>
+          <span>快门 1/80s</span>
+          <span>ISO 1200</span>
+        </p>
+        <p class="photo-desc">微光处，是归处。</p>
       </div>
     </div>
   </section>
@@ -786,10 +814,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-12.jpg" alt="倒影" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾贰 / 拾伍</p><h2 class="photo-title">月</h2><p class="photo-subtitle">Moon · 水月镜花，一场空。</p>
+        <p class="photo-number">拾贰 / 拾伍</p>
+        <h2 class="photo-title">月</h2>
+        <p class="photo-subtitle">Moon</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 20s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">水月镜花，一场空。</p>
       </div>
     </div>
   </section>
@@ -799,10 +836,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-13.jpg" alt="一隅" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾叁 / 拾伍</p><h2 class="photo-title">一隅</h2><p class="photo-subtitle">A Quiet Corner · 世界喧嚣，我只想安静地待着。一个角落，一束光，一段留白，便是全部。</p>
+        <p class="photo-number">拾叁 / 拾伍</p>
+        <h2 class="photo-title">一隅</h2>
+        <p class="photo-subtitle">A Quiet Corner</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 1/250s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">世界喧嚣，我只想安静地待着。一个角落，一束光，一段留白，便是全部。</p>
       </div>
     </div>
   </section>
@@ -812,10 +858,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-14.jpg" alt="繁城" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾肆 / 拾伍</p><h2 class="photo-title">都</h2><p class="photo-subtitle">All · 色即是空。</p>
+        <p class="photo-number">拾肆 / 拾伍</p>
+        <h2 class="photo-title">都</h2>
+        <p class="photo-subtitle">All</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 14mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 30s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">色即是空。</p>
       </div>
     </div>
   </section>
@@ -825,10 +880,19 @@
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-15.jpg" alt="探戈" loading="lazy" onclick="openLightbox(this.src)">
-        <div class="photo-overlay"></div>
       </div>
       <div class="photo-info">
-        <p class="photo-number">拾伍 / 拾伍</p><h2 class="photo-title">待</h2><p class="photo-subtitle">Wait · 光影交错，万物待时。</p>
+        <p class="photo-number">拾伍 / 拾伍</p>
+        <h2 class="photo-title">待</h2>
+        <p class="photo-subtitle">Wait</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/400s</span>
+          <span>ISO 2000</span>
+        </p>
+        <p class="photo-desc">光影交错，万物待时。</p>
       </div>
     </div>
   </section>
@@ -844,11 +908,6 @@
     <div class="footer-divider"></div>
     <p class="footer-copy">© 2025 桂花落 · Photography Portfolio</p>
   </section>
-  <footer>
-    <p class="footer-copy">photo by liscn</p>
-    <p class="footer-year">2026</p>
-  </footer>
-
   
   <script>
     function toggleMenu() {
