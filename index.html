@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -254,31 +254,39 @@
     }
     
     .photo-info {
-      flex: 0.5;
-      max-width: 320px;
+      position: absolute;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      max-width: none;
+      flex: none;
+      background: rgba(255,255,255,0.92);
+      padding: 0.8rem 1.2rem;
+      border-radius: 4px;
+      text-align: right;
     }
     
     .photo-number {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
       color: var(--text-light);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.3rem;
     }
     
     .photo-title {
       font-family: 'Noto Serif SC', serif;
-      font-size: 2.2rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      margin-bottom: 0.3rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
+      display: inline;
     }
     
     .photo-subtitle {
-      font-size: 0.9rem;
+      font-size: 0.7rem;
       color: var(--accent);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.15em;
+      margin-left: 0.6rem;
+      letter-spacing: 0.05em;
       font-style: italic;
+      display: inline;
     }
     
     .photo-meta {
@@ -525,7 +533,45 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(0,0,0,0.2);
     }
-  </style>
+  
+    /* Mobile: Photo info overlay on image */
+    @media (max-width: 768px) {
+      .photo-section {
+        padding: 5rem 1rem 2rem;
+        min-height: auto;
+      }
+      
+      .photo-container {
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .photo-wrapper {
+        flex: none;
+        width: 100%;
+      }
+      
+      .photo-wrapper img {
+        max-height: 55vh;
+      }
+      
+      .photo-info {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.5rem 0.8rem;
+        background: rgba(255,255,255,0.95);
+      }
+      
+      .photo-title {
+        font-size: 0.9rem;
+      }
+      
+      .photo-subtitle {
+        font-size: 0.65rem;
+        margin-left: 0.4rem;
+      }
+    }
+</style>
 </head>
 <body>
   
@@ -980,3 +1026,4 @@
   </script>
 </body>
 </html>
+
