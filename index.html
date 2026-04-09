@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -217,7 +217,6 @@
     }
     
     .photo-section {
-      position: relative;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -477,7 +476,7 @@
       .hero-subtitle { font-size: 0.9rem; letter-spacing: 0.2em; }
       
       .photo-section {
-        padding: 4rem 1.2rem 5rem;
+        padding: 4rem 1.2rem;
         min-height: auto;
       }
       
@@ -526,17 +525,7 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(0,0,0,0.2);
     }
-  
-    /* Camera params overlay on photo */
-    
-    /* Mobile camera params */
-    @media (max-width: 768px) {
-      
-      .camera-params span {
-        margin-right: 0.4rem;
-      }
-    }
-</style>
+  </style>
 </head>
 <body>
   
@@ -578,7 +567,6 @@
     </div>
   </section>
   
-  
   <!-- Photo 1 -->
   <section class="photo-section fade-in" id="photo1">
     <div class="photo-container">
@@ -589,11 +577,18 @@
         <p class="photo-number">壹 / 拾伍</p>
         <h2 class="photo-title">静</h2>
         <p class="photo-subtitle">Stillness</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 15s</span>
+          <span>ISO 100</span>
+        </p>
         <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 2 -->
   <section class="photo-section fade-in" id="photo2">
     <div class="photo-container">
@@ -604,11 +599,18 @@
         <p class="photo-number">贰 / 拾伍</p>
         <h2 class="photo-title">痕</h2>
         <p class="photo-subtitle">Trace</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 1/125s</span>
+          <span>ISO 200</span>
+        </p>
         <p class="photo-desc">线过留痕，痕即永恒。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 3 -->
   <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
@@ -619,11 +621,18 @@
         <p class="photo-number">叁 / 拾伍</p>
         <h2 class="photo-title">暖</h2>
         <p class="photo-subtitle">Warmth</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/60s</span>
+          <span>ISO 800</span>
+        </p>
         <p class="photo-desc">一点微光，温暖人间。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 4 -->
   <section class="photo-section fade-in" id="photo4">
     <div class="photo-container">
@@ -634,11 +643,18 @@
         <p class="photo-number">肆 / 拾伍</p>
         <h2 class="photo-title">湿</h2>
         <p class="photo-subtitle">Wet</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 28mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 8s</span>
+          <span>ISO 400</span>
+        </p>
         <p class="photo-desc">润物细无声。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 5 -->
   <section class="photo-section fade-in" id="photo5">
     <div class="photo-container">
@@ -649,11 +665,18 @@
         <p class="photo-number">伍 / 拾伍</p>
         <h2 class="photo-title">流</h2>
         <p class="photo-subtitle">Flow</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/5.6</span>
+          <span>快门 10s</span>
+          <span>ISO 200</span>
+        </p>
         <p class="photo-desc">色即是空，空即是色。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 6 -->
   <section class="photo-section fade-in" id="photo6">
     <div class="photo-container">
@@ -664,11 +687,18 @@
         <p class="photo-number">陆 / 拾伍</p>
         <h2 class="photo-title">齐</h2>
         <p class="photo-subtitle">Order</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 4s</span>
+          <span>ISO 100</span>
+        </p>
         <p class="photo-desc">不齐不立，大道至简。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 7 -->
   <section class="photo-section fade-in" id="photo7">
     <div class="photo-container">
@@ -679,137 +709,274 @@
         <p class="photo-number">柒 / 拾伍</p>
         <h2 class="photo-title">寂</h2>
         <p class="photo-subtitle">Silence</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 2.5s</span>
+          <span>ISO 400</span>
+        </p>
         <p class="photo-desc">石不言，光不语。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 8 -->
   <section class="photo-section fade-in" id="photo8">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-08.jpg" alt="空与满" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-08.jpg" alt="留白" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">捌 / 拾伍</p>
         <h2 class="photo-title">留白</h2>
         <p class="photo-subtitle">Negative Space</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 1/200s</span>
+          <span>ISO 200</span>
+        </p>
         <p class="photo-desc">中国画讲究留白，摄影亦然。有时候，空即是满，少即是多。给视觉留一点呼吸的空间。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 9 -->
   <section class="photo-section fade-in" id="photo9">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-09.jpg" alt="影与形" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-09.jpg" alt="影的独白" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">玖 / 拾伍</p>
         <h2 class="photo-title">影</h2>
         <p class="photo-subtitle">Shadow</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.8</span>
+          <span>快门 1/500s</span>
+          <span>ISO 1600</span>
+        </p>
         <p class="photo-desc">形影相随，不离不弃。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 10 -->
   <section class="photo-section fade-in" id="photo10">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-10.jpg" alt="深与远" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-10.jpg" alt="星海" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾 / 拾伍</p>
         <h2 class="photo-title">渊</h2>
         <p class="photo-subtitle">Abyss</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 16mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 25s</span>
+          <span>ISO 100</span>
+        </p>
         <p class="photo-desc">星沉海底，雨过天青。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 11 -->
   <section class="photo-section fade-in" id="photo11">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-11.jpg" alt="微与著" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-11.jpg" alt="炉火" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾壹 / 拾伍</p>
         <h2 class="photo-title">微</h2>
         <p class="photo-subtitle">Subtle</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 35mm</span>
+          <span>光圈 f/1.8</span>
+          <span>快门 1/80s</span>
+          <span>ISO 1200</span>
+        </p>
         <p class="photo-desc">微光处，是归处。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 12 -->
   <section class="photo-section fade-in" id="photo12">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-12.jpg" alt="月与水" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-12.jpg" alt="倒影" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾贰 / 拾伍</p>
         <h2 class="photo-title">月</h2>
         <p class="photo-subtitle">Moon</p>
-        <p class="photo-desc">水月镜花一场空。</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 24mm</span>
+          <span>光圈 f/8</span>
+          <span>快门 20s</span>
+          <span>ISO 100</span>
+        </p>
+        <p class="photo-desc">水月镜花，一场空。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 13 -->
   <section class="photo-section fade-in" id="photo13">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-13.jpg" alt="静与动" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-13.jpg" alt="一隅" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾叁 / 拾伍</p>
         <h2 class="photo-title">一隅</h2>
         <p class="photo-subtitle">A Quiet Corner</p>
-        <p class="photo-desc">喧嚣中独守安静。</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 50mm</span>
+          <span>光圈 f/4</span>
+          <span>快门 1/250s</span>
+          <span>ISO 400</span>
+        </p>
+        <p class="photo-desc">世界喧嚣，我只想安静地待着。一个角落，一束光，一段留白，便是全部。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 14 -->
   <section class="photo-section fade-in" id="photo14">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-14.jpg" alt="全与空" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-14.jpg" alt="繁城" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾肆 / 拾伍</p>
         <h2 class="photo-title">都</h2>
         <p class="photo-subtitle">All</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 14mm</span>
+          <span>光圈 f/11</span>
+          <span>快门 30s</span>
+          <span>ISO 100</span>
+        </p>
         <p class="photo-desc">色即是空。</p>
       </div>
     </div>
   </section>
-
+  
   <!-- Photo 15 -->
   <section class="photo-section fade-in" id="photo15">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-15.jpg" alt="待与时" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-15.jpg" alt="探戈" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <p class="photo-number">拾伍 / 拾伍</p>
         <h2 class="photo-title">待</h2>
         <p class="photo-subtitle">Wait</p>
-        <p class="photo-desc">万物待时。</p>
+        <p class="photo-meta">
+          <span>📷 Sony A7R IV</span>
+          <span>焦段 85mm</span>
+          <span>光圈 f/2.0</span>
+          <span>快门 1/400s</span>
+          <span>ISO 2000</span>
+        </p>
+        <p class="photo-desc">光影交错，万物待时。</p>
       </div>
     </div>
   </section>
-
-
-  <!-- Footer -->
-  <footer class="footer fade-in" id="contact">
-    <p class="footer-tag">感谢观看</p>
-    <p class="footer-email">PHOTOGRAPHY@EXAMPLE.COM</p>
-  </footer>
-
+  
+  <section class="footer" id="about">
+    <p class="footer-tag">About</p>
+    <p class="footer-text">
+      人闲桂花落，夜静春山空。<br>
+      月出惊山鸟，时鸣春涧中。<br><br>
+      用镜头捕捉静谧中的诗意，<br>
+      在光影间寻找内心的宁静。
+    </p>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">© 2025 桂花落 · Photography Portfolio</p>
+  </section>
+  
+  <script>
+    function toggleMenu() {
+      document.querySelector('.menu-btn').classList.toggle('active');
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (scrollTop / docHeight) * 100;
+      document.getElementById('progressBar').style.width = progress + '%';
+    });
+    
+    const sections = document.querySelectorAll('.hero, .photo-section, .footer');
+    const dotsContainer = document.getElementById('pageDots');
+    
+    sections.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => sections[i].scrollIntoView({ behavior: 'smooth' });
+      dotsContainer.appendChild(dot);
+    });
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = Array.from(sections).indexOf(entry.target);
+          document.querySelectorAll('.dot').forEach((d, i) => {
+            d.classList.toggle('active', i === index);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    sections.forEach(s => observer.observe(s));
+    
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+    
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+    
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
 </body>
 </html>
