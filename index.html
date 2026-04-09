@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
-  <meta name="description" content="个人摄影作品集，人闲桂花落，夜静春山空">
+  <title>浜洪棽妗傝姳钀?路 澶滈潤鏄ュ北绌?| Photography Portfolio</title>
+  <meta name="description" content="涓汉鎽勫奖浣滃搧闆嗭紝浜洪棽妗傝姳钀斤紝澶滈潤鏄ュ北绌?>
   <meta name="theme-color" content="#ffffff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +32,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Header ── */
+    /* 鈹€鈹€ Header 鈹€鈹€ */
     header {
       position: fixed; top: 0; left: 0; right: 0;
       padding: 1.2rem 2.5rem;
@@ -78,7 +78,7 @@
     .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav a:hover { color: var(--text); }
 
-    /* ── Hero ── */
+    /* 鈹€鈹€ Hero 鈹€鈹€ */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -105,7 +105,7 @@
       50% { transform: translateY(8px); opacity: 1; }
     }
 
-    /* ── Photo ── */
+    /* 鈹€鈹€ Photo 鈹€鈹€ */
     .photo-section {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       padding: 5rem 3rem; background: var(--bg);
@@ -128,7 +128,7 @@
     }
     .camera-params span { margin-left: 0.8rem; }
 
-    /* ── Lightbox ── */
+    /* 鈹€鈹€ Lightbox 鈹€鈹€ */
     .lightbox {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center;
@@ -144,7 +144,7 @@
     }
     .lightbox-close:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
 
-    /* ── Footer ── */
+    /* 鈹€鈹€ Footer 鈹€鈹€ */
     .footer {
       min-height: 70vh; display: flex; flex-direction: column; align-items: center;
       justify-content: center; text-align: center; padding: 4rem 2rem; background: var(--bg-cream);
@@ -154,23 +154,23 @@
     .footer-divider { width: 60px; height: 1px; background: var(--border); margin: 2.5rem auto; }
     .footer-copy { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.15em; }
 
-    /* ── Progress ── */
+    /* 鈹€鈹€ Progress 鈹€鈹€ */
     .progress-bar {
       position: fixed; top: 60px; left: 0; height: 2px; background: var(--accent);
       z-index: 999; width: 0%; transition: width 0.1s;
     }
 
-    /* ── Fade-in ── */
+    /* 鈹€鈹€ Fade-in 鈹€鈹€ */
     .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── Scrollbar ── */
+    /* 鈹€鈹€ Scrollbar 鈹€鈹€ */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
-    /* ── Responsive ── */
+    /* 鈹€鈹€ Responsive 鈹€鈹€ */
     @media (max-width: 1024px) {
       .photo-container { flex-direction: column; gap: 2rem; text-align: center; }
       .photo-wrapper { width: 100%; flex: none; }
@@ -203,10 +203,10 @@
   <div class="progress-bar" id="progressBar"></div>
 
   <header>
-    <a href="#hero" class="logo">桂花落</a>
+    <a href="#hero" class="logo">妗傝姳钀?/a>
     <ul class="nav-links">
-      <li><a href="#photo1">作品</a></li>
-      <li><a href="#about">关于</a></li>
+      <li><a href="#photo1">浣滃搧</a></li>
+      <li><a href="#about">鍏充簬</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn">
       <span></span><span></span><span></span>
@@ -214,35 +214,35 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav">
-    <a href="#hero" onclick="toggleMenu()">首页</a>
-    <a href="#photo1" onclick="toggleMenu()">作品</a>
-    <a href="#about" onclick="toggleMenu()">关于</a>
+    <a href="#hero" onclick="toggleMenu()">棣栭〉</a>
+    <a href="#photo1" onclick="toggleMenu()">浣滃搧</a>
+    <a href="#about" onclick="toggleMenu()">鍏充簬</a>
   </nav>
 
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <button class="lightbox-close" onclick="closeLightbox()">脳</button>
     <img src="" alt="" id="lightboxImg">
   </div>
 
   <section class="hero" id="hero">
     <p class="hero-tag">Photography Portfolio</p>
-    <h1 class="hero-title">人闲桂花落</h1>
-    <p class="hero-subtitle">夜静春山空</p>
-    <div class="scroll-hint"><span>SCROLL</span><span>↓</span></div>
+    <h1 class="hero-title">浜洪棽妗傝姳钀?/h1>
+    <p class="hero-subtitle">澶滈潤鏄ュ北绌?/p>
+    <div class="scroll-hint"><span>SCROLL</span><span>鈫?/span></div>
   </section>
 
   <!-- Photo 1 (New) -->
   <section class="photo-section fade-in" id="photo1">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-new-01.jpg" alt="谧" loading="eager" onclick="openLightbox(this.src)">
+        <img src="images/photo-new-01.jpg" alt="璋? loading="eager" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">壹 / 柒</p>
-        <h2 class="photo-title">谧</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
+        <p class="photo-number">澹?/ 鏌?/p>
+        <h2 class="photo-title">璋?/h2>
         <p class="photo-subtitle">Serenity</p>
-        <p class="photo-desc">夜色如水，万籁归寂。</p>
+        <p class="photo-desc">澶滆壊濡傛按锛屼竾绫佸綊瀵傘€?/p>
       </div>
     </div>
   </section>
@@ -251,14 +251,14 @@
   <section class="photo-section fade-in" id="photo2">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/hero-01.jpg" alt="万家灯火" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/hero-01.jpg" alt="涓囧鐏伀" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>35mm</span> <span>f/11</span> <span>1/125s</span> <span>ISO 200</span></div>
-        <p class="photo-number">贰 / 柒</p>
-        <h2 class="photo-title">静</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/11</span> <span>1/125s</span> <span>ISO 200</span></div>
+        <p class="photo-number">璐?/ 鏌?/p>
+        <h2 class="photo-title">闈?/h2>
         <p class="photo-subtitle">Stillness</p>
-        <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
+        <p class="photo-desc">涓囩眮淇卞瘋锛屽敮鏈夌伅鐏湭鐪犮€?/p>
       </div>
     </div>
   </section>
@@ -267,14 +267,14 @@
   <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-02.jpg" alt="线的诗学" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-02.jpg" alt="绾跨殑璇楀" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>50mm</span> <span>f/2.0</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">叁 / 柒</p>
-        <h2 class="photo-title">痕</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>50mm</span> <span>f/2.0</span> <span>1/60s</span> <span>ISO 800</span></div>
+        <p class="photo-number">鍙?/ 鏌?/p>
+        <h2 class="photo-title">鐥?/h2>
         <p class="photo-subtitle">Trace</p>
-        <p class="photo-desc">线过留痕，痕即永恒。</p>
+        <p class="photo-desc">绾胯繃鐣欑棔锛岀棔鍗虫案鎭掋€?/p>
       </div>
     </div>
   </section>
@@ -283,14 +283,14 @@
   <section class="photo-section fade-in" id="photo4">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-05.jpg" alt="烁" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-05.jpg" alt="鐑? loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">肆 / 柒</p>
-        <h2 class="photo-title">烁</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 800</span></div>
+        <p class="photo-number">鑲?/ 鏌?/p>
+        <h2 class="photo-title">鐑?/h2>
         <p class="photo-subtitle">Shimmer</p>
-        <p class="photo-desc">霓虹闪烁，城市不眠。</p>
+        <p class="photo-desc">闇撹櫣闂儊锛屽煄甯備笉鐪犮€?/p>
       </div>
     </div>
   </section>
@@ -299,14 +299,14 @@
   <section class="photo-section fade-in" id="photo5">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-06.jpg" alt="构" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-06.jpg" alt="鏋? loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>24mm</span> <span>f/8</span> <span>1/125s</span> <span>ISO 200</span></div>
-        <p class="photo-number">伍 / 柒</p>
-        <h2 class="photo-title">构</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>24mm</span> <span>f/8</span> <span>1/125s</span> <span>ISO 200</span></div>
+        <p class="photo-number">浼?/ 鏌?/p>
+        <h2 class="photo-title">鏋?/h2>
         <p class="photo-subtitle">Structure</p>
-        <p class="photo-desc">线条交错，几何之美。</p>
+        <p class="photo-desc">绾挎潯浜ら敊锛屽嚑浣曚箣缇庛€?/p>
       </div>
     </div>
   </section>
@@ -315,14 +315,14 @@
   <section class="photo-section fade-in" id="photo6">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-07.jpg" alt="隅" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-07.jpg" alt="闅? loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>50mm</span> <span>f/1.8</span> <span>1/80s</span> <span>ISO 400</span></div>
-        <p class="photo-number">陆 / 柒</p>
-        <h2 class="photo-title">隅</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>50mm</span> <span>f/1.8</span> <span>1/80s</span> <span>ISO 400</span></div>
+        <p class="photo-number">闄?/ 鏌?/p>
+        <h2 class="photo-title">闅?/h2>
         <p class="photo-subtitle">Corner</p>
-        <p class="photo-desc">一隅静谧，光影温柔。</p>
+        <p class="photo-desc">涓€闅呴潤璋э紝鍏夊奖娓╂煍銆?/p>
       </div>
     </div>
   </section>
@@ -331,14 +331,30 @@
   <section class="photo-section fade-in" id="photo7">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-08.jpg" alt="尘" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-08.jpg" alt="灏? loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>85mm</span> <span>f/2</span> <span>1/100s</span> <span>ISO 640</span></div>
-        <p class="photo-number">柒 / 柒</p>
-        <h2 class="photo-title">尘</h2>
+        <div class="camera-params">馃摲 Sony A7R IV <span>85mm</span> <span>f/2</span> <span>1/100s</span> <span>ISO 640</span></div>
+        <p class="photo-number">鏌?/ 鎹?/p>
+        <h2 class="photo-title">灏?/h2>
         <p class="photo-subtitle">Dust</p>
-        <p class="photo-desc">人间烟火，尘世浮华。</p>
+        <p class="photo-desc">浜洪棿鐑熺伀锛屽皹涓栨诞鍗庛€?/p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 8 -->
+  <section class="photo-section fade-in" id="photo8">
+    <div class="photo-container">
+      <div class="photo-wrapper">
+        <img src="images/photo-new-08.jpg" alt="澜" loading="lazy" onclick="openLightbox(this.src)">
+      </div>
+      <div class="photo-info">
+        <div class="camera-params">📷 Sony A7R IV <span>50mm</span> <span>f/2.8</span> <span>1/80s</span> <span>ISO 500</span></div>
+        <p class="photo-number">捌 / 捌</p>
+        <h2 class="photo-title">澜</h2>
+        <p class="photo-subtitle">Ripple</p>
+        <p class="photo-desc">波澜不惊，深流无声。</p>
       </div>
     </div>
   </section>
@@ -346,13 +362,13 @@
   <section class="footer" id="about">
     <p class="footer-tag">About</p>
     <p class="footer-text">
-      人闲桂花落，夜静春山空。<br>
-      月出惊山鸟，时鸣春涧中。<br><br>
-      用镜头捕捉静谧中的诗意，<br>
-      在光影间寻找内心的宁静。
+      浜洪棽妗傝姳钀斤紝澶滈潤鏄ュ北绌恒€?br>
+      鏈堝嚭鎯婂北楦燂紝鏃堕福鏄ユ锭涓€?br><br>
+      鐢ㄩ暅澶存崟鎹夐潤璋т腑鐨勮瘲鎰忥紝<br>
+      鍦ㄥ厜褰遍棿瀵绘壘鍐呭績鐨勫畞闈欍€?
     </p>
     <div class="footer-divider"></div>
-    <p class="footer-copy">© 2026 桂花落 · Photography Portfolio</p>
+    <p class="footer-copy">漏 2026 妗傝姳钀?路 Photography Portfolio</p>
   </section>
 
   <script>
