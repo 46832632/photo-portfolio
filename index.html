@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -525,7 +525,44 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(0,0,0,0.2);
     }
-  </style>
+  
+    /* Camera params overlay on photo */
+    .camera-params {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.5);
+      padding: 0.3rem 0.6rem;
+      border-radius: 3px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    
+    .camera-params span {
+      display: inline;
+      margin-right: 0.6rem;
+    }
+    
+    .camera-params span:last-child {
+      margin-right: 0;
+    }
+    
+    /* Mobile camera params */
+    @media (max-width: 768px) {
+      .camera-params {
+        bottom: 0.6rem;
+        right: 0.6rem;
+        font-size: 0.55rem;
+        padding: 0.25rem 0.5rem;
+      }
+      
+      .camera-params span {
+        margin-right: 0.4rem;
+      }
+    }
+</style>
 </head>
 <body>
   
@@ -980,3 +1017,4 @@
   </script>
 </body>
 </html>
+
