@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head>
+﻿<!DOCTYPE html><html lang="zh-CN"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
@@ -603,4 +603,27 @@
         <p class="photo-desc">一点微光，温暖人间。</p>
       </div>
     </div>
-  </section></body></html>
+  </section><script>
+// 淡入动画
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// 移动端菜单
+function toggleMenu() {
+  document.getElementById('mobileNav').classList.toggle('active');
+}
+
+// 灯箱
+function openLightbox(src) {
+  // 简化版，直接在新窗口打开
+  window.open(src, '_blank');
+}
+</script>
+</body></html>
