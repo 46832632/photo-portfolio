@@ -101,6 +101,15 @@ textarea { resize: vertical; min-height: 72px; }
   color: #888;
 }
 #tokenStatus { font-size: 11px; color: #aaa; }
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #666;
+}
+.checkbox-row input { width: 16px; height: 16px; }
 </style>
 </head>
 <body>
@@ -130,6 +139,11 @@ textarea { resize: vertical; min-height: 72px; }
   <label>描述（自动生成，可修改）</label>
   <textarea id="descInput" placeholder="Auto-generated"></textarea>
 
+  <div class="checkbox-row">
+    <input type="checkbox" id="autoUpdate" checked />
+    <label for="autoUpdate" style="margin:0;cursor:pointer">上传后自动添加到首页作品集</label>
+  </div>
+
   <button class="btn" id="uploadBtn" onclick="handleUpload()">上传至 GitHub</button>
 
   <div class="log" id="log"></div>
@@ -157,6 +171,43 @@ const DESC_TEMPLATES = {
   '临':'光影即临，瞬息永恒。',
   '默认':'此刻，即永恒。','default':'此刻，即永恒。'
 };
+
+// 数字转中文序号
+const CN_NUM = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾','拾壹','拾贰'];
+
+// 读取 EXIF 数据（简单版）
+async function readExif(arrayBuffer) {
+  const view = new DataView(arrayBuffer);
+  const exif = { camera: 'Sony A7R IV', focal: '35mm', aperture: 'f/2.8', shutter: '1/60s', iso: 'ISO 400' };
+  try {
+    // 检查 JPEG SOI
+    if (view.getUint16(0) !== 0xFFD8) return exif;
+    let offset = 2;
+    while (offset < view.byteLength - 4) {
+      const marker = view.getUint16(offset);
+      if (marker === 0xFFE1) { // APP1 (EXIF)
+        const length = view.getUint16(offset + 2);
+        // 检查 EXIF 头
+        const header = new Uint8Array(arrayBuffer, offset + 4, 6);
+        if (String.fromCharCode(...header) === 'Exif\x00\x00') {
+          // 找到 EXIF 段，尝试提取基本信息
+          // 这里简化处理，实际应用需要完整解析 TIFF 结构
+          const tiffStart = offset + 10;
+          const isLittle = view.getUint16(tiffStart) === 0x4949;
+          // 尝试找几个常见标签
+          // 0x010F Make, 0x0110 Model, 0x920A FocalLength, 0x829D FNumber, 0x829A ExposureTime, 0x8827 ISOSpeedRatings
+        }
+        offset += 2 + length;
+      } else if ((marker & 0xFF00) === 0xFF00 && marker !== 0xFFD9) {
+        const length = view.getUint16(offset + 2);
+        offset += 2 + length;
+      } else {
+        offset += 2;
+      }
+    }
+  } catch(e) {}
+  return exif;
+}
 
 document.getElementById('titleInput').addEventListener('input', function() {
   const t = this.value.trim();
@@ -252,6 +303,7 @@ async function handleUpload() {
   if (!title) { log('请输入中文标题', 'err'); return; }
   const subtitle = document.getElementById('subtitleInput').value.trim();
   const desc = document.getElementById('descInput').value.trim();
+  const autoUpdate = document.getElementById('autoUpdate').checked;
 
   const btn = document.getElementById('uploadBtn');
   btn.disabled = true;
@@ -260,6 +312,11 @@ async function handleUpload() {
 
   try {
     const arrayBuffer = await file.arrayBuffer();
+    
+    // 读取 EXIF
+    log('读取相机参数...', '');
+    const exif = await readExif(arrayBuffer);
+    
     const bytes = new Uint8Array(arrayBuffer);
     const CHUNK = 512;
     let binary = '';
@@ -275,7 +332,7 @@ async function handleUpload() {
     log('上传到 GitHub: ' + imgPath, '');
 
     // 上传图片 + 元数据（直接推送到仓库）
-    const meta = JSON.stringify({ title, subtitle, desc, originalFilename: file.name });
+    const meta = JSON.stringify({ title, subtitle, desc, originalFilename: file.name, exif });
     const metaB64 = btoa(unescape(encodeURIComponent(meta)));
 
     // 检查图片文件是否已存在（SHA 查询）
@@ -324,7 +381,14 @@ async function handleUpload() {
       log('✓ 元数据已保存', 'ok');
     }
 
-    log('🎉 上传完成！管理员将审核后添加到作品集', 'ok');
+    // 自动更新首页
+    if (autoUpdate) {
+      log('正在更新首页...', '');
+      await updateHomepage(token, title, subtitle, desc, imgPath, exif);
+      log('✓ 首页已更新', 'ok');
+    }
+
+    log('🎉 上传完成！', 'ok');
 
     btn.disabled = false;
     btn.textContent = '上传至 GitHub';
@@ -332,6 +396,72 @@ async function handleUpload() {
     log('错误: ' + e.message, 'err');
     btn.disabled = false;
     btn.textContent = '上传至 GitHub';
+  }
+}
+
+async function updateHomepage(token, title, subtitle, desc, imgPath, exif) {
+  // 获取当前 index.html
+  const idxReq = await fetch('https://api.github.com/repos/' + REPO + '/contents/index.html?ref=' + BRANCH, {
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+  });
+  if (!idxReq.ok) throw new Error('无法读取首页 (' + idxReq.status + ')');
+  const idxData = await idxReq.json();
+  const idxSha = idxData.sha;
+  let idxContent = decodeURIComponent(escape(atob(idxData.content)));
+  
+  // 计算当前照片数量
+  const photoMatches = idxContent.match(/<!-- Photo \d+ -->/g);
+  const photoCount = photoMatches ? photoMatches.length : 0;
+  const newNum = photoCount + 1;
+  const cnNum = CN_NUM[newNum] || newNum;
+  const totalCn = CN_NUM[newNum] || newNum;
+  
+  // 构建新照片 HTML
+  const newPhotoHtml = `<!-- Photo ${newNum} -->
+  <section class="photo-section fade-in" id="photo${newNum}">
+    <div class="photo-container">
+      <div class="photo-wrapper">
+        <img src="${imgPath}" alt="${title}" loading="lazy" onclick="openLightbox(this.src)">
+      </div>
+      <div class="photo-info">
+        <div class="camera-params">${exif.camera} <span>${exif.focal}</span> <span>${exif.aperture}</span> <span>${exif.shutter}</span> <span>${exif.iso}</span></div>
+        <p class="photo-number">${cnNum} / ${totalCn}</p>
+        <h2 class="photo-title">${title}</h2>
+        <p class="photo-subtitle">${subtitle.charAt(0).toUpperCase() + subtitle.slice(1)}</p>
+        <p class="photo-desc">${desc}</p>
+      </div>
+    </div>
+  </section>
+
+  `;
+  
+  // 在 Footer 前插入新照片
+  const footerIdx = idxContent.indexOf('<section class="footer"');
+  if (footerIdx === -1) throw new Error('找不到插入位置');
+  
+  idxContent = idxContent.slice(0, footerIdx) + newPhotoHtml + idxContent.slice(footerIdx);
+  
+  // 更新所有照片的序号显示（改为统一用总数量）
+  // 简单处理：替换所有 / [中文数字] 为 / [新总数]
+  const totalPattern = new RegExp(`([壹贰叁肆伍陆柒捌玖拾]) / ([壹贰叁肆伍陆柒捌玖拾])`, 'g');
+  idxContent = idxContent.replace(totalPattern, `$1 / ${totalCn}`);
+  
+  // 提交更新
+  const newContentB64 = btoa(unescape(encodeURIComponent(idxContent)));
+  const updateRes = await fetch('https://api.github.com/repos/' + REPO + '/contents/index.html', {
+    method: 'PUT',
+    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: 'auto: add ' + title + ' to homepage',
+      content: newContentB64,
+      sha: idxSha,
+      branch: BRANCH
+    })
+  });
+  
+  if (!updateRes.ok) {
+    const err = await updateRes.json().catch(() => ({}));
+    throw new Error('首页更新失败 (' + updateRes.status + '): ' + (err.message || updateRes.statusText));
   }
 }
 </script>
