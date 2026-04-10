@@ -72,6 +72,52 @@
     @media (min-width: 769px) {
       .menu-btn { display: none; }
     }
+    .nav-menu { position: relative; }
+    .nav-menu-btn {
+      background: none; border: none; font-size: 1.1rem;
+      cursor: pointer; padding: 0.4rem 0.5rem;
+      border-radius: 4px; transition: all 0.2s ease;
+      color: var(--text);
+    }
+    .nav-menu-btn:hover { background: rgba(0,0,0,0.05); }
+    .nav-dropdown {
+      position: absolute; top: 100%; right: 0;
+      background: #fff; border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      min-width: 120px; padding: 0.5rem 0;
+      opacity: 0; visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.25s ease;
+      z-index: 1001;
+    }
+    .nav-dropdown.show {
+      opacity: 1; visibility: visible;
+      transform: translateY(0);
+    }
+    .nav-dropdown a {
+      display: block; padding: 0.6rem 1rem;
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      color: var(--text); text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-dropdown a:hover { background: #f5f5f3; }
+    .about-section {
+      min-height: 50vh; scroll-snap-align: start;
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem 2rem;
+    }
+    .about-content {
+      text-align: center;
+      max-width: 400px;
+    }
+    .about-content h2 {
+      font-size: 1.4rem; font-weight: 400;
+      letter-spacing: 0.3em; margin-bottom: 1.5rem;
+    }
+    .about-content p {
+      font-size: 0.9rem; color: var(--text-dim);
+      letter-spacing: 0.15em; line-height: 1.8;
+    }
     .mobile-menu {
       display: none; position: fixed; inset: 0;
       background: white; z-index: 999;
@@ -183,6 +229,13 @@
   <div class="progress-bar" id="progress"></div>
   <nav>
     <a href="#home" class="logo">桂花落</a>
+    <div class="nav-menu">
+      <button class="nav-menu-btn" onclick="toggleNavMenu()">&#9776;</button>
+      <div class="nav-dropdown" id="navDropdown">
+        <a href="#about">认识一下</a>
+        <a href="upload-local.html">上传照片</a>
+      </div>
+    </div>
   </nav>
   <div class="dot-nav">
     <a href="#home" class="active"></a>
@@ -323,6 +376,15 @@
   </section>
   <!-- 照片列表结束 -->
 
+  <!-- 认识一下 -->
+  <section class="about-section fade-in" id="about">
+    <div class="about-content">
+      <h2>认识一下</h2>
+      <p>一个记录光影的人</p>
+      <p style="font-size:0.8rem;color:var(--text-dim);margin-top:1rem;">用镜头捕捉瞬间，用照片留住永恒</p>
+    </div>
+  </section>
+
   <!-- 页脚 -->
   <footer>
     <p>人闲桂花落 &middot; 夜静春山空</p>
@@ -332,6 +394,20 @@
   </footer>
 
   <script>
+    // 导航下拉菜单
+    function toggleNavMenu() {
+      const dropdown = document.getElementById('navDropdown');
+      dropdown.classList.toggle('show');
+    }
+    // 点击外部关闭下拉菜单
+    document.addEventListener('click', function(e) {
+      const navMenu = document.querySelector('.nav-menu');
+      const dropdown = document.getElementById('navDropdown');
+      if (navMenu && !navMenu.contains(e.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
     // 灯箱
     function openLightbox(src) {
       document.getElementById('lightboxImg').src = src;
