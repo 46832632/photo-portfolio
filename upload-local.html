@@ -268,49 +268,62 @@ async function handleUpload() {
     }
     const base64 = btoa(binary);
     const safeName = title + '_' + Date.now();
-    const filePath = 'images/' + safeName + '.jpg';
+    const imgPath = 'images/' + safeName + '.jpg';
+    const metaPath = 'images/' + safeName + '.meta.json';
 
-    log('上传到 GitHub: ' + filePath, '');
+    log('上传到 GitHub: ' + imgPath, '');
 
-    // Create issue with base64 data as body (no path conflict)
-    const issueBody = JSON.stringify({
-      title: '[自动] ' + title + ' - ' + subtitle,
-      body: desc + '\n\n<!-- base64_data:' + base64 + ' -->',
-      labels: ['auto-upload']
-    });
+    // 上传图片 + 元数据（直接推送到仓库）
+    const meta = JSON.stringify({ title, subtitle, desc, originalFilename: file.name });
+    const metaB64 = btoa(unescape(encodeURIComponent(meta)));
 
-    // Actually, let's use Gist API instead - it's simpler
-    const gistRes = await fetch('https://api.github.com/gists', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/vnd.github.v3+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        description: title + ' | ' + subtitle,
-        public: false,
-        files: {
-          'photo.json': {
-            content: JSON.stringify({
-              title, subtitle, desc,
-              filename: file.name,
-              base64: base64
-            })
-          }
-        }
-      })
-    });
-
-    if (!gistRes.ok) {
-      const err = await gistRes.json();
-      throw new Error('Gist API: ' + (err.message || gistRes.status));
+    // 检查图片文件是否已存在（SHA 查询）
+    let imgSha = null;
+    let metaSha = null;
+    for (const p of [imgPath, metaPath]) {
+      const shReq = await fetch('https://api.github.com/repos/46832632/photo-portfolio/contents/' + p + '?ref=main', {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (shReq.ok) {
+        const sh = await shReq.json();
+        if (p === imgPath) imgSha = sh.sha;
+        else metaSha = sh.sha;
+      }
     }
 
-    const gist = await gistRes.json();
-    log('✓ 已保存到 Gist: ' + gist.id, 'ok');
-    log('⚠ 照片数据已存储，需合并到仓库', 'err');
-    log('请在电脑上运行同步脚本，或联系管理员', 'err');
+    // 上传图片
+    log('推送图片 (' + (base64.length/1024).toFixed(0) + ' KB)...', '');
+    const imgPayload = {
+      message: 'feat: add photo ' + title,
+      content: base64,
+      sha: imgSha || undefined,
+      branch: 'main'
+    };
+    const imgRes = await fetch('https://api.github.com/repos/46832632/photo-portfolio/contents/' + imgPath, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(imgPayload)
+    });
+
+    if (!imgRes.ok) {
+      const err = await imgRes.json().catch(() => ({}));
+      throw new Error('图片上传失败 (' + imgRes.status + '): ' + (err.message || imgRes.statusText));
+    }
+
+    log('✓ 图片已上传', 'ok');
+
+    // 上传元数据
+    const metaRes = await fetch('https://api.github.com/repos/46832632/photo-portfolio/contents/' + metaPath, {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'docs: add metadata ' + title, content: metaB64, sha: metaSha || undefined, branch: 'main' })
+    });
+
+    if (metaRes.ok) {
+      log('✓ 元数据已保存', 'ok');
+    }
+
+    log('🎉 上传完成！管理员将审核后添加到作品集', 'ok');
 
     btn.disabled = false;
     btn.textContent = '上传至 GitHub';
