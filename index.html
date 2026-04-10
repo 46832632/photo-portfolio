@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>浜洪棽妗傝姳钀?路 澶滈潤鏄ュ北绌?| Photography Portfolio</title>
-  <meta name="description" content="涓汉鎽勫奖浣滃搧闆嗭紝浜洪棽妗傝姳钀斤紝澶滈潤鏄ュ北绌?>
+  <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
   <meta name="theme-color" content="#ffffff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,114 +28,121 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.8;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* 鈹€鈹€ Header 鈹€鈹€ */
+    /* ── Header ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0;
-      padding: 1.2rem 2.5rem;
-      display: flex; justify-content: space-between; align-items: center;
-      z-index: 1000;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
     }
     .logo {
-      font-size: 1rem; font-weight: 400; letter-spacing: 0.2em;
-      color: var(--text); text-decoration: none; transition: opacity 0.3s;
+      font-size: 0.85rem; letter-spacing: 0.3em; color: var(--text);
+      text-decoration: none; text-transform: uppercase; transition: opacity 0.3s;
     }
-    .logo:hover { opacity: 0.6; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .logo:hover { opacity: 0.5; }
+    .nav-links { list-style: none; display: flex; gap: 2.5rem; }
     .nav-links a {
-      color: var(--text-dim); text-decoration: none;
-      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; transition: color 0.3s;
+      font-size: 0.8rem; letter-spacing: 0.2em; color: var(--text-dim);
+      text-decoration: none; transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--text); }
     .menu-btn {
-      display: none; flex-direction: column; justify-content: center; align-items: center;
-      width: 40px; height: 40px; background: none; border: none; cursor: pointer; gap: 6px; padding: 0;
+      display: none; flex-direction: column; gap: 5px; background: none;
+      border: none; cursor: pointer; padding: 5px;
     }
-    .menu-btn span {
-      display: block; width: 22px; height: 1.5px; background: var(--text); transition: all 0.3s;
-    }
-    .menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-btn span { display: block; width: 24px; height: 1px; background: var(--text); transition: 0.3s; }
+    .menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
     .menu-btn.active span:nth-child(2) { opacity: 0; }
-    .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+    .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+    /* ── Mobile Nav ── */
     .mobile-nav {
-      position: fixed; top: 60px; left: 0; right: 0;
-      background: rgba(255,255,255,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      padding: 1rem; transform: translateY(-100%); opacity: 0; visibility: hidden;
-      transition: all 0.3s; z-index: 999; border-bottom: 1px solid var(--border);
+      display: none; position: fixed; top: 60px; left: 0; right: 0;
+      background: white; padding: 2rem; z-index: 99;
+      flex-direction: column; gap: 1.5rem; text-align: center;
+      border-top: 1px solid var(--border);
     }
-    .mobile-nav.active { transform: translateY(0); opacity: 1; visibility: visible; }
+    .mobile-nav.active { display: flex; }
     .mobile-nav a {
-      display: block; padding: 1rem; color: var(--text-dim); text-decoration: none;
-      font-size: 0.9rem; letter-spacing: 0.1em; text-align: center;
-      border-bottom: 1px solid var(--border); transition: color 0.3s;
+      font-size: 1rem; letter-spacing: 0.3em; color: var(--text-dim);
+      text-decoration: none; transition: color 0.3s;
     }
-    .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav a:hover { color: var(--text); }
 
-    /* 鈹€鈹€ Hero 鈹€鈹€ */
+    /* ── Hero ── */
     .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 6rem 2rem 4rem; background: var(--bg);
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 6rem 2rem 4rem; position: relative;
     }
-    .hero-tag { font-size: 0.7rem; letter-spacing: 0.4em; color: var(--text-light); margin-bottom: 2rem; text-transform: uppercase; }
+    .hero-tag {
+      font-size: 0.65rem; letter-spacing: 0.5em; color: var(--text-light);
+      text-transform: uppercase; margin-bottom: 3rem;
+    }
     .hero-title {
       font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-      font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 400; letter-spacing: 0.3em;
-      margin-bottom: 1rem; color: var(--text); line-height: 1.3;
+      font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 400;
+      letter-spacing: 0.15em; margin-bottom: 1rem; line-height: 1.3;
     }
     .hero-subtitle {
-      font-family: 'Noto Serif SC', serif;
-      font-size: clamp(1rem, 3vw, 1.4rem); color: var(--text-dim); font-weight: 300; letter-spacing: 0.4em;
+      font-size: 1rem; letter-spacing: 0.4em; color: var(--text-dim); font-weight: 300;
     }
     .scroll-hint {
-      position: absolute; bottom: 3rem;
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      color: var(--text-light); font-size: 0.65rem; letter-spacing: 0.3em;
-      animation: bounce 2.5s ease-in-out infinite;
+      position: absolute; bottom: 3rem; display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem; color: var(--text-light);
+      font-size: 0.65rem; letter-spacing: 0.3em; animation: bounce 2s infinite;
     }
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); opacity: 0.6; }
-      50% { transform: translateY(8px); opacity: 1; }
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
     }
 
-    /* 鈹€鈹€ Photo 鈹€鈹€ */
+    /* ── Photo Sections ── */
     .photo-section {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      padding: 5rem 3rem; background: var(--bg);
+      padding: 5rem 3rem; display: flex; justify-content: center;
     }
-    .photo-container { display: flex; align-items: center; gap: 5rem; max-width: 1400px; width: 100%; }
-    .photo-wrapper { flex: 1.2; }
+    .photo-container {
+      display: flex; align-items: center; gap: 6rem;
+      max-width: 1200px; width: 100%;
+    }
+    .photo-container:nth-child(even) { flex-direction: row-reverse; }
+    .photo-wrapper {
+      flex: 1.2; position: relative; cursor: pointer;
+    }
     .photo-wrapper img {
-      width: 100%; max-height: 75vh; object-fit: contain;
-      box-shadow: var(--shadow); transition: box-shadow 0.4s, transform 0.4s; cursor: zoom-in;
+      width: 100%; max-height: 70vh; object-fit: contain;
+      display: block; box-shadow: var(--shadow); transition: box-shadow 0.5s;
     }
-    .photo-wrapper img:hover { box-shadow: var(--shadow-hover); transform: translateY(-4px); }
-    .photo-info { flex: 0.5; max-width: 320px; }
-    .photo-number { font-size: 0.7rem; letter-spacing: 0.25em; color: var(--text-light); margin-bottom: 1.2rem; }
-    .photo-title { font-size: 2.2rem; font-weight: 400; margin-bottom: 0.3rem; letter-spacing: 0.08em; }
-    .photo-subtitle { font-size: 0.9rem; color: var(--accent); margin-bottom: 1.5rem; letter-spacing: 0.15em; font-style: italic; }
-    .photo-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 2; font-weight: 300; }
+    .photo-wrapper img:hover { box-shadow: var(--shadow-hover); }
+    .photo-info { flex: 0.7; }
     .camera-params {
-      font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.08em; margin-bottom: 1.2rem; opacity: 0.6;
-      text-align: right;
+      font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1rem;
+      letter-spacing: 0.05em; text-align: right;
     }
-    .camera-params span { margin-left: 0.8rem; }
+    .camera-params span { margin-left: 1rem; font-family: monospace; }
+    .photo-number {
+      font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.2em; margin-bottom: 0.5rem;
+    }
+    .photo-title {
+      font-size: 2.2rem; letter-spacing: 0.2em; margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+    .photo-subtitle {
+      font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.15em; margin-bottom: 1.5rem;
+    }
+    .photo-desc {
+      font-size: 0.9rem; color: var(--text-dim); font-weight: 300;
+      line-height: 2; letter-spacing: 0.05em;
+    }
 
-    /* 鈹€鈹€ Lightbox 鈹€鈹€ */
+    /* ── Lightbox ── */
     .lightbox {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center;
-      z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s; cursor: zoom-out;
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+      z-index: 1000; align-items: center; justify-content: center;
     }
-    .lightbox.active { opacity: 1; visibility: visible; }
-    .lightbox img { max-width: 90%; max-height: 90%; object-fit: contain; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; }
     .lightbox-close {
       position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px;
       background: none; border: 1px solid rgba(255,255,255,0.3); color: white;
@@ -144,7 +151,7 @@
     }
     .lightbox-close:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
 
-    /* 鈹€鈹€ Footer 鈹€鈹€ */
+    /* ── Footer ── */
     .footer {
       min-height: 70vh; display: flex; flex-direction: column; align-items: center;
       justify-content: center; text-align: center; padding: 4rem 2rem; background: var(--bg-cream);
@@ -154,28 +161,30 @@
     .footer-divider { width: 60px; height: 1px; background: var(--border); margin: 2.5rem auto; }
     .footer-copy { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.15em; }
 
-    /* 鈹€鈹€ Progress 鈹€鈹€ */
+    /* ── Progress ── */
     .progress-bar {
       position: fixed; top: 60px; left: 0; height: 2px; background: var(--accent);
       z-index: 999; width: 0%; transition: width 0.1s;
     }
 
-    /* 鈹€鈹€ Fade-in 鈹€鈹€ */
+    /* ── Fade-in ── */
     .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* 鈹€鈹€ Scrollbar 鈹€鈹€ */
+    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
 
-    /* 鈹€鈹€ Responsive 鈹€鈹€ */
+    /* ── Responsive ── */
     @media (max-width: 1024px) {
       .photo-container { flex-direction: column; gap: 2rem; text-align: center; }
+      .photo-container:nth-child(even) { flex-direction: column; }
       .photo-wrapper { width: 100%; flex: none; }
       .photo-wrapper img { max-height: 55vh; }
       .photo-info { flex: none; max-width: 100%; }
+      .camera-params { text-align: center; }
     }
     @media (max-width: 768px) {
       header { padding: 1rem 1.5rem; }
@@ -203,10 +212,10 @@
   <div class="progress-bar" id="progressBar"></div>
 
   <header>
-    <a href="#hero" class="logo">妗傝姳钀?/a>
+    <a href="#hero" class="logo">桂花落</a>
     <ul class="nav-links">
-      <li><a href="#photo1">浣滃搧</a></li>
-      <li><a href="#about">鍏充簬</a></li>
+      <li><a href="#photo1">作品</a></li>
+      <li><a href="#about">关于</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn">
       <span></span><span></span><span></span>
@@ -214,35 +223,35 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav">
-    <a href="#hero" onclick="toggleMenu()">棣栭〉</a>
-    <a href="#photo1" onclick="toggleMenu()">浣滃搧</a>
-    <a href="#about" onclick="toggleMenu()">鍏充簬</a>
+    <a href="#hero" onclick="toggleMenu()">首页</a>
+    <a href="#photo1" onclick="toggleMenu()">作品</a>
+    <a href="#about" onclick="toggleMenu()">关于</a>
   </nav>
 
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">脳</button>
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
     <img src="" alt="" id="lightboxImg">
   </div>
 
   <section class="hero" id="hero">
     <p class="hero-tag">Photography Portfolio</p>
-    <h1 class="hero-title">浜洪棽妗傝姳钀?/h1>
-    <p class="hero-subtitle">澶滈潤鏄ュ北绌?/p>
-    <div class="scroll-hint"><span>SCROLL</span><span>鈫?/span></div>
+    <h1 class="hero-title">人闲桂花落</h1>
+    <p class="hero-subtitle">夜静春山空</p>
+    <div class="scroll-hint"><span>SCROLL</span><span>&#8595;</span></div>
   </section>
 
-  <!-- Photo 1 (New) -->
+  <!-- Photo 1 -->
   <section class="photo-section fade-in" id="photo1">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-new-01.jpg" alt="璋? loading="eager" onclick="openLightbox(this.src)">
+        <img src="images/photo-new-01.jpg" alt="谧" loading="eager" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">澹?/ 鏌?/p>
-        <h2 class="photo-title">璋?/h2>
+        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
+        <p class="photo-number">壹 / 捌</p>
+        <h2 class="photo-title">谧</h2>
         <p class="photo-subtitle">Serenity</p>
-        <p class="photo-desc">澶滆壊濡傛按锛屼竾绫佸綊瀵傘€?/p>
+        <p class="photo-desc">夜色如水，万籁归寂。</p>
       </div>
     </div>
   </section>
@@ -251,14 +260,14 @@
   <section class="photo-section fade-in" id="photo2">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/hero-01.jpg" alt="涓囧鐏伀" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/hero-01.jpg" alt="静" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/11</span> <span>1/125s</span> <span>ISO 200</span></div>
-        <p class="photo-number">璐?/ 鏌?/p>
-        <h2 class="photo-title">闈?/h2>
+        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/11</span> <span>1/125s</span> <span>ISO 200</span></div>
+        <p class="photo-number">贰 / 捌</p>
+        <h2 class="photo-title">静</h2>
         <p class="photo-subtitle">Stillness</p>
-        <p class="photo-desc">涓囩眮淇卞瘋锛屽敮鏈夌伅鐏湭鐪犮€?/p>
+        <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
       </div>
     </div>
   </section>
@@ -267,14 +276,14 @@
   <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/gallery-02.jpg" alt="绾跨殑璇楀" loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/gallery-02.jpg" alt="痕" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>50mm</span> <span>f/2.0</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">鍙?/ 鏌?/p>
-        <h2 class="photo-title">鐥?/h2>
+        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/2.0</span> <span>1/60s</span> <span>ISO 800</span></div>
+        <p class="photo-number">叁 / 捌</p>
+        <h2 class="photo-title">痕</h2>
         <p class="photo-subtitle">Trace</p>
-        <p class="photo-desc">绾胯繃鐣欑棔锛岀棔鍗虫案鎭掋€?/p>
+        <p class="photo-desc">线过留痕，痕即永恒。</p>
       </div>
     </div>
   </section>
@@ -283,14 +292,14 @@
   <section class="photo-section fade-in" id="photo4">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-05.jpg" alt="鐑? loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-05.jpg" alt="烁" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">鑲?/ 鏌?/p>
-        <h2 class="photo-title">鐑?/h2>
+        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 800</span></div>
+        <p class="photo-number">肆 / 捌</p>
+        <h2 class="photo-title">烁</h2>
         <p class="photo-subtitle">Shimmer</p>
-        <p class="photo-desc">闇撹櫣闂儊锛屽煄甯備笉鐪犮€?/p>
+        <p class="photo-desc">霓虹闪烁，城市不眠。</p>
       </div>
     </div>
   </section>
@@ -299,14 +308,14 @@
   <section class="photo-section fade-in" id="photo5">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-06.jpg" alt="鏋? loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-06.jpg" alt="构" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>24mm</span> <span>f/8</span> <span>1/125s</span> <span>ISO 200</span></div>
-        <p class="photo-number">浼?/ 鏌?/p>
-        <h2 class="photo-title">鏋?/h2>
+        <div class="camera-params">Sony A7R IV <span>24mm</span> <span>f/8</span> <span>1/125s</span> <span>ISO 200</span></div>
+        <p class="photo-number">伍 / 捌</p>
+        <h2 class="photo-title">构</h2>
         <p class="photo-subtitle">Structure</p>
-        <p class="photo-desc">绾挎潯浜ら敊锛屽嚑浣曚箣缇庛€?/p>
+        <p class="photo-desc">线条交错，几何之美。</p>
       </div>
     </div>
   </section>
@@ -315,14 +324,14 @@
   <section class="photo-section fade-in" id="photo6">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-07.jpg" alt="闅? loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-07.jpg" alt="隅" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>50mm</span> <span>f/1.8</span> <span>1/80s</span> <span>ISO 400</span></div>
-        <p class="photo-number">闄?/ 鏌?/p>
-        <h2 class="photo-title">闅?/h2>
+        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/1.8</span> <span>1/80s</span> <span>ISO 400</span></div>
+        <p class="photo-number">陆 / 捌</p>
+        <h2 class="photo-title">隅</h2>
         <p class="photo-subtitle">Corner</p>
-        <p class="photo-desc">涓€闅呴潤璋э紝鍏夊奖娓╂煍銆?/p>
+        <p class="photo-desc">一隅静谧，光影温柔。</p>
       </div>
     </div>
   </section>
@@ -331,14 +340,14 @@
   <section class="photo-section fade-in" id="photo7">
     <div class="photo-container">
       <div class="photo-wrapper">
-        <img src="images/photo-08.jpg" alt="灏? loading="lazy" onclick="openLightbox(this.src)">
+        <img src="images/photo-08.jpg" alt="尘" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">馃摲 Sony A7R IV <span>85mm</span> <span>f/2</span> <span>1/100s</span> <span>ISO 640</span></div>
-        <p class="photo-number">鏌?/ 鎹?/p>
-        <h2 class="photo-title">灏?/h2>
+        <div class="camera-params">Sony A7R IV <span>85mm</span> <span>f/2</span> <span>1/100s</span> <span>ISO 640</span></div>
+        <p class="photo-number">柒 / 捌</p>
+        <h2 class="photo-title">尘</h2>
         <p class="photo-subtitle">Dust</p>
-        <p class="photo-desc">浜洪棿鐑熺伀锛屽皹涓栨诞鍗庛€?/p>
+        <p class="photo-desc">人间烟火，尘世浮华。</p>
       </div>
     </div>
   </section>
@@ -350,7 +359,7 @@
         <img src="images/photo-new-08.jpg" alt="澜" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">📷 Sony A7R IV <span>50mm</span> <span>f/2.8</span> <span>1/80s</span> <span>ISO 500</span></div>
+        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/2.8</span> <span>1/80s</span> <span>ISO 500</span></div>
         <p class="photo-number">捌 / 捌</p>
         <h2 class="photo-title">澜</h2>
         <p class="photo-subtitle">Ripple</p>
@@ -362,13 +371,13 @@
   <section class="footer" id="about">
     <p class="footer-tag">About</p>
     <p class="footer-text">
-      浜洪棽妗傝姳钀斤紝澶滈潤鏄ュ北绌恒€?br>
-      鏈堝嚭鎯婂北楦燂紝鏃堕福鏄ユ锭涓€?br><br>
-      鐢ㄩ暅澶存崟鎹夐潤璋т腑鐨勮瘲鎰忥紝<br>
-      鍦ㄥ厜褰遍棿瀵绘壘鍐呭績鐨勫畞闈欍€?
+      人闲桂花落，夜静春山空。<br>
+      月出惊山鸟，时鸣春涧中。<br><br>
+      用镜头捕捉静谧中的诗意，<br>
+      在光影间寻找内心的宁静。
     </p>
     <div class="footer-divider"></div>
-    <p class="footer-copy">漏 2026 妗傝姳钀?路 Photography Portfolio</p>
+    <p class="footer-copy">&#169; 2026 &#26607;&#33457;&#33853; &#183; Photography Portfolio</p>
   </section>
 
   <script>
@@ -380,38 +389,40 @@
     document.getElementById('menuBtn').addEventListener('click', toggleMenu);
 
     // Progress bar
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      document.getElementById('progressBar').style.width = (scrolled * 100) + '%';
-    }, { passive: true });
+    window.addEventListener('scroll', function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
 
-    // Fade-in observer
-    const fadeObs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    // Fade-in on scroll
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
     }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      observer.observe(el);
+    });
 
     // Lightbox
     function openLightbox(src) {
       document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightbox').classList.add('active');
+      document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
+      document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
-    document.getElementById('lightbox').addEventListener('click', e => {
-      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-    // Smooth scroll for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const t = document.querySelector(a.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-      });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
     });
   </script>
 </body>
