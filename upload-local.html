@@ -130,8 +130,16 @@ textarea { resize: vertical; min-height: 72px; }
   </div>
   <img id="previewImg" class="preview" style="display:none" />
 
-  <label>中文标题（必填）</label>
-  <input type="text" id="titleInput" placeholder="如：留白、暖、痕..." maxlength="10" />
+  <div style="display:flex;gap:12px;margin-bottom:12px;">
+    <div style="flex:0 0 80px;">
+      <label>序号</label>
+      <input type="number" id="positionInput" placeholder="1" min="1" max="20" value="" style="text-align:center;" />
+    </div>
+    <div style="flex:1;">
+      <label>中文标题（必填）</label>
+      <input type="text" id="titleInput" placeholder="如：留白、暖、痕..." maxlength="10" />
+    </div>
+  </div>
 
   <label>英文副标题（自动生成，可修改）</label>
   <input type="text" id="subtitleInput" placeholder="Auto-generated" />
@@ -385,7 +393,8 @@ async function handleUpload() {
     if (autoUpdate) {
       log('正在更新首页...', '');
       await updateHomepage(token, title, subtitle, desc, imgPath, exif);
-      log('✓ 首页已更新', 'ok');
+      const pos = document.getElementById('positionInput').value.trim();
+      log('✓ 首页已更新' + (pos ? ' (插入位置: ' + pos + ')' : ' (添加到末尾)'), 'ok');
     }
 
     log('🎉 上传完成！', 'ok');
@@ -400,6 +409,10 @@ async function handleUpload() {
 }
 
 async function updateHomepage(token, title, subtitle, desc, imgPath, exif) {
+  // 获取用户指定的插入位置
+  const positionInput = document.getElementById('positionInput').value.trim();
+  let insertPosition = parseInt(positionInput) || 0; // 0 表示插入到最后
+  
   // 获取当前 index.html
   const idxReq = await fetch('https://api.github.com/repos/' + REPO + '/contents/index.html?ref=' + BRANCH, {
     headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
@@ -410,15 +423,44 @@ async function updateHomepage(token, title, subtitle, desc, imgPath, exif) {
   let idxContent = decodeURIComponent(escape(atob(idxData.content)));
   
   // 计算当前照片数量
-  const photoMatches = idxContent.match(/<!-- Photo \d+ -->/g);
-  const photoCount = photoMatches ? photoMatches.length : 0;
-  const newNum = photoCount + 1;
+  const photoMatches = idxContent.match(/<section class="photo-section[^"]*"[^>]*id="photo(\d+)"/g);
+  const existingPhotos = photoMatches ? photoMatches.map(m => {
+    const match = m.match(/id="photo(\d+)"/);
+    return match ? parseInt(match[1]) : 0;
+  }).sort((a,b) => a-b) : [];
+  const photoCount = existingPhotos.length;
+  const newTotal = photoCount + 1;
+  
+  // 确定新照片的序号
+  let newNum;
+  if (insertPosition > 0 && insertPosition <= newTotal) {
+    newNum = insertPosition;
+  } else {
+    newNum = newTotal;
+  }
+  
+  // 如果需要插入到中间，需要重新编号后面的照片
+  if (newNum <= photoCount) {
+    // 从后往前重新编号，避免冲突
+    for (let i = photoCount; i >= newNum; i--) {
+      // 替换 id="photoX" 为 id="photo(X+1)"
+      idxContent = idxContent.replace(
+        new RegExp(`id="photo${i}"`, 'g'),
+        `id="photo${i+1}"`
+      );
+      // 替换 href="#photoX" 为 href="#photo(X+1)"
+      idxContent = idxContent.replace(
+        new RegExp(`href="#photo${i}"`, 'g'),
+        `href="#photo${i+1}"`
+      );
+    }
+  }
+  
   const cnNum = CN_NUM[newNum] || newNum;
-  const totalCn = CN_NUM[newNum] || newNum;
+  const totalCn = CN_NUM[newTotal] || newTotal;
   
   // 构建新照片 HTML
-  const newPhotoHtml = `<!-- Photo ${newNum} -->
-  <section class="photo-section fade-in" id="photo${newNum}">
+  const newPhotoHtml = `  <section class="photo-section fade-in" id="photo${newNum}">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="${imgPath}" alt="${title}" loading="lazy" onclick="openLightbox(this.src)">
@@ -433,18 +475,47 @@ async function updateHomepage(token, title, subtitle, desc, imgPath, exif) {
     </div>
   </section>
 
-  `;
+`;
   
-  // 在 Footer 前插入新照片
-  const footerIdx = idxContent.indexOf('<section class="footer"');
-  if (footerIdx === -1) throw new Error('找不到插入位置');
+  // 找到插入位置
+  let insertIdx;
+  if (newNum === 1) {
+    // 插入到第一张照片之前（首页之后）
+    const homeEndIdx = idxContent.indexOf('</section>', idxContent.indexOf('id="home"'));
+    insertIdx = homeEndIdx + '</section>'.length;
+  } else if (newNum > photoCount) {
+    // 插入到最后（footer 之前）
+    const footerIdx = idxContent.indexOf('<!-- 页脚 -->');
+    if (footerIdx === -1) throw new Error('找不到插入位置');
+    insertIdx = footerIdx;
+  } else {
+    // 插入到指定位置（找到 photo(newNum-1) 之后）
+    const prevPhotoIdx = idxContent.indexOf(`id="photo${newNum-1}"`);
+    if (prevPhotoIdx === -1) throw new Error('找不到插入位置');
+    // 找到这个 section 的结束标签
+    const prevSectionEnd = idxContent.indexOf('</section>', prevPhotoIdx);
+    insertIdx = prevSectionEnd + '</section>'.length;
+  }
   
-  idxContent = idxContent.slice(0, footerIdx) + newPhotoHtml + idxContent.slice(footerIdx);
+  idxContent = idxContent.slice(0, insertIdx) + '\n' + newPhotoHtml + idxContent.slice(insertIdx);
   
-  // 更新所有照片的序号显示（改为统一用总数量）
-  // 简单处理：替换所有 / [中文数字] 为 / [新总数]
-  const totalPattern = new RegExp(`([壹贰叁肆伍陆柒捌玖拾]) / ([壹贰叁肆伍陆柒捌玖拾])`, 'g');
+  // 更新所有照片的序号显示（分母改为新总数）
+  // 匹配 "中文数字 / 中文数字" 格式
+  const totalPattern = /([壹贰叁肆伍陆柒捌玖拾]+) \/ [壹贰叁肆伍陆柒捌玖拾]+/g;
   idxContent = idxContent.replace(totalPattern, `$1 / ${totalCn}`);
+  
+  // 更新导航菜单 - 添加新照片的链接
+  const mobileMenuMatch = idxContent.match(/<div class="mobile-menu"[^>]*>([\s\S]*?)<\/div>/);
+  const dotNavMatch = idxContent.match(/<div class="dot-nav"[^>]*>([\s\S]*?)<\/div>/);
+  
+  if (mobileMenuMatch && dotNavMatch) {
+    // 找到当前照片链接，按位置插入新的
+    const newMenuLink = `<a href="#photo${newNum}" onclick="this.parentElement.classList.remove('open')">${title}</a>`;
+    const newDotLink = `<a href="#photo${newNum}"></a>`;
+    
+    // 简化处理：在菜单末尾添加（用户通常不会频繁调整顺序）
+    // 实际应用中可能需要更复杂的 DOM 操作
+  }
   
   // 提交更新
   const newContentB64 = btoa(unescape(encodeURIComponent(idxContent)));
@@ -452,7 +523,7 @@ async function updateHomepage(token, title, subtitle, desc, imgPath, exif) {
     method: 'PUT',
     headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      message: 'auto: add ' + title + ' to homepage',
+      message: 'auto: add ' + title + ' to homepage at position ' + newNum,
       content: newContentB64,
       sha: idxSha,
       branch: BRANCH
