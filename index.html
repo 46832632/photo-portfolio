@@ -43,20 +43,35 @@
       color: var(--text-dim); position: absolute; left: 50%; transform: translateX(-50%);
     }
     .menu-btn {
-      display: none; background: none; border: none;
-      font-size: 1.2rem; cursor: pointer; padding: 0.5rem;
-      border-radius: 4px; transition: all 0.25s ease;
+      display: block; background: none; border: none;
+      font-size: 1.2rem; cursor: pointer; padding: 0.5rem 0.6rem;
+      border-radius: 6px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative; overflow: hidden;
+      color: var(--text);
     }
-    .menu-btn:hover { background: rgba(0,0,0,0.05); transform: scale(1.05); }
-    .menu-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.1); }
-    .menu-btn::after {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, transparent 70%);
-      opacity: 0; transition: opacity 0.3s ease;
+    .menu-btn:hover { 
+      background: rgba(0,0,0,0.06); 
+      transform: scale(1.08); 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .menu-btn:active { 
+      transform: scale(0.92); 
+      background: rgba(0,0,0,0.12);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .menu-btn::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(0,0,0,0.08);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
       pointer-events: none;
     }
-    .menu-btn:active::after { opacity: 1; }
+    .menu-btn:active::before { width: 120%; height: 120%; }
+    @media (min-width: 769px) {
+      .menu-btn { display: none; }
+    }
     .mobile-menu {
       display: none; position: fixed; inset: 0;
       background: white; z-index: 999;
