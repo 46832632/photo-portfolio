@@ -44,8 +44,19 @@
     }
     .menu-btn {
       display: none; background: none; border: none;
-      font-size: 1.2rem; cursor: pointer; padding: 0.3rem;
+      font-size: 1.2rem; cursor: pointer; padding: 0.5rem;
+      border-radius: 4px; transition: all 0.25s ease;
+      position: relative; overflow: hidden;
     }
+    .menu-btn:hover { background: rgba(0,0,0,0.05); transform: scale(1.05); }
+    .menu-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.1); }
+    .menu-btn::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .menu-btn:active::after { opacity: 1; }
     .mobile-menu {
       display: none; position: fixed; inset: 0;
       background: white; z-index: 999;
@@ -161,11 +172,11 @@
   </nav>
   <div class="mobile-menu" id="mobileMenu">
     <a href="#home" onclick="this.parentElement.classList.remove('open')">首页</a>
-    <a href="#photo1" onclick="this.parentElement.classList.remove('open')">谧</a><a href="#photo3" onclick="this.parentElement.classList.remove('open')">静</a><a href="#photo4" onclick="this.parentElement.classList.remove('open')">痕</a><a href="#photo5" onclick="this.parentElement.classList.remove('open')">烁</a><a href="#photo6" onclick="this.parentElement.classList.remove('open')">构</a><a href="#photo7" onclick="this.parentElement.classList.remove('open')">隅</a><a href="#photo8" onclick="this.parentElement.classList.remove('open')">尘</a><a href="#photo9" onclick="this.parentElement.classList.remove('open')">澜</a>
+    <a href="#photo1" onclick="this.parentElement.classList.remove('open')">谧</a><a href="#photo2" onclick="this.parentElement.classList.remove('open')">静</a><a href="#photo3" onclick="this.parentElement.classList.remove('open')">痕</a><a href="#photo4" onclick="this.parentElement.classList.remove('open')">烁</a><a href="#photo5" onclick="this.parentElement.classList.remove('open')">构</a><a href="#photo6" onclick="this.parentElement.classList.remove('open')">隅</a><a href="#photo7" onclick="this.parentElement.classList.remove('open')">尘</a><a href="#photo8" onclick="this.parentElement.classList.remove('open')">澜</a>
   </div>
   <div class="dot-nav">
     <a href="#home" class="active"></a>
-    <a href="#photo1"></a><a href="#photo3"></a><a href="#photo4"></a><a href="#photo5"></a><a href="#photo6"></a><a href="#photo7"></a><a href="#photo8"></a><a href="#photo9"></a>
+    <a href="#photo1"></a><a href="#photo2"></a><a href="#photo3"></a><a href="#photo4"></a><a href="#photo5"></a><a href="#photo6"></a><a href="#photo7"></a><a href="#photo8"></a>
   </div>
   <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
     <img src="" id="lightboxImg">
@@ -188,38 +199,22 @@
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">壹 / 玖</p>
+        <p class="photo-number">壹 / 捌</p>
         <h2 class="photo-title">谧</h2>
         <p class="photo-subtitle">Serenity</p>
         <p class="photo-desc">夜色如水，万籁归寂。</p>
       </div>
     </div>
   </section>
+
   <section class="photo-section fade-in" id="photo2">
-    <div class="photo-container">
-      <div class="photo-wrapper">
-        <img src="images/临渊_1775818005308.jpg" alt="临渊" loading="lazy" onclick="openLightbox(this.src)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">贰 / 玖</p>
-        <h2 class="photo-title">临渊</h2>
-        <p class="photo-subtitle">Default</p>
-        <p class="photo-desc">此刻，她们在飞</p>
-      </div>
-    </div>
-  </section>
-
-
-
-  <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/hero-01.jpg" alt="静" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">贰 / 玖</p>
+        <p class="photo-number">贰 / 捌</p>
         <h2 class="photo-title">静</h2>
         <p class="photo-subtitle">Stillness</p>
         <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
@@ -227,14 +222,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo4">
+  <section class="photo-section fade-in" id="photo3">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/gallery-02.jpg" alt="痕" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">叁 / 玖</p>
+        <p class="photo-number">叁 / 捌</p>
         <h2 class="photo-title">痕</h2>
         <p class="photo-subtitle">Trace</p>
         <p class="photo-desc">线过留痕，痕即永恒。</p>
@@ -242,14 +237,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo5">
+  <section class="photo-section fade-in" id="photo4">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/photo-05.jpg" alt="烁" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">肆 / 玖</p>
+        <p class="photo-number">肆 / 捌</p>
         <h2 class="photo-title">烁</h2>
         <p class="photo-subtitle">Shimmer</p>
         <p class="photo-desc">霓虹闪烁，城市不眠。</p>
@@ -257,14 +252,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo6">
+  <section class="photo-section fade-in" id="photo5">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/photo-06.jpg" alt="构" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">伍 / 玖</p>
+        <p class="photo-number">伍 / 捌</p>
         <h2 class="photo-title">构</h2>
         <p class="photo-subtitle">Structure</p>
         <p class="photo-desc">线条交错，几何之美。</p>
@@ -272,14 +267,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo7">
+  <section class="photo-section fade-in" id="photo6">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/photo-07.jpg" alt="隅" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">陆 / 玖</p>
+        <p class="photo-number">陆 / 捌</p>
         <h2 class="photo-title">隅</h2>
         <p class="photo-subtitle">Corner</p>
         <p class="photo-desc">一隅静谧，光影温柔。</p>
@@ -287,14 +282,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo8">
+  <section class="photo-section fade-in" id="photo7">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/photo-08.jpg" alt="尘" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">柒 / 玖</p>
+        <p class="photo-number">柒 / 捌</p>
         <h2 class="photo-title">尘</h2>
         <p class="photo-subtitle">Dust</p>
         <p class="photo-desc">人间烟火，尘世浮华。</p>
@@ -302,14 +297,14 @@
     </div>
   </section>
 
-  <section class="photo-section fade-in" id="photo9">
+  <section class="photo-section fade-in" id="photo8">
     <div class="photo-container">
       <div class="photo-wrapper">
         <img src="images/photo-new-08.jpg" alt="澜" loading="lazy" onclick="openLightbox(this.src)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">捌 / 玖</p>
+        <p class="photo-number">捌 / 捌</p>
         <h2 class="photo-title">澜</h2>
         <p class="photo-subtitle">Ripple</p>
         <p class="photo-desc">波澜不惊，深流无声。</p>
