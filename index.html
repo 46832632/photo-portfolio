@@ -154,7 +154,7 @@
 
     /* ── Footer ── */
     .footer {
-      min-height: 70vh; display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
       justify-content: center; text-align: center; padding: 4rem 2rem; background: var(--bg-cream);
     }
     .footer-tag { font-size: 0.65rem; letter-spacing: 0.4em; color: var(--text-light); margin-bottom: 2rem; text-transform: uppercase; }
@@ -195,7 +195,7 @@
       .hero-tag { font-size: 0.6rem; letter-spacing: 0.3em; }
       .hero-title { letter-spacing: 0.15em; }
       .hero-subtitle { font-size: 0.9rem; letter-spacing: 0.2em; }
-      .photo-section { padding: 4rem 1.2rem; min-height: auto; }
+      .photo-section { padding: 4rem 1.2rem; min-height: 100vh; scroll-snap-align: start; }
       .photo-wrapper img { max-height: 45vh; }
       .photo-title { font-size: 1.6rem; }
       .photo-subtitle { font-size: 0.85rem; }
@@ -217,6 +217,7 @@
     <ul class="nav-links">
       <li><a href="#photo1">作品</a></li>
       <li><a href="#about">春山空</a></li>
+      <li><a href="upload-local.html" target="_blank">春涧中</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn">
       <span></span><span></span><span></span>
@@ -227,6 +228,7 @@
     <a href="#hero" onclick="toggleMenu()">首页</a>
     <a href="#photo1" onclick="toggleMenu()">作品</a>
     <a href="#about" onclick="toggleMenu()">春山空</a>
+    <a href="upload-local.html" onclick="toggleMenu()" target="_blank">春涧中</a>
   </nav>
 
   <div class="lightbox" id="lightbox">
