@@ -643,11 +643,29 @@
       if (e.key === 'ArrowRight') navigateLightbox(1);
     });
 
-    // Image error handler
+    // Image error handler with retry
     function handleImageError(img) {
+      console.log('Image failed to load:', img.src);
+      // Try once more with cache-busting
+      if (!img.dataset.retried) {
+        img.dataset.retried = 'true';
+        var originalSrc = img.src;
+        img.src = originalSrc + (originalSrc.indexOf('?') > -1 ? '&' : '?') + '_t=' + Date.now();
+        return;
+      }
+      // Show fallback
       img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f5f5f3" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23888" font-family="sans-serif" font-size="14"%3E图片加载失败%3C/text%3E%3C/svg%3E';
       img.parentElement.classList.remove('loading');
     }
+    
+    // Force load all images on page load
+    window.addEventListener('load', function() {
+      document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
+        if (img.getBoundingClientRect().top < window.innerHeight * 2) {
+          img.loading = 'eager';
+        }
+      });
+    });
   </script>
 </body>
 </html>
