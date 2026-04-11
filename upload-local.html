@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>春涧中 · 上传</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<!-- 使用国内 CDN 加速字体加载 -->
+<link rel="preconnect" href="https://fonts.loli.net">
+<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #ffffff;
@@ -27,7 +28,7 @@ html { scroll-behavior: smooth; }
 body {
   min-height: 100vh;
   background: var(--bg);
-  font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', serif;
+  font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', serif;
   color: var(--text);
   line-height: 1.8;
   display: flex;
@@ -96,7 +97,7 @@ main {
   text-align: center; margin-bottom: 0.5rem;
 }
 .page-title h1 {
-  font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
+  font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', 'Microsoft YaHei', serif;
   font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 400;
   letter-spacing: 0.2em;
 }
@@ -204,21 +205,43 @@ main {
   display: block; font-size: 0.68rem; color: var(--text-light);
   letter-spacing: 0.25em; margin-bottom: 6px;
 }
-input[type="text"], input[type="number"], textarea {
+input[type="text"], input[type="number"], textarea, select {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: 3px; font-size: 14px;
-  font-family: 'Noto Serif SC', serif;
+  font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
   background: var(--bg-cream); color: var(--text);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
   outline: none; border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
 }
 input[type="number"] { text-align: center; }
 textarea { resize: vertical; min-height: 72px; }
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+/* ── Camera Params ── */
+.camera-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.camera-row .field { min-width: 0; }
+.camera-row input {
+  text-align: center;
+  padding: 8px 6px;
+  font-size: 12px;
+}
 
 /* ── Auto Update Checkbox ── */
 .checkbox-row {
@@ -239,7 +262,7 @@ textarea { resize: vertical; min-height: 72px; }
   background: var(--text); color: var(--bg);
   border: none; border-radius: 3px;
   font-size: 0.85rem; letter-spacing: 0.35em;
-  cursor: pointer; font-family: 'Noto Serif SC', serif;
+  cursor: pointer; font-family: 'Noto Serif SC', 'Microsoft YaHei', serif;
   transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
 }
 .btn-upload:hover {
@@ -315,6 +338,7 @@ textarea { resize: vertical; min-height: 72px; }
   .menu-btn { display: flex; }
   main { padding: 5rem 1.2rem 4rem; }
   .form-row { flex-direction: column; gap: 0; }
+  .camera-row { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -360,7 +384,7 @@ textarea { resize: vertical; min-height: 72px; }
   <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
     <div class="drop-zone-icon">📷</div>
     <p class="main">点击选择照片 · 或拖拽至此</p>
-    <p class="hint">支持 JPG · PNG · WebP</p>
+    <p class="hint">支持 JPG · PNG · WebP · 自动压缩至 2MB 以下</p>
     <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" />
   </div>
 
@@ -398,9 +422,31 @@ textarea { resize: vertical; min-height: 72px; }
     <input type="text" id="subtitleInput" placeholder="自动生成，可修改" />
   </div>
 
-  <div class="field" style="margin-bottom:1.5rem;">
+  <div class="field" style="margin-bottom:1rem;">
     <label>禅意描述</label>
     <textarea id="descInput" placeholder="自动生成，可修改"></textarea>
+  </div>
+
+  <!-- Camera Params -->
+  <div class="field" style="margin-bottom:0.5rem;">
+    <label>相机参数</label>
+  </div>
+  <div class="camera-row">
+    <div class="field">
+      <input type="text" id="cameraModel" placeholder="相机型号" value="Sony A7R IV" />
+    </div>
+    <div class="field">
+      <input type="text" id="cameraLens" placeholder="镜头" value="35mm" />
+    </div>
+    <div class="field">
+      <input type="text" id="cameraAperture" placeholder="光圈" value="f/2.8" />
+    </div>
+    <div class="field">
+      <input type="text" id="cameraShutter" placeholder="快门" value="1/60s" />
+    </div>
+  </div>
+  <div class="field" style="margin-bottom:1rem;">
+    <input type="text" id="cameraIso" placeholder="ISO" value="ISO 400" style="width:100px;" />
   </div>
 
   <div class="checkbox-row">
@@ -422,6 +468,7 @@ textarea { resize: vertical; min-height: 72px; }
 // ── Config ──────────────────────────────────────────
 const REPO = '46832632/photo-portfolio';
 const BRANCH = 'main';
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
 const EN_MAP = {
   '留白':'still','静':'quiet','暖':'warm','痕':'trace',
@@ -455,7 +502,8 @@ function toggleMenu() {
 }
 
 // ── Token ───────────────────────────────────────────
-let savedToken = localStorage.getItem('gh_token') || '';
+// 使用 sessionStorage 替代 localStorage，更安全
+let savedToken = sessionStorage.getItem('gh_token') || '';
 if (savedToken) {
   document.getElementById('tokenInput').value = savedToken;
   checkToken(savedToken);
@@ -483,7 +531,7 @@ function checkToken(t) {
   });
 }
 document.getElementById('tokenInput').addEventListener('change', function() {
-  localStorage.setItem('gh_token', this.value);
+  sessionStorage.setItem('gh_token', this.value);
   checkToken(this.value);
 });
 
@@ -515,23 +563,90 @@ document.getElementById('fileInput').addEventListener('change', e => {
   if (e.target.files.length) handleFile(e.target.files[0]);
 });
 
+// ── Image Compression ───────────────────────────────
+async function compressImage(file, maxSize = MAX_FILE_SIZE) {
+  if (file.size <= maxSize) return file;
+  
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      
+      let width = img.width;
+      let height = img.height;
+      const maxDimension = 2048;
+      
+      if (width > maxDimension || height > maxDimension) {
+        if (width > height) {
+          height = Math.round(height * maxDimension / width);
+          width = maxDimension;
+        } else {
+          width = Math.round(width * maxDimension / height);
+          height = maxDimension;
+        }
+      }
+      
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      let quality = 0.9;
+      const tryCompress = () => {
+        canvas.toBlob(blob => {
+          if (blob.size <= maxSize || quality <= 0.3) {
+            const compressed = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+            resolve(compressed);
+          } else {
+            quality -= 0.1;
+            tryCompress();
+          }
+        }, 'image/jpeg', quality);
+      };
+      tryCompress();
+    };
+    
+    img.onerror = () => reject(new Error('图片加载失败'));
+    img.src = url;
+  });
+}
+
 // ── Preview ──────────────────────────────────────────
-function handleFile(file) {
+async function handleFile(file) {
   const valid = ['image/jpeg','image/png','image/webp'];
   if (!valid.includes(file.type)) {
     log('不支持的图片格式: ' + file.type, 'err'); return;
   }
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById('previewImg').src = e.target.result;
-    document.getElementById('previewWrap').style.display = 'block';
-    document.getElementById('previewWrap').style.animation = 'none';
-    document.getElementById('previewWrap').offsetHeight; // reflow
-    document.getElementById('previewWrap').style.animation = 'fadeIn 0.4s';
-  };
-  reader.readAsDataURL(file);
-  window._currentFile = file;
-  log('已选: ' + file.name + ' (' + (file.size/1024).toFixed(0) + ' KB)', 'ok');
+  
+  log('正在压缩图片...', 'info');
+  try {
+    const compressed = await compressImage(file);
+    if (compressed.size < file.size) {
+      log('压缩完成: ' + (file.size/1024/1024).toFixed(2) + 'MB → ' + (compressed.size/1024/1024).toFixed(2) + 'MB', 'ok');
+    }
+    window._currentFile = compressed;
+    
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('previewImg').src = e.target.result;
+      document.getElementById('previewWrap').style.display = 'block';
+      document.getElementById('previewWrap').style.animation = 'none';
+      document.getElementById('previewWrap').offsetHeight;
+      document.getElementById('previewWrap').style.animation = 'fadeIn 0.4s';
+    };
+    reader.readAsDataURL(compressed);
+    log('已选: ' + file.name, 'ok');
+  } catch(e) {
+    log('压缩失败: ' + e.message, 'err');
+  }
 }
 function removePreview() {
   document.getElementById('previewWrap').style.display = 'none';
@@ -560,6 +675,27 @@ function setProgress(pct, label) {
 function showProgress() { document.getElementById('progressWrap').classList.add('active'); }
 function hideProgress() { document.getElementById('progressWrap').classList.remove('active'); setProgress(0,''); }
 
+// ── Upload with retry ────────────────────────────────
+async function uploadWithRetry(url, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok) return res;
+      if (res.status === 409) throw new Error('冲突: 文件可能已存在');
+      if (res.status === 401) throw new Error('Token 无效或已过期');
+      if (i < maxRetries - 1) {
+        log('上传失败，' + (i + 1) + '/' + maxRetries + ' 秒后重试...', 'info');
+        await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+      }
+    } catch(e) {
+      if (i === maxRetries - 1) throw e;
+      log('网络错误，' + (i + 1) + '/' + maxRetries + ' 秒后重试...', 'info');
+      await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+    }
+  }
+  throw new Error('上传失败，已重试 ' + maxRetries + ' 次');
+}
+
 // ── Upload ───────────────────────────────────────────
 async function handleUpload() {
   const token = document.getElementById('tokenInput').value.trim();
@@ -571,6 +707,13 @@ async function handleUpload() {
   const subtitle = document.getElementById('subtitleInput').value.trim() || EN_MAP['default'];
   const desc = document.getElementById('descInput').value.trim() || DESC_TEMPLATES['default'];
   const autoUpdate = document.getElementById('autoUpdate').checked;
+  
+  // Get camera params
+  const cameraModel = document.getElementById('cameraModel').value.trim() || 'Sony A7R IV';
+  const cameraLens = document.getElementById('cameraLens').value.trim() || '35mm';
+  const cameraAperture = document.getElementById('cameraAperture').value.trim() || 'f/2.8';
+  const cameraShutter = document.getElementById('cameraShutter').value.trim() || '1/60s';
+  const cameraIso = document.getElementById('cameraIso').value.trim() || 'ISO 400';
 
   const btn = document.getElementById('uploadBtn');
   btn.disabled = true; btn.classList.add('loading'); btn.textContent = '上传中...';
@@ -579,33 +722,35 @@ async function handleUpload() {
   try {
     showProgress();
     setProgress(10, '读取文件...');
-    const arrayBuffer = await file.arrayBuffer();
-
+    
     setProgress(30, '编码图片...');
-    log('图片大小: ' + (arrayBuffer.byteLength/1024/1024).toFixed(2) + ' MB', 'info');
-    const bytes = new Uint8Array(arrayBuffer);
-    const CHUNK = 512;
-    let binary = '';
-    for (let i = 0; i < bytes.length; i += CHUNK) {
-      const chunk = bytes.slice(i, Math.min(i+CHUNK, bytes.length));
-      binary += String.fromCharCode.apply(null, chunk);
-    }
-    const base64 = btoa(binary);
+    log('图片大小: ' + (file.size/1024/1024).toFixed(2) + ' MB', 'info');
+    
+    // Use FileReader for better performance with large files
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    
     const safeName = title + '_' + Date.now();
     const imgPath = 'images/' + safeName + '.jpg';
 
     setProgress(50, '推送至 GitHub...');
     log('上传到: ' + imgPath, 'info');
 
-    // 检查是否已存在
+    // Check if exists
     let imgSha;
-    const shReq = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + imgPath + '?ref=' + BRANCH, {
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    if (shReq.ok) {
-      imgSha = (await shReq.json()).sha;
-      log('检测到同名文件，将覆盖更新', 'info');
-    }
+    try {
+      const shReq = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + imgPath + '?ref=' + BRANCH, {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      if (shReq.ok) {
+        imgSha = (await shReq.json()).sha;
+        log('检测到同名文件，将覆盖更新', 'info');
+      }
+    } catch(e) {}
 
     const imgPayload = {
       message: 'feat: add photo — ' + title,
@@ -613,11 +758,16 @@ async function handleUpload() {
       sha: imgSha || undefined,
       branch: BRANCH
     };
-    const imgRes = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + imgPath, {
-      method: 'PUT',
-      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify(imgPayload)
-    });
+    
+    const imgRes = await uploadWithRetry(
+      'https://api.github.com/repos/' + REPO + '/contents/' + imgPath,
+      {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(imgPayload)
+      }
+    );
+    
     if (!imgRes.ok) {
       const err = await imgRes.json().catch(() => ({}));
       throw new Error('图片上传失败 (' + imgRes.status + '): ' + (err.message || imgRes.statusText));
@@ -626,11 +776,17 @@ async function handleUpload() {
     setProgress(75, '保存元数据...');
     log('✓ 图片上传完成', 'ok');
 
-    // 自动更新首页
+    // Auto update homepage
     if (autoUpdate) {
       setProgress(85, '更新首页...');
       log('正在更新首页作品集...', 'info');
-      await updateHomepage(token, title, subtitle, desc, imgPath);
+      await updateHomepage(token, title, subtitle, desc, imgPath, {
+        model: cameraModel,
+        lens: cameraLens,
+        aperture: cameraAperture,
+        shutter: cameraShutter,
+        iso: cameraIso
+      });
       log('✓ 首页已更新', 'ok');
     }
 
@@ -648,7 +804,7 @@ async function handleUpload() {
 }
 
 // ── Update Homepage ─────────────────────────────────
-async function updateHomepage(token, title, subtitle, desc, imgPath) {
+async function updateHomepage(token, title, subtitle, desc, imgPath, camera) {
   const positionInput = document.getElementById('positionInput').value.trim();
   const insertPosition = parseInt(positionInput) || 0;
 
@@ -686,11 +842,11 @@ async function updateHomepage(token, title, subtitle, desc, imgPath) {
 
   const newPhotoHtml = `  <section class="photo-section fade-in" id="photo${newNum}">
     <div class="photo-container">
-      <div class="photo-wrapper">
-        <img src="${imgPath}" alt="${title}" loading="lazy" onclick="openLightbox(this.src)">
+      <div class="photo-wrapper loading">
+        <img src="${imgPath}" alt="${title}" loading="lazy" onclick="openLightbox(${newNum-1})" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
+        <div class="camera-params">${camera.model} <span>${camera.lens}</span> <span>${camera.aperture}</span> <span>${camera.shutter}</span> <span>${camera.iso}</span></div>
         <p class="photo-number">${cnNum} / ${totalCn}</p>
         <h2 class="photo-title">${title}</h2>
         <p class="photo-subtitle">${subDisplay}</p>
@@ -717,16 +873,33 @@ async function updateHomepage(token, title, subtitle, desc, imgPath) {
   // Update all denominators
   const totalPattern = /([壹贰叁肆伍陆柒捌玖拾\d]+) \/ [壹贰叁肆伍陆柒捌玖拾\d]+/g;
   idxContent = idxContent.replace(totalPattern, m => m.replace(/ \/ [壹贰叁肆伍陆柒捌玖拾\d]+$/, ' / ' + totalCn));
+  
+  // Update photos array in script
+  const photosMatch = idxContent.match(/const photos = \[[\s\S]*?\];/);
+  if (photosMatch) {
+    const newPhotoEntry = `{ src: '${imgPath}', title: '${title}' }`;
+    if (newNum > photoCount) {
+      idxContent = idxContent.replace(/const photos = \[([\s\S]*?)\];/, `const photos = [$1, ${newPhotoEntry}];`);
+    } else {
+      // Insert at specific position
+      const photosArray = photosMatch[0];
+      const insertPos = photosArray.lastIndexOf('}');
+      idxContent = idxContent.replace(photosArray, photosArray.slice(0, insertPos + 1) + ', ' + newPhotoEntry + photosArray.slice(insertPos + 1));
+    }
+  }
 
   const newContentB64 = btoa(unescape(encodeURIComponent(idxContent)));
-  const updateRes = await fetch('https://api.github.com/repos/' + REPO + '/contents/index.html', {
-    method: 'PUT',
-    headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: 'auto: add ' + title + ' to homepage at position ' + newNum,
-      content: newContentB64, sha: idxSha, branch: BRANCH
-    })
-  });
+  const updateRes = await uploadWithRetry(
+    'https://api.github.com/repos/' + REPO + '/contents/index.html',
+    {
+      method: 'PUT',
+      headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'auto: add ' + title + ' to homepage at position ' + newNum,
+        content: newContentB64, sha: idxSha, branch: BRANCH
+      })
+    }
+  );
   if (!updateRes.ok) {
     const err = await updateRes.json().catch(() => ({}));
     throw new Error('首页更新失败 (' + updateRes.status + '): ' + (err.message || updateRes.statusText));
