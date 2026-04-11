@@ -22,7 +22,7 @@
       --shadow-hover: 0 16px 60px rgba(0,0,0,0.12);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
     body {
       font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
       background: var(--bg);
@@ -72,7 +72,7 @@
 
     /* ── Hero ── */
     .hero {
-      min-height: 100vh; display: flex; flex-direction: column;
+      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center;
       padding: 6rem 2rem 4rem; position: relative;
     }
@@ -100,6 +100,7 @@
 
     /* ── Photo Sections ── */
     .photo-section {
+      min-height: 100vh; scroll-snap-align: start;
       padding: 5rem 3rem; display: flex; justify-content: center;
     }
     .photo-container {
