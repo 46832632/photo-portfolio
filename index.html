@@ -373,7 +373,7 @@
   <section class="photo-section fade-in" id="photo1">
     <div class="photo-container">
       <div class="photo-wrapper loading">
-        <img src="images/01.jpg" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+        <img src="images/img-01-1776089317229.jpg" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
@@ -389,7 +389,7 @@
   <section class="photo-section fade-in" id="photo2">
     <div class="photo-container">
       <div class="photo-wrapper loading">
-        <img src="images/02.jpg" alt="临" loading="lazy" onclick="openLightbox(1)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+        <img src="images/img-02-1776089317229.jpg" alt="临" loading="lazy" onclick="openLightbox(1)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
       </div>
       <div class="photo-info">
         <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
@@ -416,8 +416,428 @@
   <script>
     // Photo data for lightbox navigation
     const photos = [
-      { src: 'images/01.jpg', title: '谧' },
-      { src: 'images/02.jpg', title: '临' }
+      { src: 'images/img-01-1776089317229.jpg', title: '谧' },
+      { src: 'images/img-02-1776089317229.jpg', title: '临' }
+    ]!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
+  <meta name="theme-color" content="#ffffff">
+  <!-- 使用国内 CDN 加速字体加载 -->
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+  <!-- 预加载字体 -->
+  <link rel="preload" as="style" href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap">
+  <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet"></noscript>
+  <!-- SEO / Social -->
+  <meta property="og:title" content="人闲桂花落 · 夜静春山空 | Photography Portfolio">
+  <meta property="og:description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📷%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-cream: #fafaf8;
+      --text: #1a1a1a;
+      --text-dim: #888;
+      --text-light: #aaa;
+      --accent: #c9a84c;
+      --border: rgba(0,0,0,0.06);
+      --shadow: 0 8px 40px rgba(0,0,0,0.08);
+      --shadow-hover: 0 16px 60px rgba(0,0,0,0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { 
+      scroll-behavior: smooth; 
+      overflow: hidden;
+      height: 100%;
+    }
+    body {
+      font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
+
+    /* ── Header ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    header.scrolled {
+      padding: 0.8rem 3rem;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    }
+    @media (max-width: 768px) {
+      header { padding: 1rem 1.5rem; }
+      header.scrolled { padding: 0.6rem 1.5rem; }
+    }
+    .logo {
+      font-size: 0.85rem; letter-spacing: 0.3em; color: var(--text);
+      text-decoration: none; text-transform: uppercase; transition: opacity 0.3s;
+    }
+    .logo:hover { opacity: 0.5; }
+    .nav-links { list-style: none; display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-size: 0.8rem; letter-spacing: 0.2em; color: var(--text-dim);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .menu-btn {
+      display: none; flex-direction: column; gap: 5px; background: none;
+      border: none; cursor: pointer; padding: 5px;
+    }
+    .menu-btn span { display: block; width: 24px; height: 1px; background: var(--text); transition: 0.3s; }
+    .menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+    .menu-btn.active span:nth-child(2) { opacity: 0; }
+    .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+    /* ── Mobile Nav ── */
+    .mobile-nav {
+      display: none; position: fixed; top: 60px; left: 0; right: 0;
+      background: white; padding: 2rem; z-index: 99;
+      flex-direction: column; gap: 1.5rem; text-align: center;
+      border-top: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .mobile-nav.active { display: flex; }
+    .mobile-nav a {
+      font-size: 1rem; letter-spacing: 0.3em; color: var(--text-dim);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .mobile-nav a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero-tag {
+      font-size: 0.65rem; letter-spacing: 0.5em; color: var(--text-light);
+      text-transform: uppercase; margin-bottom: 3rem;
+    }
+    .hero-title {
+      font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', 'Microsoft YaHei', serif;
+      font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 400;
+      letter-spacing: 0.15em; margin-bottom: 1rem; line-height: 1.3;
+    }
+    .hero-subtitle {
+      font-size: 1rem; letter-spacing: 0.4em; color: var(--text-dim); font-weight: 300;
+    }
+    .scroll-hint {
+      position: absolute; bottom: 3rem; display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem; color: var(--text-light);
+      font-size: 0.65rem; letter-spacing: 0.3em; animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* ── Photo Sections ── */
+    .photo-section {
+      min-height: 100vh; scroll-snap-align: start;
+      padding: 5rem 3rem; display: flex; justify-content: center;
+    }
+    .photo-container {
+      display: flex; align-items: center; gap: 6rem;
+      max-width: 1200px; width: 100%;
+    }
+    .photo-section:nth-child(even) .photo-container { flex-direction: row-reverse; }
+    .photo-wrapper {
+      flex: 1.2; position: relative; cursor: pointer;
+      overflow: hidden;
+      background: var(--bg-cream);
+      border-radius: 4px;
+    }
+    .photo-wrapper::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--bg-cream) 25%, transparent 50%, var(--bg-cream) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .photo-wrapper.loading::before { opacity: 1; }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .photo-wrapper img {
+      width: 100%; max-height: 70vh; object-fit: contain;
+      display: block; box-shadow: var(--shadow); 
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform, opacity;
+      position: relative;
+      z-index: 2;
+    }
+    .photo-wrapper img.loaded { opacity: 1; }
+    .photo-wrapper img:not(.loaded) { opacity: 0; }
+    .photo-wrapper:hover img { 
+      box-shadow: var(--shadow-hover); 
+      transform: scale(1.02);
+    }
+    .photo-info { flex: 0.7; }
+    .camera-params {
+      font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1rem;
+      letter-spacing: 0.05em; text-align: right;
+    }
+    .camera-params span { margin-left: 1rem; font-family: monospace; }
+    .photo-number {
+      font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.2em; margin-bottom: 0.5rem;
+    }
+    .photo-title {
+      font-size: 2.2rem; letter-spacing: 0.2em; margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+    .photo-subtitle {
+      font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.15em; margin-bottom: 1.5rem;
+    }
+    .photo-desc {
+      font-size: 0.9rem; color: var(--text-dim); font-weight: 300;
+      line-height: 2; letter-spacing: 0.05em;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: flex; 
+      opacity: 0;
+      visibility: hidden;
+      position: fixed; inset: 0; background: rgba(0,0,0,0);
+      z-index: 1000; align-items: center; justify-content: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: pan-y;
+    }
+    .lightbox.open { 
+      opacity: 1;
+      visibility: visible;
+      background: rgba(0,0,0,0.95);
+    }
+    .lightbox img { 
+      max-width: 90vw; max-height: 90vh; object-fit: contain; 
+      transform: scale(0.9);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .lightbox.open img {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .lightbox img.swipe-left { transform: scale(0.9) translateX(-100px); opacity: 0; }
+    .lightbox img.swipe-right { transform: scale(0.9) translateX(100px); opacity: 0; }
+    .lightbox-close {
+      position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px;
+      background: none; border: 1px solid rgba(255,255,255,0.3); color: white;
+      font-size: 1.5rem; cursor: pointer; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; 
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateY(-20px);
+      z-index: 1001;
+    }
+    .lightbox.open .lightbox-close {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 50px; height: 80px; background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2); color: white;
+      font-size: 1.5rem; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; opacity: 0;
+      transition: all 0.3s; z-index: 1001;
+    }
+    .lightbox:hover .lightbox-nav { opacity: 1; }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.2); }
+    .lightbox-nav.prev { left: 1rem; border-radius: 0 4px 4px 0; }
+    .lightbox-nav.next { right: 1rem; border-radius: 4px 0 0 4px; }
+    .lightbox-counter {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.6); font-size: 0.75rem; letter-spacing: 0.2em;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .lightbox:hover .lightbox-counter { opacity: 1; }
+
+    /* ── Footer ── */
+    .footer {
+      min-height: auto; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 6rem 2rem; background: var(--bg-cream);
+    }
+    .footer-tag { font-size: 0.65rem; letter-spacing: 0.4em; color: var(--text-light); margin-bottom: 2rem; text-transform: uppercase; }
+    .footer-text { font-size: 1.1rem; color: var(--text-dim); line-height: 2.5; font-weight: 300; max-width: 500px; }
+    .footer-divider { width: 60px; height: 1px; background: var(--border); margin: 2.5rem auto; }
+    .footer-copy { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.15em; }
+
+    /* ── Progress ── */
+    .progress-bar {
+      position: fixed; top: 60px; left: 0; height: 2px; background: var(--accent);
+      z-index: 999; width: 0%; transition: width 0.1s;
+    }
+
+    /* ── Enhanced Fade-in Animation ── */
+    .fade-in { 
+      opacity: 0; 
+      transform: translateY(40px) scale(0.98); 
+      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); 
+    }
+    .fade-in.visible { 
+      opacity: 1; 
+      transform: translateY(0) scale(1); 
+    }
+    
+    .parallax-img {
+      transform: translateY(20px);
+      opacity: 0.8;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .parallax-img.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .photo-container { flex-direction: column; gap: 2rem; text-align: center; }
+      .photo-section:nth-child(even) .photo-container { flex-direction: column; }
+      .photo-wrapper { width: 100%; flex: none; }
+      .photo-wrapper img { max-height: 55vh; }
+      .photo-info { flex: none; max-width: 100%; }
+      .camera-params { text-align: center; }
+      .lightbox-nav { display: none; }
+    }
+    @media (max-width: 768px) {
+      header { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .menu-btn { display: flex; }
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .hero-tag { font-size: 0.6rem; letter-spacing: 0.3em; }
+      .hero-title { letter-spacing: 0.15em; }
+      .hero-subtitle { font-size: 0.9rem; letter-spacing: 0.2em; }
+      .photo-section { padding: 4rem 1.2rem; min-height: 100vh; scroll-snap-align: start; }
+      .photo-wrapper img { max-height: 45vh; }
+      .photo-title { font-size: 1.6rem; }
+      .photo-subtitle { font-size: 0.85rem; }
+      .photo-desc { font-size: 0.85rem; }
+      .camera-params { margin-bottom: 0.8rem; font-size: 0.65rem; letter-spacing: 0.05em; text-align: center; }
+      .camera-params span { margin: 0 0.3rem; }
+      .scroll-hint { bottom: 2rem; }
+      .footer { padding: 3rem 1.5rem; }
+      .footer-text { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <header id="mainHeader">
+    <a href="#hero" class="logo">桂花落</a>
+    <ul class="nav-links">
+      <li><a href="#photo1">作品</a></li>
+      <li><a href="#about">春山空</a></li>
+      <li><a href="upload-local.html" target="_blank">春涧中</a></li>
+    </ul>
+    <button class="menu-btn" id="menuBtn">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#hero" onclick="closeMenuNav(this)">首页</a>
+    <a href="#photo1" onclick="closeMenuNav(this)">作品</a>
+    <a href="#about" onclick="closeMenuNav(this)">春山空</a>
+    <a href="upload-local.html" onclick="closeMenuNav(this)" target="_blank">春涧中</a>
+  </nav>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">&#8249;</button>
+    <img src="" alt="" id="lightboxImg">
+    <button class="lightbox-nav next" onclick="navigateLightbox(1)">&#8250;</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
+  <section class="hero" id="hero">
+    <p class="hero-tag">Photography Portfolio</p>
+    <h1 class="hero-title">人闲桂花落</h1>
+    <p class="hero-subtitle">夜静春山空</p>
+    <div class="scroll-hint"><span>SCROLL</span><span>&#8595;</span></div>
+  </section>
+
+  <!-- Photo 1 -->
+  <section class="photo-section fade-in" id="photo1">
+    <div class="photo-container">
+      <div class="photo-wrapper loading">
+        <img src="images/img-01-1776089317229.jpg" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+      </div>
+      <div class="photo-info">
+        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
+        <p class="photo-number">壹 / 贰</p>
+        <h2 class="photo-title">谧</h2>
+        <p class="photo-subtitle">Serenity</p>
+        <p class="photo-desc">夜色如水，万籁归寂。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo 2 -->
+  <section class="photo-section fade-in" id="photo2">
+    <div class="photo-container">
+      <div class="photo-wrapper loading">
+        <img src="images/img-02-1776089317229.jpg" alt="临" loading="lazy" onclick="openLightbox(1)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+      </div>
+      <div class="photo-info">
+        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
+        <p class="photo-number">贰 / 贰</p>
+        <h2 class="photo-title">临</h2>
+        <p class="photo-subtitle">Presence</p>
+        <p class="photo-desc">光影即临，瞬息永恒。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer" id="about">
+    <p class="footer-tag">About</p>
+    <p class="footer-text">
+      人闲桂花落，夜静春山空。<br>
+      月出惊山鸟，时鸣春涧中。<br><br>
+      用镜头捕捉静谧中的诗意，<br>
+      在光影间寻找内心的宁静。
+    </p>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">© 2026 桂花落 · Photography Portfolio &nbsp;|&nbsp; v2.1</p>
+  </section>
+
+  <script>
+    // Photo data for lightbox navigation
+    const photos = [
+      { src: 'images/img-01-1776089317229.jpg', title: '谧' },
+      { src: 'images/img-02-1776089317229.jpg', title: '临' }
     ]
     let currentPhotoIndex = 0;
 
@@ -580,4 +1000,4 @@
     });
   </script>
 </body>
-</html>
+</html><!-- v3 -->
