@@ -351,7 +351,7 @@ select {
     <li><a href="index.html#about">春山空</a></li>
     <li><a href="upload-local.html" class="active">春涧中</a></li>
   </ul>
-  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+  <button class="menu-btn" id="menuBtn">
     <span></span><span></span><span></span>
   </button>
 </header>
@@ -500,6 +500,7 @@ function toggleMenu() {
   document.getElementById('menuBtn').classList.toggle('active');
   document.getElementById('mobileNav').classList.toggle('active');
 }
+document.getElementById('menuBtn').addEventListener('click', toggleMenu);
 
 // ── Token ───────────────────────────────────────────
 // 使用 sessionStorage 替代 localStorage，更安全
@@ -792,7 +793,7 @@ async function handleUpload() {
 
     setProgress(100, '完成');
     log('🎉 全部完成！', 'ok');
-    log('→ 访问 https://46832632.github.io/photo-portfolio/ 查看', 'info');
+    log('→ 访问 https://photo-portfolio-ip6.pages.dev 查看', 'info');
 
     btn.disabled = false; btn.classList.remove('loading'); btn.textContent = '上传至 GitHub';
     setTimeout(hideProgress, 2000);
