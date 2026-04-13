@@ -9,7 +9,17 @@
   <!-- 使用国内 CDN 加速字体加载 -->
   <link rel="preconnect" href="https://fonts.loli.net">
   <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-  <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <!-- 预加载字体 -->
+  <link rel="preload" as="style" href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap">
+  <link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet"></noscript>
+  <!-- SEO / Social -->
+  <meta property="og:title" content="人闲桂花落 · 夜静春山空 | Photography Portfolio">
+  <meta property="og:description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📷%3C/text%3E%3C/svg%3E">
   <style>
     :root {
       --bg: #ffffff;
@@ -249,8 +259,8 @@
 
     /* ── Footer ── */
     .footer {
-      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 4rem 2rem; background: var(--bg-cream);
+      min-height: auto; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 6rem 2rem; background: var(--bg-cream);
     }
     .footer-tag { font-size: 0.65rem; letter-spacing: 0.4em; color: var(--text-light); margin-bottom: 2rem; text-transform: uppercase; }
     .footer-text { font-size: 1.1rem; color: var(--text-dim); line-height: 2.5; font-weight: 300; max-width: 500px; }
@@ -338,10 +348,10 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav">
-    <a href="#hero" onclick="toggleMenu()">首页</a>
-    <a href="#photo1" onclick="toggleMenu()">作品</a>
-    <a href="#about" onclick="toggleMenu()">春山空</a>
-    <a href="upload-local.html" onclick="toggleMenu()" target="_blank">春涧中</a>
+    <a href="#hero" onclick="closeMenuNav(this)">首页</a>
+    <a href="#photo1" onclick="closeMenuNav(this)">作品</a>
+    <a href="#about" onclick="closeMenuNav(this)">春山空</a>
+    <a href="upload-local.html" onclick="closeMenuNav(this)" target="_blank">春涧中</a>
   </nav>
 
   <div class="lightbox" id="lightbox">
@@ -525,8 +535,9 @@
       { src: 'images/photo-06.jpg?v=2', title: '构' },
       { src: 'images/photo-07.jpg?v=2', title: '隅' },
       { src: 'images/photo-08.jpg?v=2', title: '尘' },
-      { src: 'images/photo-new-08.jpg?v=2', title: '澜' }
-    , { src: 'images/夕_1775946710125.jpg', title: '夕' }];
+      { src: 'images/photo-new-08.jpg?v=2', title: '澜' },
+      { src: 'images/夕_1775946710125.jpg?v=2', title: '夕' }
+    ];
     let currentPhotoIndex = 0;
 
     // Mobile menu
@@ -534,12 +545,16 @@
       document.getElementById('menuBtn').classList.toggle('active');
       document.getElementById('mobileNav').classList.toggle('active');
     }
+    function closeMenuNav(link) {
+      document.getElementById('menuBtn').classList.remove('active');
+      document.getElementById('mobileNav').classList.remove('active');
+    }
     document.getElementById('menuBtn').addEventListener('click', toggleMenu);
 
-    // Unified scroll handler for performance
+    // Unified scroll handler — bind to window for reliable cross-browser support
     function handleScroll() {
-      var scrollTop = document.body.scrollTop;
-      var scrollHeight = document.body.scrollHeight - document.body.clientHeight;
+      var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement.scrollTop || document.body.scrollTop || 0);
+      var scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       var scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
       document.getElementById('progressBar').style.width = scrolled + '%';
       
@@ -550,7 +565,7 @@
         header.classList.remove('scrolled');
       }
     }
-    document.body.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Enhanced fade-in on scroll with parallax
     var observer = new IntersectionObserver(function(entries) {
@@ -639,9 +654,9 @@
       var diff = touchStartX - touchEndX;
       if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
-          navigateLightbox(1);
+          navigateLightbox(-1); // 左滑 → 上一张
         } else {
-          navigateLightbox(-1);
+          navigateLightbox(1);  // 右滑 → 下一张
         }
       }
     }
