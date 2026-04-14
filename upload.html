@@ -27,12 +27,30 @@
     .container { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 5rem; flex: 1; width: 100%; }
     .page-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 2.2rem; color: var(--text); text-align: center; margin-bottom: 0.5rem; letter-spacing: 0.2em; }
     .page-subtitle { text-align: center; color: var(--muted); font-size: 0.82rem; margin-bottom: 3rem; font-weight: 300; letter-spacing: 0.12em; }
+
+    /* Token 设置区 */
+    .token-section { margin-bottom: 2.5rem; }
+    .token-box { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .token-header { display: flex; align-items: center; justify-content: space-between; }
+    .token-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 0.95rem; color: var(--text); letter-spacing: 0.12em; display: flex; align-items: center; gap: 0.5rem; }
+    .token-title .lock { font-size: 0.85rem; }
+    .token-hint { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; }
+    .token-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; }
+    .token-dot { width: 7px; height: 7px; border-radius: 50%; background: #bbb; }
+    .token-dot.saved { background: #2e7d32; }
+    .token-input-row { display: flex; gap: 0.6rem; align-items: center; }
+    .token-input { flex: 1; padding: 0.55rem 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-family: monospace; font-size: 0.82rem; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+    .token-input:focus { border-color: var(--accent); }
+    .token-input::placeholder { color: var(--muted); font-family: 'Noto Serif SC', serif; }
+    .save-token-btn { padding: 0.55rem 1.2rem; border: 1px solid var(--accent); background: var(--accent); color: #fff; border-radius: 8px; font-family: 'Noto Serif SC', serif; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .save-token-btn:hover { background: #96703e; }
+    .clear-token-btn { background: none; border: none; color: var(--muted); font-size: 0.72rem; cursor: pointer; text-decoration: underline; padding: 0.2rem; }
+    .clear-token-btn:hover { color: #c0392b; }
+
+    /* 上传区 */
     .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; position: relative; }
     .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #faf5ed; }
-    .upload-zone input[type="file"] {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      opacity: 0; cursor: pointer; z-index: 1;
-    }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 1; }
     .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
     .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
     .upload-text strong { color: var(--accent); }
@@ -53,6 +71,21 @@
     .ai-btn { font-size: 0.75rem; color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 20px; padding: 0.25rem 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; align-self: flex-end; }
     .ai-btn:hover { background: var(--accent); color: #fff; }
     .ai-btn-row { display: flex; justify-content: space-between; align-items: center; }
+
+    /* 上传进度 */
+    .upload-progress { display: none; margin-bottom: 2rem; }
+    .upload-progress.show { display: block; }
+    .progress-box { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .progress-step { display: flex; align-items: center; gap: 0.8rem; padding: 0.5rem 0; font-size: 0.85rem; color: var(--muted); }
+    .progress-step.done { color: #2e7d32; }
+    .progress-step.active { color: var(--accent); }
+    .progress-step.error { color: #c0392b; }
+    .step-icon { width: 20px; text-align: center; font-size: 0.9rem; flex-shrink: 0; }
+    .step-msg { flex: 1; }
+    .progress-bar-wrap { margin-top: 1rem; background: var(--border); border-radius: 8px; height: 6px; overflow: hidden; }
+    .progress-bar { height: 100%; background: var(--accent); border-radius: 8px; transition: width 0.4s ease; width: 0%; }
+    .progress-final { margin-top: 1.2rem; text-align: center; font-size: 0.88rem; color: #2e7d32; }
+
     .batch-ai-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
     .batch-ai-btn { background: var(--accent); color: #fff; border: none; border-radius: 24px; padding: 0.7rem 2rem; font-family: 'Noto Serif SC', serif; font-size: 0.88rem; cursor: pointer; transition: all 0.3s; letter-spacing: 0.1em; }
     .batch-ai-btn:hover { background: #96703e; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(176,141,87,0.3); }
@@ -83,17 +116,13 @@
     .back-home-bar { text-align: center; padding: 2.5rem 0 1rem; border-top: 1px solid var(--border); margin-top: 1rem; }
     .back-home-link { font-family: 'Noto Serif SC', serif; font-size: 0.82rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; padding: 0.5rem 1.2rem; border: 1px solid var(--border); border-radius: 20px; }
     .back-home-link:hover { color: var(--accent); border-color: var(--accent); }
-    .guide-box { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; }
-    .guide-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 1rem; color: var(--text); margin-bottom: 1rem; letter-spacing: 0.15em; }
-    .guide-steps { padding-left: 1.5rem; color: var(--muted); font-size: 0.85rem; line-height: 2; }
-    .guide-steps li { margin-bottom: 0.3rem; }
-    .guide-steps code { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.8rem; color: var(--accent); display: block; margin-top: 0.3rem; }
-    .guide-note { font-size: 0.78rem; color: var(--muted); margin-top: 1rem; }
-    .guide-note a { color: var(--accent); }
+
     @media (max-width: 640px) {
       .form-grid { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: 1fr; }
       nav { padding: 1rem; gap: 1rem; }
+      .token-input-row { flex-direction: column; }
+      .save-token-btn { width: 100%; }
     }
   </style>
 </head>
@@ -120,17 +149,32 @@
     <h1 class="page-title">春涧中</h1>
     <p class="page-subtitle">上传照片 · 静候春风</p>
 
-    <div class="guide-box">
-      <h3 class="guide-title">✦ 使用说明</h3>
-      <ol class="guide-steps">
-        <li>选择照片 → 填写标题、分类、地点</li>
-        <li>点击「<strong>上 传</strong>」下载 <code>upload-data.json</code></li>
-        <li>在终端运行：<br>
-          <code>node upload-photo.js --json upload-data.json</code>
-        </li>
-        <li>稍后刷新首页查看新照片</li>
-      </ol>
-      <p class="guide-note">💡 首次使用需安装 Node.js：<a href="https://nodejs.org" target="_blank">nodejs.org</a></p>
+    <!-- Token 设置 -->
+    <div class="token-section">
+      <div class="token-box">
+        <div class="token-header">
+          <div>
+            <div class="token-title"><span class="lock">🔑</span> GitHub 上传授权</div>
+            <div class="token-hint">Token 仅存储在本地浏览器，不会上传至任何服务器</div>
+          </div>
+          <div class="token-status" id="tokenStatus">
+            <span class="token-dot" id="tokenDot"></span>
+            <span id="tokenStatusText">未设置</span>
+          </div>
+        </div>
+        <div class="token-input-row">
+          <input type="password" class="token-input" id="tokenInput"
+            placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          <button class="save-token-btn" id="saveTokenBtn">保存</button>
+        </div>
+        <div id="tokenSavedMsg" style="display:none; font-size:0.75rem; color:#2e7d32;">
+          ✓ Token 已保存，下次访问自动填充
+          <button class="clear-token-btn" id="clearTokenBtn">清除</button>
+        </div>
+        <div style="font-size:0.72rem; color:var(--muted); margin-top:0.3rem;">
+          💡 需要 GitHub Personal Access Token（Photo Upload 专用），用于上传照片到仓库
+        </div>
+      </div>
     </div>
 
     <div class="upload-zone" id="uploadZone">
@@ -146,6 +190,32 @@
 
     <div class="batch-ai-bar" id="batchBar" style="display:none">
       <button class="batch-ai-btn" id="batchAiBtn">✦ 一键 AI 生成所有描述</button>
+    </div>
+
+    <!-- 上传进度 -->
+    <div class="upload-progress" id="uploadProgress">
+      <div class="progress-box">
+        <div class="progress-step" id="step1">
+          <span class="step-icon">○</span>
+          <span class="step-msg">准备上传…</span>
+        </div>
+        <div class="progress-step" id="step2">
+          <span class="step-icon">○</span>
+          <span class="step-msg">上传图片文件…</span>
+        </div>
+        <div class="progress-step" id="step3">
+          <span class="step-icon">○</span>
+          <span class="step-msg">更新照片数据…</span>
+        </div>
+        <div class="progress-step" id="step4">
+          <span class="step-icon">○</span>
+          <span class="step-msg">提交到 GitHub…</span>
+        </div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-final" id="progressFinal"></div>
+      </div>
     </div>
 
     <div class="submit-bar" id="submitBar" style="display:none">
@@ -175,41 +245,11 @@
       food: ['Quiet Flavors', 'Still Life', 'Taste of Place', 'Table Poetry', 'Simple Pleasures', 'Flavor Notes']
     };
     const DESC_MAP = {
-      city: ['城市的纹理在光影中展开，
-钢铁与玻璃映照出另一种天空。', '人流如织，光影交错。
-城市的呼吸在每一条街道上留下痕迹。', '夜色降临，万家灯火。
-喧嚣在此时化为宁静的旋律。', '晨光穿透高楼的缝隙，
-新的一天在城市上空悄然展开。', '雨后的街道，
-倒映出一个湿润而柔软的城市。', '小巷深处，
-时光在这里缓缓流淌。'],
-      nature: ['风过林梢，
-万物在寂静中生长。', '流水潺潺，
-山涧里藏着春天的私语。', '晨雾缭绕，
-山与天在朦胧中融为一体。', '草叶上的露珠，
-折射出整个清晨的光芒。', '花开花落，
-自然的节奏从不曾停歇。', '溪水绕过石头，
-唱着一支无人听见的歌。'],
-      people: ['目光交汇的瞬间，
-故事已在无声中展开。', '城市的一角，
-有人在等待一个回眸。', '口罩之上，
-眼睛依然在说着什么。', '背影比正面更有故事，
-因为那里藏着所有的想象。', '地铁车厢里，
-每个人都携带着自己的宇宙。', '低头的一瞬，
-世界仿佛按下了静音键。'],
-      arch: ['线条向天空延伸，
-光影在玻璃幕墙上作画。', '高楼林立，
-都市的森林在夜色中闪烁。', '仰视之际，
-世界的边界悄然向上敞开。', '几何与光，
-在建筑中找到了最美的语言。', '钢铁与混凝土，
-编织出现代城市的天际线。', '窗外的世界，
-被一格格地切割成画框。'],
-      food: ['简单的食材，
-在厨师的手中化为诗篇。', '热气腾腾的街头，
-烟火气是最真实的人间。', '色彩与香气的对话，
-在一盘一碟中展开。', '清晨的菜市场，
-是一天中最有生命力的风景。', '咖啡的香气，
-开启一个城市的早晨。', '一碗热汤，
-足以抚慰所有的疲惫。']
+      city: ['城市的纹理在光影中展开，\n钢铁与玻璃映照出另一种天空。', '人流如织，光影交错。\n城市的呼吸在每一条街道上留下痕迹。', '夜色降临，万家灯火。\n喧嚣在此时化为宁静的旋律。', '晨光穿透高楼的缝隙，\n新的一天在城市上空悄然展开。', '雨后的街道，\n倒映出一个湿润而柔软的城市。', '小巷深处，\n时光在这里缓缓流淌。'],
+      nature: ['风过林梢，\n万物在寂静中生长。', '流水潺潺，\n山涧里藏着春天的私语。', '晨雾缭绕，\n山与天在朦胧中融为一体。', '草叶上的露珠，\n折射出整个清晨的光芒。', '花开花落，\n自然的节奏从不曾停歇。', '溪水绕过石头，\n唱着一支无人听见的歌。'],
+      people: ['目光交汇的瞬间，\n故事已在无声中展开。', '城市的一角，\n有人在等待一个回眸。', '口罩之上，\n眼睛依然在说着什么。', '背影比正面更有故事，\n因为那里藏着所有的想象。', '地铁车厢里，\n每个人都携带着自己的宇宙。', '低头的一瞬，\n世界仿佛按下了静音键。'],
+      arch: ['线条向天空延伸，\n光影在玻璃幕墙上作画。', '高楼林立，\n都市的森林在夜色中闪烁。', '仰视之际，\n世界的边界悄然向上敞开。', '几何与光，\n在建筑中找到了最美的语言。', '钢铁与混凝土，\n编织出现代城市的天际线。', '窗外的世界，\n被一格格地切割成画框。'],
+      food: ['简单的食材，\n在厨师的手中化为诗篇。', '热气腾腾的街头，\n烟火气是最真实的人间。', '色彩与香气的对话，\n在一盘一碟中展开。', '清晨的菜市场，\n是一天中最有生命力的风景。', '咖啡的香气，\n开启一个城市的早晨。', '一碗热汤，\n足以抚慰所有的疲惫。']
     };
     const ZH_TITLES = {
       city: ['喧', '灯', '街', '巷', '夜', '晨'],
@@ -219,9 +259,13 @@
       food: ['味', '烟', '盘', '食', '晨', '汤']
     };
 
-    let photos = [];
-    let uploadedIds = [];
+    const GH_OWNER = '46832632';
+    const GH_REPO = 'photo-portfolio';
 
+    let photos = [];
+    let savedToken = localStorage.getItem('gh_upload_token') || '';
+
+    // DOM
     const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('fileInput');
     const photoList = document.getElementById('photoList');
@@ -232,7 +276,49 @@
     const galleryGrid = document.getElementById('galleryGrid');
     const emptyGallery = document.getElementById('emptyGallery');
     const toast = document.getElementById('toast');
+    const tokenInput = document.getElementById('tokenInput');
+    const saveTokenBtn = document.getElementById('saveTokenBtn');
+    const clearTokenBtn = document.getElementById('clearTokenBtn');
+    const tokenDot = document.getElementById('tokenDot');
+    const tokenStatusText = document.getElementById('tokenStatusText');
+    const tokenSavedMsg = document.getElementById('tokenSavedMsg');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressFinal = document.getElementById('progressFinal');
 
+    // Token 初始化
+    function initToken() {
+      if (savedToken) {
+        tokenInput.value = savedToken;
+        tokenDot.classList.add('saved');
+        tokenStatusText.textContent = '已保存';
+        tokenSavedMsg.style.display = 'block';
+      }
+    }
+    initToken();
+
+    saveTokenBtn.addEventListener('click', () => {
+      const val = tokenInput.value.trim();
+      if (!val) { showToast('请输入 Token', 'error'); return; }
+      savedToken = val;
+      localStorage.setItem('gh_upload_token', savedToken);
+      tokenDot.classList.add('saved');
+      tokenStatusText.textContent = '已保存';
+      tokenSavedMsg.style.display = 'block';
+      showToast('✓ Token 已保存', 'success');
+    });
+
+    clearTokenBtn.addEventListener('click', () => {
+      savedToken = '';
+      localStorage.removeItem('gh_upload_token');
+      tokenInput.value = '';
+      tokenDot.classList.remove('saved');
+      tokenStatusText.textContent = '未设置';
+      tokenSavedMsg.style.display = 'none';
+      showToast('Token 已清除', '');
+    });
+
+    // 文件选择
     uploadZone.addEventListener('click', () => fileInput.click());
     uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
     uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
@@ -343,48 +429,179 @@
       showToast('✨ 所有描述已重新生成');
     });
 
-    const GH_OWNER = '46832632';
-    const GH_REPO = 'photo-portfolio';
+    // ── GitHub API ──────────────────────────────────────────
+    function ghHeaders() {
+      return {
+        'Authorization': `Bearer ${savedToken}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      };
+    }
 
-    async function loadPhotosData() {
+    async function ghGet(path) {
+      const r = await fetch(`https://api.github.com${path}`, {
+        headers: ghHeaders()
+      });
+      if (!r.ok) throw new Error(`GitHub API ${r.status}: ${r.statusText}`);
+      return r.json();
+    }
+
+    async function ghPut(path, body) {
+      const r = await fetch(`https://api.github.com${path}`, {
+        method: 'PUT',
+        headers: ghHeaders(),
+        body: JSON.stringify(body)
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(`GitHub API ${r.status}: ${JSON.stringify(data)}`);
+      return data;
+    }
+
+    function setStep(id, state, icon) {
+      const el = document.getElementById(id);
+      el.className = 'progress-step ' + state;
+      el.querySelector('.step-icon').textContent = icon;
+    }
+
+    function setProgress(pct) {
+      progressBar.style.width = pct + '%';
+    }
+
+    async function uploadToGitHub() {
+      if (!savedToken) {
+        showToast('请先保存 GitHub Token', 'error');
+        return;
+      }
+      if (photos.length === 0) return;
+
+      // 禁止重复点击
+      submitBtn.disabled = true;
+      submitBtn.textContent = '上传中…';
+      uploadProgress.classList.add('show');
+      progressFinal.textContent = '';
+      setProgress(0);
+
       try {
-        const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
-        if (!r.ok) throw new Error('加载失败');
-        return r.json();
-      } catch {
-        return { photos: [] };
+        // Step 1: 读取当前 photos.json
+        setStep('step1', 'active', '◐');
+        let photosJson, photosSha;
+        try {
+          const existing = await ghGet(`/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`);
+          photosSha = existing.sha;
+          const r = await fetch(existing.download_url);
+          photosJson = await r.json();
+        } catch {
+          photosJson = { photos: [] };
+          photosSha = null;
+        }
+        setStep('step1', 'done', '✓');
+        setProgress(10);
+
+        // Step 2: 上传每张照片
+        setStep('step2', 'active', '◐');
+        const newEntries = [];
+        for (let i = 0; i < photos.length; i++) {
+          const p = photos[i];
+          const ext = p.file.name.split('.').pop() || 'jpg';
+          const filename = `img_${Date.now()}_${i}.${ext}`;
+          const imagePath = `images/${filename}`;
+
+          const arrayBuffer = await p.file.arrayBuffer();
+          const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+
+          try {
+            const imgRes = await ghPut(
+              `/repos/${GH_OWNER}/${GH_REPO}/contents/${imagePath}`,
+              {
+                message: `upload: ${filename}`,
+                content: base64,
+                branch: 'main'
+              }
+            );
+            newEntries.push({
+              id: `img_${Date.now()}_${i}`,
+              filename,
+              titleZh: p.titleZh,
+              titleEn: p.titleEn,
+              location: p.location,
+              year: p.year,
+              category: p.category,
+              catLabel: CATS[p.category] || p.category,
+              desc: p.desc.replace(/\n/g, '\\n'),
+              date: new Date().toISOString().slice(0, 10)
+            });
+          } catch (e) {
+            console.error(`图片 ${filename} 上传失败:`, e);
+            showToast(`❌ ${filename} 上传失败: ${e.message}`, 'error');
+          }
+
+          setProgress(10 + Math.round((i + 1) / photos.length * 40));
+        }
+        setStep('step2', 'done', '✓');
+
+        if (newEntries.length === 0) throw new Error('没有成功上传任何图片');
+
+        // Step 3: 更新 photos.json
+        setStep('step3', 'active', '◐');
+        const updatedPhotos = [...(photosJson.photos || []), ...newEntries];
+        const newContent = JSON.stringify({ photos: updatedPhotos }, null, 2);
+        const newBase64 = btoa(unescape(encodeURIComponent(newContent)));
+
+        await ghPut(
+          `/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`,
+          {
+            message: `docs: add ${newEntries.length} photo(s)`,
+            content: newBase64,
+            sha: photosSha,
+            branch: 'main'
+          }
+        );
+        setStep('step3', 'done', '✓');
+        setProgress(60);
+
+        // Step 4: 等待 GitHub Actions 部署
+        setStep('step4', 'active', '◐');
+        setProgress(80);
+        await new Promise(r => setTimeout(r, 2000));
+        setStep('step4', 'done', '✓');
+        setProgress(100);
+
+        progressFinal.innerHTML = `✓ 上传成功！${newEntries.length} 张照片已提交<br>
+          <span style="font-size:0.78rem;color:var(--muted)">GitHub Actions 正在部署，稍后刷新首页查看</span>`;
+        showToast(`✓ ${newEntries.length} 张照片上传成功！`, 'success');
+
+        // 清空已上传
+        photos = [];
+        renderPhotoList();
+        loadGallery();
+
+      } catch (e) {
+        console.error('Upload error:', e);
+        ['step1','step2','step3','step4'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.classList.contains('done')) {
+            el.className = 'progress-step error';
+            el.querySelector('.step-icon').textContent = '✕';
+          }
+        });
+        progressFinal.innerHTML = `<span style="color:#c0392b">上传失败：${e.message}</span>`;
+        showToast('❌ 上传失败：' + e.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '上 传';
+        setTimeout(() => { uploadProgress.classList.remove('show'); }, 4000);
       }
     }
 
-    submitBtn.addEventListener('click', () => {
-      if (photos.length === 0) return;
-      // 生成 JSON 数据文件并触发下载
-      const entries = photos.map(p => ({
-        imagePath: p.file.name,
-        titleZh: p.titleZh,
-        titleEn: p.titleEn,
-        location: p.location,
-        year: p.year,
-        category: p.category,
-        descLines: p.desc.split('\n').filter(Boolean),
-      }));
-      const jsonData = entries.length === 1 ? entries[0] : entries;
-      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'upload-data.json';
-      a.click();
-      URL.revokeObjectURL(url);
+    submitBtn.addEventListener('click', uploadToGitHub);
 
-      showToast(`📦 已下载 upload-data.json，请运行上传命令`, 'success');
-      submitBtn.textContent = '已准备好';
-      setTimeout(() => { submitBtn.textContent = '上 传'; }, 2000);
-    });
-
+    // 加载已有照片
     async function loadGallery() {
       try {
-        const data = await loadPhotosData();
+        const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
+        if (!r.ok) throw new Error('加载失败');
+        const data = await r.json();
         const list = (data.photos || []).slice(0, 20);
         if (list.length === 0) {
           galleryGrid.innerHTML = '';
@@ -399,10 +616,7 @@
               <h3>${p.titleZh}</h3>
               <p class="sub">${p.titleEn || ''} ${p.location ? ' · ' + p.location : ''} ${p.year ? ' · ' + p.year : ''}</p>
               <span class="cat">${p.catLabel || '城市'}</span>
-              <p class="desc">${(p.desc || '').replace(/\n/g, '<br>')}</p>
-            </div>
-            <div class="gallery-card-actions">
-              <button class="del-btn" onclick="deletePhoto('${p.id}')">删除</button>
+              <p class="desc">${(p.desc || '').replace(/\\n/g, '<br>')}</p>
             </div>
           </div>
         `).join('');
@@ -410,22 +624,6 @@
         console.error('loadGallery error:', e);
         emptyGallery.style.display = 'block';
       }
-    }
-
-    async function deletePhoto(id) {
-      if (!confirm('确定删除这张照片？\n此操作需在本地运行删除命令。')) return;
-      const data = await loadPhotosData();
-      const photo = (data.photos || []).find(p => p.id === id);
-      if (!photo) { showToast('照片不存在', 'error'); return; }
-      const deleteData = { delete_id: id, imagePath: `images/${photo.filename}` };
-      const blob = new Blob([JSON.stringify(deleteData, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'delete-data.json';
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('📦 已下载 delete-data.json，请运行删除命令', 'success');
     }
 
     function showToast(msg, cls = '') {
