@@ -2,791 +2,239 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>春涧中 · 上传</title>
-<link rel="preconnect" href="https://fonts.loli.net">
-<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #ffffff;
-  --bg-cream: #fafaf8;
-  --bg-ghost: #f5f5f3;
-  --text: #1a1a1a;
-  --text-dim: #888;
-  --text-light: #bbb;
-  --border: rgba(0,0,0,0.08);
-  --border-hover: rgba(0,0,0,0.18);
-  --shadow: 0 4px 30px rgba(0,0,0,0.06);
-  --accent: #c9a84c;
-  --success: #5a8a5a;
-  --error: #c05050;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  min-height: 100vh;
-  background: var(--bg);
-  font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', serif;
-  color: var(--text);
-  line-height: 1.8;
-}
-
-/* Header */
-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.5rem 3rem;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.logo {
-  font-size: 0.8rem; letter-spacing: 0.35em; color: var(--text);
-  text-decoration: none; text-transform: uppercase; font-weight: 400;
-}
-.nav-links { list-style: none; display: flex; gap: 2.5rem; }
-.nav-links a {
-  font-size: 0.78rem; letter-spacing: 0.2em; color: var(--text-dim);
-  text-decoration: none;
-}
-.nav-links a.active { color: var(--text); }
-.menu-btn { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
-.menu-btn span { width: 22px; height: 1px; background: var(--text); }
-
-.mobile-nav {
-  display: none; position: fixed; top: 58px; left: 0; right: 0;
-  background: white; padding: 2rem; z-index: 99;
-  flex-direction: column; gap: 1.5rem; text-align: center;
-}
-.mobile-nav.active { display: flex; }
-.mobile-nav a { font-size: 0.95rem; letter-spacing: 0.3em; color: var(--text-dim); text-decoration: none; }
-
-/* Main */
-main {
-  margin-top: 100px;
-  width: 100%; max-width: 640px;
-  padding: 3rem 2rem 5rem;
-  margin-left: auto; margin-right: auto;
-  animation: fadeUp 0.8s cubic-bezier(0.4,0,0.2,1) both;
-}
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-.page-title { text-align: center; margin-bottom: 0.5rem; }
-.page-title h1 { font-family: 'ZCOOL XiaoWei', serif; font-size: clamp(1.8rem, 5vw, 2.4rem); letter-spacing: 0.2em; }
-.page-title p { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.5em; margin-top: 0.6rem; }
-
-.divider {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-  margin: 2rem auto;
-}
-
-/* Section */
-.section { margin-bottom: 2rem; }
-.section-title {
-  font-size: 0.7rem; color: var(--text-light);
-  letter-spacing: 0.3em; margin-bottom: 10px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-title::before {
-  content: ''; width: 12px; height: 1px; background: var(--border-hover);
-}
-
-/* Config */
-.config-row { display: flex; gap: 8px; align-items: center; }
-.config-row input {
-  flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 3px;
-  font-size: 13px; font-family: monospace; background: var(--bg-ghost);
-}
-.config-row input:focus { outline: none; border-color: var(--accent); }
-.toggle-btn { background: none; border: none; cursor: pointer; padding: 8px; font-size: 15px; opacity: 0.5; }
-.toggle-btn:hover { opacity: 1; }
-.status { font-size: 11px; margin-top: 6px; text-align: center; }
-.status.ok { color: var(--success); }
-.status.err { color: var(--error); }
-
-/* GitHub Token */
-.gh-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-
-/* Drop Zone */
-.drop-zone {
-  border: 1.5px dashed var(--border-hover);
-  border-radius: 4px; padding: 2.5rem 2rem;
-  text-align: center; cursor: pointer;
-  transition: border-color 0.25s, background 0.25s;
-  position: relative;
-}
-.drop-zone:hover, .drop-zone.drag {
-  border-color: var(--accent);
-  background: var(--bg-cream);
-}
-.drop-zone-icon { font-size: 2rem; margin-bottom: 0.6rem; }
-.drop-zone p { color: var(--text-dim); font-size: 0.85rem; }
-.drop-zone .hint { font-size: 0.72rem; color: var(--text-light); margin-top: 0.4rem; }
-.drop-zone input { display: none; }
-
-/* Queue */
-.queue-section { margin-bottom: 1.5rem; }
-.queue-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
-}
-.queue-header .title { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 0.15em; }
-.queue-header .count { font-size: 0.7rem; color: var(--text-light); }
-.queue-list { max-height: 350px; overflow-y: auto; }
-.queue-item {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px; margin-bottom: 8px;
-  background: var(--bg-cream); border: 1px solid var(--border);
-  border-radius: 4px; animation: fadeIn 0.3s;
-}
-.queue-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
-.queue-info { flex: 1; min-width: 0; }
-.queue-filename { font-size: 0.78rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.queue-size { font-size: 0.68rem; color: var(--text-light); margin-top: 2px; }
-.queue-status { font-size: 0.68rem; margin-top: 4px; font-weight: 500; }
-.queue-status.pending { color: var(--text-light); }
-.queue-status.uploading { color: var(--accent); }
-.queue-status.done { color: var(--success); }
-.queue-status.error { color: var(--error); }
-
-.queue-fields { margin-top: 8px; }
-.queue-fields input {
-  width: 100%; padding: 6px 10px; margin-bottom: 6px;
-  border: 1px solid var(--border); border-radius: 2px;
-  font-size: 0.78rem; font-family: inherit;
-}
-.queue-fields input:focus { outline: none; border-color: var(--accent); }
-.queue-fields input::placeholder { color: var(--text-light); }
-
-.queue-position {
-  display: flex; align-items: center; gap: 6px;
-  margin-top: 6px;
-}
-.queue-position label { font-size: 0.68rem; color: var(--text-light); white-space: nowrap; }
-.queue-position input {
-  width: 60px; padding: 4px 8px; text-align: center;
-  border: 1px solid var(--border); border-radius: 2px;
-  font-size: 0.78rem;
-}
-.queue-position .hint { font-size: 0.65rem; color: var(--text-light); }
-
-.queue-remove {
-  width: 26px; height: 26px; background: transparent; border: 1px solid var(--border);
-  border-radius: 50%; color: var(--text-dim); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.queue-remove:hover { background: var(--error); border-color: var(--error); color: white; }
-.queue-remove:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Progress */
-.progress-wrap { margin-bottom: 1rem; display: none; }
-.progress-wrap.active { display: block; }
-.progress-text { font-size: 0.72rem; color: var(--text-dim); margin-bottom: 6px; display: flex; justify-content: space-between; }
-.progress-bar-track { height: 3px; background: var(--bg-ghost); border-radius: 2px; overflow: hidden; }
-.progress-bar-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
-
-/* Buttons */
-.btn-row { display: flex; gap: 10px; margin-bottom: 1rem; }
-.btn {
-  flex: 1; padding: 14px;
-  border: none; border-radius: 3px;
-  font-size: 0.82rem; letter-spacing: 0.2em;
-  cursor: pointer; font-family: inherit;
-  transition: all 0.2s;
-}
-.btn-primary { background: var(--text); color: white; }
-.btn-primary:hover { background: #333; }
-.btn-primary:disabled { background: #ccc; cursor: not-allowed; }
-.btn-secondary { background: var(--bg-ghost); color: var(--text); border: 1px solid var(--border); }
-.btn-secondary:hover { border-color: var(--accent); }
-.btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-sync {
-  background: var(--accent); color: white;
-  opacity: 0.6;
-}
-.btn-sync:hover { opacity: 1; }
-.btn-sync:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* Log */
-.log-box {
-  margin-top: 1rem;
-  background: var(--bg-ghost);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 12px 14px;
-  max-height: 180px; overflow-y: auto;
-  display: none;
-}
-.log-box.show { display: block; animation: fadeIn 0.3s; }
-.log-entry { font-size: 0.72rem; color: var(--text-dim); padding: 3px 0; }
-.log-entry.ok { color: var(--success); }
-.log-entry.err { color: var(--error); }
-.log-entry.info { color: var(--text-light); }
-.log-entry .ts { color: var(--text-light); margin-right: 6px; font-size: 0.65rem; }
-
-/* Footer */
-.footer-quote {
-  text-align: center; padding: 2rem;
-  border-top: 1px solid var(--border);
-  margin-top: 2rem;
-}
-.footer-quote p { font-size: 0.75rem; color: var(--text-light); letter-spacing: 0.3em; line-height: 2; }
-
-/* Responsive */
-@media (max-width: 640px) {
-  header { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  .menu-btn { display: flex; }
-  main { padding: 5rem 1.2rem 4rem; }
-  .queue-item { flex-wrap: wrap; }
-  .queue-thumb { width: 56px; height: 56px; }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Serif SC',serif;color:#1a1a1a;line-height:1.8;min-height:100vh;display:flex;flex-direction:column;align-items:center;background:#fff}
+header{position:fixed;top:0;left:0;right:0;z-index:100;width:100%;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.08)}
+.logo{font-size:.75rem;letter-spacing:.3em;text-decoration:none;color:#1a1a1a;text-transform:uppercase}
+.nav{display:flex;gap:2rem}
+.nav a{font-size:.75rem;letter-spacing:.15em;color:#888;text-decoration:none}
+.nav a.active{color:#1a1a1a}
+main{margin-top:90px;width:100%;max-width:580px;padding:2.5rem 1.5rem 4rem;animation:fadeUp .7s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:2.2rem;text-align:center;letter-spacing:.15em;margin-bottom:.4rem}
+.sub{font-size:.68rem;color:#bbb;letter-spacing:.5em;text-align:center;margin-bottom:2rem}
+.divider{width:1px;height:36px;background:linear-gradient(to bottom,transparent,#c9a84c,transparent);margin:0 auto 2rem}
+.card{background:#fafaf8;border:1px solid rgba(0,0,0,.08);border-radius:6px;padding:1.5rem;margin-bottom:1.2rem}
+.row{margin-bottom:1rem}
+label{display:block;font-size:.68rem;color:#bbb;letter-spacing:.2em;margin-bottom:.5rem}
+input{width:100%;padding:9px 12px;border:1px solid rgba(0,0,0,.1);border-radius:3px;font-size:.85rem;font-family:monospace;background:#fff}
+input:focus{outline:none;border-color:#c9a84c}
+.tip{font-size:.65rem;color:#bbb;margin-top:.4rem;line-height:1.6}
+.drop{border:1.5px dashed rgba(0,0,0,.15);border-radius:5px;padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:1.2rem;background:#fff}
+.drop:hover{border-color:#c9a84c;background:#fafaf8}
+.icon{font-size:2rem;margin-bottom:.4rem}
+.drop p{font-size:.82rem;color:#888}
+.drop .tip2{font-size:.65rem;color:#bbb;margin-top:.3rem}
+.drop input{display:none}
+.queue{margin-bottom:1.2rem;display:none}
+.queue.show{display:block}
+.queue-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:.5rem;border-bottom:1px solid rgba(0,0,0,.08);margin-bottom:.6rem}
+.queue-head span{font-size:.68rem;color:#888;letter-spacing:.15em}
+.item{display:flex;gap:10px;padding:10px;margin-bottom:.5rem;background:#fafaf8;border:1px solid rgba(0,0,0,.08);border-radius:4px;flex-wrap:wrap}
+.thumb{width:60px;height:60px;object-fit:cover;border-radius:3px;flex-shrink:0;align-self:center}
+.info{flex:1;min-width:0;align-self:center}
+.name{font-size:.78rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.sz{font-size:.65rem;color:#bbb}
+.stat{font-size:.65rem;margin-top:4px;font-weight:600}
+.stat.p{color:#bbb}.stat.u{color:#c9a84c}.stat.d{color:#5a8a5a}.stat.e{color:#c05050}
+.rm{width:26px;height:26px;border-radius:50%;border:1px solid rgba(0,0,0,.1);background:transparent;color:#888;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:center}
+.rm:hover{background:#c05050;border-color:#c05050;color:#fff}
+.rm:disabled{opacity:.3;cursor:not-allowed}
+.prog{margin-bottom:1rem;display:none}
+.prog.show{display:block}
+.prog-t{font-size:.68rem;color:#888;margin-bottom:5px;display:flex;justify-content:space-between}
+.bar{height:3px;background:#f5f5f3;border-radius:2px;overflow:hidden}
+.fill{height:100%;background:#c9a84c;transition:width .3s;width:0}
+.btn-row{display:flex;gap:8px;margin-bottom:.8rem}
+.btn{flex:1;padding:13px;border:none;border-radius:3px;font-size:.8rem;letter-spacing:.15em;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-p{background:#1a1a1a;color:#fff}
+.btn-p:hover{background:#333}
+.btn-p:disabled{background:#ccc;cursor:not-allowed}
+.btn-s{background:#f5f5f3;color:#1a1a1a;border:1px solid rgba(0,0,0,.08)}
+.btn-s:hover{border-color:#c9a84c}
+.btn-s:disabled{opacity:.5;cursor:not-allowed}
+.log{margin-top:1rem;background:#f5f5f3;border:1px solid rgba(0,0,0,.08);border-radius:3px;padding:10px 12px;max-height:160px;overflow-y:auto;font-size:.68rem;display:none}
+.log.show{display:block}
+.l{color:#888;padding:2px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.l:last-child{border-bottom:none}
+.l.ok{color:#5a8a5a}.l.er{color:#c05050}.l.inf{color:#bbb}
+.ts{color:#bbb;margin-right:5px;font-size:.62rem}
+footer{text-align:center;padding:1.5rem;border-top:1px solid rgba(0,0,0,.06);margin-top:auto;width:100%}
+footer p{font-size:.68rem;color:#bbb;letter-spacing:.3em;line-height:2}
+@media(max-width:600px){header{padding:1rem 1.2rem}.nav{display:none}main{padding:4.5rem 1rem 3rem}}
 </style>
 </head>
 <body>
-
 <header>
-  <a href="index.html" class="logo">桂花落</a>
-  <ul class="nav-links">
-    <li><a href="index.html">作品</a></li>
-    <li><a href="index.html#about">春山空</a></li>
-    <li><a href="upload-local.html" class="active">春涧中</a></li>
-  </ul>
-  <button class="menu-btn" id="menuBtn"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">桂 花 落</a>
+  <nav class="nav">
+    <a href="index.html">作品</a>
+    <a href="index.html#about">春山空</a>
+    <a href="upload-local.html" class="active">春涧中</a>
+  </nav>
 </header>
-
-<nav class="mobile-nav" id="mobileNav">
-  <a href="index.html">作品</a>
-  <a href="index.html#about">春山空</a>
-  <a href="upload-local.html" class="active">春涧中</a>
-</nav>
-
 <main>
-  <div class="page-title">
-    <h1>春涧中</h1>
-    <p>CLOUDFLARE IMAGES</p>
-  </div>
-
+  <h1>春涧中</h1>
+  <p class="sub">CLOUDFLARE PAGES + GITHUB IMAGES</p>
   <div class="divider"></div>
-
-  <!-- Cloudflare Images Config -->
-  <div class="section">
-    <div class="section-title">ACCOUNT ID</div>
-    <div class="config-row">
-      <input type="text" id="accountIdInput" placeholder="例如：e70a1b5220669c3275adf9625c919a94" autocomplete="off" />
+  <div class="card">
+    <div class="row">
+      <label>GITHUB TOKEN（上传图片到 GitHub）</label>
+      <input type="password" id="gh" placeholder="ghp_xxxxxxxx" autocomplete="off">
     </div>
-    <p id="cfStatus" class="status"></p>
+    <p class="tip">图片存 GitHub（国内可访问） · Token 仅浏览器本地使用，不会上传</p>
   </div>
-
-  <div class="section">
-    <div class="section-title">API TOKEN</div>
-    <div class="config-row">
-      <input type="password" id="tokenInput" placeholder="填写 Cloudflare API Token" autocomplete="off" spellcheck="false" />
-      <button class="toggle-btn" onclick="toggleToken()" title="显示/隐藏">👁</button>
-    </div>
+  <div class="drop" id="drop">
+    <div class="icon">📷</div>
+    <p>点击选择照片 · 支持多选</p>
+    <p class="tip2">JPG / PNG / WebP / HEIC · 自动压缩</p>
+    <input type="file" id="fi" accept="image/*" multiple>
   </div>
-
-  <!-- GitHub Token (for homepage sync) -->
-  <div class="section gh-section">
-    <div class="section-title">GITHUB TOKEN（同步首页用）</div>
-    <div class="config-row">
-      <input type="password" id="ghTokenInput" placeholder="ghp_xxxx... 同步首页时需要" autocomplete="off" spellcheck="false" />
-      <button class="toggle-btn" onclick="toggleGhToken()" title="显示/隐藏">👁</button>
-    </div>
-    <p id="ghStatus" class="status"></p>
+  <div class="queue" id="qsec">
+    <div class="queue-head"><span>待上传</span><span id="qcnt">0 张</span></div>
+    <div id="qlist"></div>
   </div>
-
-  <div class="divider"></div>
-
-  <!-- Drop Zone -->
-  <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-    <div class="drop-zone-icon">📷</div>
-    <p>点击选择照片 · 或拖拽至此</p>
-    <p class="hint">支持多选 · JPG/PNG/WebP · 自动压缩</p>
-    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple />
-  </div>
-
-  <!-- Queue -->
-  <div class="queue-section" id="queueSection" style="display:none">
-    <div class="queue-header">
-      <span class="title">待上传队列</span>
-      <span class="count" id="queueCount">0 张</span>
-    </div>
-    <div class="queue-list" id="queueList"></div>
-  </div>
-
-  <!-- Progress -->
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-text">
-      <span id="progressLabel">准备上传...</span>
-      <span id="progressPct">0%</span>
-    </div>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" id="progressFill"></div>
-    </div>
-  </div>
-
-  <!-- Buttons -->
-  <div class="btn-row">
-    <button class="btn btn-primary" id="uploadBtn" onclick="startUpload()" disabled>上传到 Cloudflare</button>
-    <button class="btn btn-sync" id="syncBtn" onclick="syncToHomepage()" disabled>同步到首页</button>
+  <div class="prog" id="prog">
+    <div class="prog-t"><span id="plbl">上传中...</span><span id="ppct">0%</span></div>
+    <div class="bar"><div class="fill" id="pfill"></div></div>
   </div>
   <div class="btn-row">
-    <button class="btn btn-secondary" id="clearBtn" onclick="clearQueue()" disabled>清空队列</button>
+    <button class="btn-p" id="upbtn" onclick="start()" disabled>上传</button>
+    <button class="btn-s" id="clbtn" onclick="clear()">清空</button>
   </div>
-
-  <!-- Log -->
-  <div class="log-box" id="logBox"></div>
+  <div class="log" id="logbox"></div>
 </main>
-
-<div class="footer-quote">
-  <p>月出惊山鸟<br>时鸣春涧中</p>
-</div>
-
+<footer><p>月出惊山鸟<br>时鸣春涧中</p></footer>
 <script>
-// Config
-let cfAccountId = sessionStorage.getItem('cf_account_id') || 'e70a1b5220669c3275adf9625c919a94';
-let cfApiToken = sessionStorage.getItem('cf_api_token') || '';
-let ghToken = sessionStorage.getItem('gh_token') || '';
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
-const REPO = '46832632/photo-portfolio';
-const BRANCH = 'main';
-const CN_NUM = ['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾'];
+const R="46832632/photo-portfolio",B="main",BASE="https://raw.githubusercontent.com/"+R+"/"+B+"/images/",MAX=10*1024*1024;
+let gt=sessionStorage.getItem("gh_t")||"",q=[],up=false;
+if(gt)document.getElementById("gh").value=gt;
+document.getElementById("gh").addEventListener("change",function(){gt=this.value.trim();sessionStorage.setItem("gh_t",gt);upd()});
+var drop=document.getElementById("drop");
+["dragenter","dragover"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.style.borderColor="#c9a84c";drop.style.background="#fafaf8"})});
+["dragleave","drop"].forEach(function(ev){drop.addEventListener(ev,function(e){e.preventDefault();drop.style.borderColor="";drop.style.background=""})});
+drop.addEventListener("drop",function(e){if(e.dataTransfer.files.length)addFiles(e.dataTransfer.files)});
+document.getElementById("fi").addEventListener("change",function(e){if(e.target.files.length)addFiles(e.target.files)});
 
-// State
-let queue = [];
-let uploading = false;
-let syncing = false;
-
-// Init
-document.getElementById('accountIdInput').value = cfAccountId;
-if (ghToken) document.getElementById('ghTokenInput').value = ghToken;
-validateConfig();
-
-// Menu
-document.getElementById('menuBtn').addEventListener('click', () => {
-  document.getElementById('menuBtn').classList.toggle('active');
-  document.getElementById('mobileNav').classList.toggle('active');
-});
-
-// Toggle tokens
-function toggleToken() {
-  const i = document.getElementById('tokenInput');
-  i.type = i.type === 'password' ? 'text' : 'password';
-}
-function toggleGhToken() {
-  const i = document.getElementById('ghTokenInput');
-  i.type = i.type === 'password' ? 'text' : 'password';
-}
-
-// Save config
-document.getElementById('accountIdInput').addEventListener('change', function() {
-  cfAccountId = this.value.trim();
-  sessionStorage.setItem('cf_account_id', cfAccountId);
-  validateConfig();
-});
-document.getElementById('tokenInput').addEventListener('change', function() {
-  cfApiToken = this.value.trim();
-  sessionStorage.setItem('cf_api_token', cfApiToken);
-  validateConfig();
-});
-document.getElementById('ghTokenInput').addEventListener('change', function() {
-  ghToken = this.value.trim();
-  sessionStorage.setItem('gh_token', ghToken);
-  validateConfig();
-});
-
-function validateConfig() {
-  const cfStatus = document.getElementById('cfStatus');
-  const ghStatus = document.getElementById('ghStatus');
-  
-  if (cfAccountId && cfApiToken) {
-    cfStatus.textContent = '✓ Cloudflare 配置完整';
-    cfStatus.className = 'status ok';
-  } else {
-    cfStatus.textContent = '上传图片需要 Cloudflare 配置';
-    cfStatus.className = 'status err';
+async function addFiles(files){
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
+    if(!file.type.startsWith("image/")){log("非图片: "+file.name,"er");continue;}
+    var f=file;
+    var bytes=await file.slice(0,12).arrayBuffer().then(function(b){return new Uint8Array(b)});
+    var isJpeg=bytes[0]===0xFF&&bytes[1]===0xD8&&bytes[2]===0xFF;
+    if(!isJpeg&&typeof heic2any!=="undefined"){
+      log("HEIC转换: "+file.name,"inf");
+      try{
+        var blob=await heic2any({blob:file,toType:"image/jpeg",quality:.88});
+        f=new File([blob],file.name.replace(/\.[^.]+$/,".jpg"),{type:"image/jpeg"});
+        log("HEIC完成: "+(f.size/1024/1024).toFixed(1)+"MB","ok");
+      }catch(err){log("HEIC失败: "+file.name,"er");continue;}
+    }else if(!isJpeg){log("不支持格式: "+file.name,"er");continue;}
+    if(f.size>MAX){f=await compress(f)}
+    var prev=await new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result)};r.readAsDataURL(f)});
+    q.push({f:f,prev:prev,title:file.name.replace(/\.[^.]+$/,"").slice(0,8),status:"pending",url:null,error:null});
+    log("添加: "+file.name+" ("+(f.size/1024/1024).toFixed(1)+"MB)","ok");
   }
-  
-  if (ghToken) {
-    ghStatus.textContent = '✓ 可同步到首页';
-    ghStatus.className = 'status ok';
-  } else {
-    ghStatus.textContent = '同步首页需要 GitHub Token';
-    ghStatus.className = 'status';
-  }
-  
-  updateButtons();
+  render();upd();
 }
 
-// Drag & Drop
-const dropZone = document.getElementById('dropZone');
-['dragenter','dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('drag'); }));
-['dragleave','drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('drag'); }));
-dropZone.addEventListener('drop', e => { if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
-document.getElementById('fileInput').addEventListener('change', e => { if (e.target.files.length) addFiles(e.target.files); });
-
-// Add files
-async function addFiles(files) {
-  const valid = ['image/jpeg','image/png','image/webp'];
-  for (const file of files) {
-    if (!valid.includes(file.type)) {
-      log('跳过: ' + file.name + '（不支持的格式）', 'err');
-      continue;
-    }
-    
-    let processedFile = file;
-    if (file.size > MAX_FILE_SIZE) {
-      log('压缩中: ' + file.name, 'info');
-      try {
-        processedFile = await compressImage(file);
-        log('压缩: ' + (file.size/1024/1024).toFixed(1) + 'MB → ' + (processedFile.size/1024/1024).toFixed(1) + 'MB', 'ok');
-      } catch(e) {
-        log('压缩失败: ' + file.name, 'err');
-        continue;
-      }
-    }
-    
-    const preview = await createPreview(processedFile);
-    const titleFromFile = file.name.replace(/\.[^.]+$/, '').slice(0, 8);
-    
-    queue.push({
-      file: processedFile,
-      originalName: file.name,
-      title: titleFromFile,
-      subtitle: '',
-      desc: '',
-      position: 0,
-      preview: preview,
-      status: 'pending',
-      cfId: null,
-      error: null
-    });
-    log('添加: ' + file.name, 'ok');
-  }
-  
-  renderQueue();
-  updateButtons();
-}
-
-// Compress
-function compressImage(file) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    const url = URL.createObjectURL(file);
-    img.onload = () => {
+function compress(file){
+  return new Promise(function(res,rej){
+    var img=new Image(),url=URL.createObjectURL(file);
+    img.onload=function(){
       URL.revokeObjectURL(url);
-      let w = img.width, h = img.height;
-      const max = 2048;
-      if (w > max || h > max) {
-        if (w > h) { h = Math.round(h * max / w); w = max; }
-        else { w = Math.round(w * max / h); h = max; }
+      var w=img.width,h=img.height,mx=2048;
+      if(w>mx||h>mx){if(w>h){h=Math.round(h*mx/w);w=mx;}else{w=Math.round(w*mx/h);h=mx;}}
+      var c=document.createElement("canvas");c.width=w;c.height=h;
+      var ctx=c.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,w,h);ctx.drawImage(img,0,0,w,h);
+      var qq=.85;
+      function go(){
+        c.toBlob(function(b){
+          if(!b){rej(new Error("canvas fail"));return;}
+          if(b.size<=MAX||qq<=.3)res(new File([b],file.name.replace(/\.[^.]+$/,".jpg"),{type:"image/jpeg"}));
+          else{qq-=.15;go();}
+        },qq>0?qq:.3,"image/jpeg");
       }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, w, h);
-      ctx.drawImage(img, 0, 0, w, h);
-      let q = 0.85;
-      const tryCompress = () => {
-        canvas.toBlob(blob => {
-          if (blob.size <= MAX_FILE_SIZE || q <= 0.3) {
-            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
-          } else { q -= 0.1; tryCompress(); }
-        }, 'image/jpeg', q);
-      };
-      tryCompress();
+      go();
     };
-    img.onerror = () => reject(new Error('图片加载失败'));
-    img.src = url;
+    img.onerror=function(){rej(new Error("load fail"))};
+    img.src=url;
   });
 }
 
-function createPreview(file) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = e => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
+function render(){
+  var sec=document.getElementById("qsec");
+  sec.className=q.length?"queue show":"queue";
+  document.getElementById("qcnt").textContent=q.filter(function(i){return i.status==="pending"}).length+" 张待上传";
+  document.getElementById("qlist").innerHTML=q.map(function(item,i){
+    var sm={pending:"p",uploading:"u",done:"d",error:"e"};
+    var tm={pending:"等待上传",uploading:"上传中...",done:"✓ 已上传",error:"✗ "+item.error};
+    var st=sm[item.status]||"p",txt=tm[item.status]||item.status;
+    return '<div class="item"><img src="'+item.prev+'" class="thumb"><div class="info"><div class="name">'+item.title+'</div><div class="sz">'+(item.f.size/1024/1024).toFixed(1)+'MB</div><div class="stat '+st+'">'+txt+'</div></div><button class="rm" onclick="rm('+i+')"'+(item.status==="uploading"?' disabled':'')+'>×</button></div>';
+  }).join("");
 }
 
-// Render queue
-function renderQueue() {
-  const section = document.getElementById('queueSection');
-  if (queue.length === 0) { section.style.display = 'none'; return; }
-  
-  section.style.display = 'block';
-  document.getElementById('queueCount').textContent = queue.filter(i => i.status === 'pending').length + ' 张待上传';
-  
-  const list = document.getElementById('queueList');
-  list.innerHTML = queue.map((item, idx) => `
-    <div class="queue-item">
-      <img src="${item.preview}" class="queue-thumb" alt="预览" />
-      <div class="queue-info">
-        <div class="queue-filename">${item.originalName}</div>
-        <div class="queue-size">${(item.file.size/1024).toFixed(0)} KB</div>
-        <div class="queue-status ${item.status}">${getStatusText(item)}${item.cfId ? ' · ' + item.cfId.slice(0,8) + '...' : ''}</div>
-        ${item.status !== 'done' ? `
-        <div class="queue-fields">
-          <input type="text" placeholder="标题（如：谧、临、痕...）" value="${item.title}" onchange="queue[${idx}].title = this.value" />
-          <input type="text" placeholder="英文副标题（可选）" value="${item.subtitle}" onchange="queue[${idx}].subtitle = this.value" />
-          <input type="text" placeholder="描述（可选）" value="${item.desc}" onchange="queue[${idx}].desc = this.value" />
-        </div>
-        <div class="queue-position">
-          <label>插入位置</label>
-          <input type="number" min="0" max="99" value="${item.position || ''}" placeholder="末尾" onchange="queue[${idx}].position = parseInt(this.value)||0" />
-          <span class="hint">0 或空 = 末尾</span>
-        </div>
-        ` : ''}
-      </div>
-      <button class="queue-remove" onclick="removeItem(${idx})" ${item.status === 'uploading' ? 'disabled' : ''}>×</button>
-    </div>
-  `).join('');
+function rm(idx){q.splice(idx,1);render();upd()}
+function clear(){q=[];render();upd();log("已清空","inf")}
+
+function upd(){
+  document.getElementById("upbtn").disabled=!gt||!q.some(function(i){return i.status==="pending"})||up;
+  document.getElementById("clbtn").disabled=!q.length||up;
 }
 
-function getStatusText(item) {
-  switch(item.status) {
-    case 'pending': return '等待上传';
-    case 'uploading': return '上传中...';
-    case 'done': return '✓ 已上传';
-    case 'error': return '✗ ' + (item.error || '失败');
-    default: return '';
+function log(msg,type){
+  var el=document.getElementById("logbox");
+  el.className="log show";
+  var d=document.createElement("div");d.className="l "+(type||"");
+  var t=new Date().toLocaleTimeString("zh-CN",{hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:false});
+  d.innerHTML="<span class=ts>"+t+"</span>"+msg;
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+
+function setP(pct,label){
+  var bar=document.getElementById("prog");
+  bar.className="prog show";
+  document.getElementById("pfill").style.width=pct+"%";
+  document.getElementById("ppct").textContent=pct+"%";
+  if(label)document.getElementById("plbl").textContent=label;
+}
+
+async function start(){
+  if(!gt){log("请先填写GitHub Token","er");return;}
+  var pending=q.filter(function(i){return i.status==="pending"});
+  if(!pending.length){log("没有待上传","er");return;}
+  up=true;upd();
+  var done=0;
+  for(var j=0;j<pending.length;j++){
+    var item=pending[j];
+    item.status="uploading";render();
+    setP(Math.round(++done/pending.length*90),"上传中 "+done+"/"+pending.length);
+    try{
+      var b64=await new Promise(function(res,rej){var r=new FileReader();r.onload=function(e){res(e.target.result.split(",")[1])};r.readAsDataURL(item.f)});
+      var ts=Date.now(),name=item.title+"_"+ts+".jpg",path="images/"+name;
+      var sha=null;
+      try{var sr=await fetch("https://api.github.com/repos/"+R+"/contents/"+path+"?ref="+B,{headers:{"Authorization":"Bearer "+gt,"Accept":"application/vnd.github.v3+json"}});if(sr.ok)sha=(await sr.json()).sha;}catch(e){}
+      var r=await fetch("https://api.github.com/repos/"+R+"/contents/"+path,{
+        method:"PUT",headers:{"Authorization":"Bearer "+gt,"Content-Type":"application/json"},
+        body:JSON.stringify({message:"feat: "+item.title,content:b64,sha:sha,branch:B})
+      });
+      if(!r.ok){var err=await r.json().catch(function(){});throw new Error((err.message||r.status)+(r.status===401?" Token无效":""));}
+      item.status="done";item.url=BASE+encodeURIComponent(path);
+      log("✓ "+item.title+" → "+name+" ("+(item.f.size/1024/1024).toFixed(1)+"MB)","ok");
+      log("  链接: "+item.url,"inf");
+    }catch(err){item.status="error";item.error=err.message;log("✗ "+item.title+": "+err.message,"er");}
+    render();setP(Math.round(done/pending.length*100),"完成 "+done+"/"+pending.length);
   }
+  up=false;upd();document.getElementById("prog").className="prog";
+  log("🎉 成功 "+q.filter(function(i){return i.status==="done"}).length+"/"+pending.length,"ok");
 }
 
-function removeItem(idx) {
-  queue.splice(idx, 1);
-  renderQueue();
-  updateButtons();
-}
-
-function clearQueue() {
-  queue = [];
-  renderQueue();
-  updateButtons();
-  log('队列已清空', 'info');
-}
-
-function updateButtons() {
-  const hasCfConfig = cfAccountId && cfApiToken;
-  const hasGhToken = !!ghToken;
-  const hasPending = queue.some(i => i.status === 'pending');
-  const hasUploaded = queue.some(i => i.status === 'done');
-  
-  document.getElementById('uploadBtn').disabled = !hasCfConfig || !hasPending || uploading;
-  document.getElementById('syncBtn').disabled = !hasGhToken || !hasUploaded || syncing;
-  document.getElementById('clearBtn').disabled = queue.length === 0 || uploading || syncing;
-}
-
-// Log
-function log(msg, type) {
-  const el = document.getElementById('logBox');
-  el.classList.add('show');
-  const now = new Date();
-  const ts = now.toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
-  const d = document.createElement('div');
-  d.className = 'log-entry ' + (type || '');
-  d.innerHTML = `<span class="ts">${ts}</span>${msg}`;
-  el.appendChild(d);
-  el.scrollTop = el.scrollHeight;
-}
-
-// Progress
-function setProgress(pct, label) {
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressPct').textContent = pct + '%';
-  if (label) document.getElementById('progressLabel').textContent = label;
-}
-function showProgress() { document.getElementById('progressWrap').classList.add('active'); }
-function hideProgress() { document.getElementById('progressWrap').classList.remove('active'); setProgress(0, ''); }
-
-// Upload to Cloudflare
-async function startUpload() {
-  if (!cfAccountId || !cfApiToken) { log('请先填写 Cloudflare 配置', 'err'); return; }
-  
-  const pending = queue.filter(i => i.status === 'pending');
-  if (pending.length === 0) { log('没有待上传的图片', 'err'); return; }
-  
-  uploading = true;
-  updateButtons();
-  showProgress();
-  
-  let done = 0;
-  const total = pending.length;
-  
-  for (const item of pending) {
-    item.status = 'uploading';
-    renderQueue();
-    
-    try {
-      const result = await uploadToCloudflare(item.file, item.title);
-      item.status = 'done';
-      item.cfId = result.id;
-      log('✓ ' + item.originalName, 'ok');
-    } catch(e) {
-      item.status = 'error';
-      item.error = e.message;
-      log('✗ ' + item.originalName + ': ' + e.message, 'err');
-    }
-    
-    done++;
-    setProgress(Math.round(done / total * 100), `上传 ${done}/${total}`);
-    renderQueue();
-  }
-  
-  uploading = false;
-  updateButtons();
-  
-  const success = queue.filter(i => i.status === 'done').length;
-  log(`🎉 完成！成功 ${success}/${total}`, 'ok');
-  setTimeout(hideProgress, 1500);
-}
-
-async function uploadToCloudflare(file, title) {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('metadata', JSON.stringify({ title }));
-  
-  const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${cfAccountId}/images/v1`, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${cfApiToken}` },
-    body: formData
-  });
-  
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.errors?.[0]?.message || `HTTP ${res.status}`);
-  }
-  
-  const data = await res.json();
-  if (!data.success) throw new Error(data.errors?.[0]?.message || '上传失败');
-  
-  return { id: data.result.id };
-}
-
-// Sync to Homepage
-async function syncToHomepage() {
-  if (!ghToken) { log('请先填写 GitHub Token', 'err'); return; }
-  
-  const uploaded = queue.filter(i => i.status === 'done' && i.cfId);
-  if (uploaded.length === 0) { log('没有已上传的图片可同步', 'err'); return; }
-  
-  syncing = true;
-  updateButtons();
-  showProgress();
-  setProgress(10, '读取首页...');
-  
-  try {
-    // Get current index.html
-    const idxRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html?ref=${BRANCH}`, {
-      headers: { 'Authorization': `Bearer ${ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    if (!idxRes.ok) throw new Error('无法读取首页');
-    
-    const idxData = await idxRes.json();
-    const idxSha = idxData.sha;
-    let html = decodeURIComponent(escape(atob(idxData.content)));
-    
-    // Count existing photos
-    const photoMatches = html.match(/<section class="photo-section[^"]*"[^>]*id="photo(\d+)"/g) || [];
-    const existingNums = photoMatches.map(m => parseInt(m.match(/id="photo(\d+)"/)[1])).sort((a,b)=>a-b);
-    const photoCount = existingNums.length;
-    
-    setProgress(30, '处理图片...');
-    
-    // Sort by position
-    const sorted = [...uploaded].sort((a, b) => (a.position || 999) - (b.position || 999));
-    
-    let insertIdx = 0;
-    for (const item of sorted) {
-      insertIdx++;
-      const pos = item.position || 0;
-      
-      // Build image URL
-      const imgSrc = `https://imagedelivery.net/${cfAccountId}/${item.cfId}/public`;
-      
-      // Determine insertion point
-      let newNum = pos > 0 && pos <= photoCount + insertIdx ? pos : photoCount + insertIdx;
-      
-      // Re-number if inserting in middle
-      if (newNum <= photoCount + insertIdx - 1) {
-        for (let i = photoCount + insertIdx - 1; i >= newNum; i--) {
-          html = html.replace(new RegExp(`id="photo${i}"`, 'g'), `id="photo${i+1}"`);
-        }
-      }
-      
-      const cnNum = CN_NUM[newNum] || String(newNum);
-      const totalCn = CN_NUM[photoCount + insertIdx] || String(photoCount + insertIdx);
-      const title = item.title || '默认';
-      const subtitle = item.subtitle || '';
-      const desc = item.desc || '此刻，即永恒。';
-      
-      const newPhotoHtml = `  <section class="photo-section fade-in" id="photo${newNum}">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="${imgSrc}" alt="${title}" loading="lazy" onclick="openLightbox(${newNum-1})" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">${cnNum} / ${totalCn}</p>
-        <h2 class="photo-title">${title}</h2>
-        <p class="photo-subtitle">${subtitle}</p>
-        <p class="photo-desc">${desc}</p>
-      </div>
-    </div>
-  </section>
-
-`;
-      
-      // Insert before footer
-      const footerIdx = html.indexOf('<section class="footer"');
-      if (footerIdx > 0) {
-        html = html.slice(0, footerIdx) + '\n' + newPhotoHtml + html.slice(footerIdx);
-      }
-      
-      // Update total numbers
-      const totalPattern = / \/ [壹贰叁肆伍陆柒捌玖拾\d]+/g;
-      html = html.replace(totalPattern, ` / ${totalCn}`);
-      
-      log('✓ 添加: ' + title + ' @ ' + newNum, 'ok');
-    }
-    
-    setProgress(80, '推送首页...');
-    
-    // Upload updated index.html
-    const newB64 = btoa(unescape(encodeURIComponent(html)));
-    const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/index.html`, {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${ghToken}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `auto: add ${sorted.length} photo(s) to homepage`,
-        content: newB64,
-        sha: idxSha,
-        branch: BRANCH
-      })
-    });
-    
-    if (!updateRes.ok) {
-      const err = await updateRes.json().catch(() => ({}));
-      throw new Error(err.message || '首页更新失败');
-    }
-    
-    setProgress(100, '完成');
-    log('🎉 首页同步完成！', 'ok');
-    log('→ https://photo-portfolio-ip6.pages.dev', 'info');
-    
-  } catch(e) {
-    log('✗ 同步失败: ' + e.message, 'err');
-  }
-  
-  syncing = false;
-  updateButtons();
-  setTimeout(hideProgress, 1500);
-}
+(function(){var s=document.createElement("script");s.src="https://unpkg.com/heic2any@0.0.4/dist/heic2any.min.js";s.onerror=function(){log("HEIC库未加载，HEIC请另存为JPEG后上传","inf")};document.head.appendChild(s)})();
+upd();
 </script>
 </body>
 </html>
