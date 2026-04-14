@@ -46,12 +46,20 @@
     .clear-token-btn:hover { color: #c0392b; }
     #tokenSavedMsg { display: none; font-size: 0.75rem; color: #2e7d32; }
 
-    /* 上传区 */
+    /* 上传区 - 使用 label 方案，更可靠 */
     .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; position: relative; }
     .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #faf5ed; }
-    .upload-zone input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 1; }
-    .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
-    .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+    .upload-zone input[type="file"] {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      opacity: 0;
+      filter: alpha(opacity=0);
+      cursor: pointer;
+      z-index: 1;
+      font-size: 0; /* 消除文件输入默认样式 */
+    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; position: relative; z-index: 0; }
+    .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; position: relative; z-index: 0; }
     .upload-text strong { color: var(--accent); }
 
     /* 照片卡片 */
@@ -62,7 +70,7 @@
     .photo-meta { flex: 1; min-width: 0; }
     .photo-name { font-size: 0.82rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .photo-filename { font-size: 0.72rem; color: var(--accent); margin-top: 0.2rem; font-family: monospace; }
-    .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 0.3rem; border-radius: 4px; transition: all 0.2s; }
+    .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 0.3rem; border-radius: 4px; transition: all 0.2s; flex-shrink: 0; }
     .remove-btn:hover { color: #c0392b; background: #fdf0ee; }
 
     /* 表单网格 */
@@ -80,7 +88,8 @@
     .ai-btn-row { display: flex; justify-content: flex-end; margin-top: 0.8rem; }
     .ai-btn { font-size: 0.75rem; color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 20px; padding: 0.25rem 0.8rem; cursor: pointer; transition: all 0.2s; }
     .ai-btn:hover { background: var(--accent); color: #fff; }
-    .batch-ai-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
+    .batch-ai-bar { display: none; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
+    .batch-ai-bar.show { display: flex; }
     .batch-ai-btn { background: var(--accent); color: #fff; border: none; border-radius: 24px; padding: 0.7rem 2rem; font-family: 'Noto Serif SC', serif; font-size: 0.88rem; cursor: pointer; transition: all 0.3s; letter-spacing: 0.1em; }
     .batch-ai-btn:hover { background: #96703e; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(176,141,87,0.3); }
     .batch-ai-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -99,13 +108,14 @@
     .progress-bar { height: 100%; background: var(--accent); border-radius: 8px; transition: width 0.4s ease; width: 0%; }
     .progress-final { margin-top: 1.2rem; text-align: center; font-size: 0.88rem; color: #2e7d32; }
 
-    .submit-bar { display: flex; justify-content: center; margin-top: 1rem; }
+    .submit-bar { display: none; justify-content: center; margin-top: 1rem; }
+    .submit-bar.show { display: flex; }
     .submit-btn { background: var(--text); color: var(--bg); border: none; border-radius: 24px; padding: 0.85rem 3.5rem; font-family: 'ZCOOL XiaoWei', serif; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; letter-spacing: 0.25em; }
     .submit-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(44,42,36,0.2); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     /* Toast */
-    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 0.8rem 2rem; border-radius: 24px; font-size: 0.85rem; opacity: 0; transition: all 0.4s; z-index: 999; white-space: nowrap; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 0.8rem 2rem; border-radius: 24px; font-size: 0.85rem; opacity: 0; transition: all 0.4s; z-index: 999; white-space: nowrap; pointer-events: none; }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.success { background: #2e7d32; }
     .toast.error { background: #c0392b; }
@@ -168,7 +178,9 @@
       </div>
     </div>
 
+    <!-- 上传区域 -->
     <div class="upload-zone" id="uploadZone">
+      <!-- 文件输入：透明覆盖整个区域，pointer-events 捕获点击 -->
       <input type="file" id="fileInput" accept="image/*" multiple>
       <div class="upload-icon">📷</div>
       <p class="upload-text">
@@ -179,7 +191,7 @@
 
     <div class="photo-list" id="photoList"></div>
 
-    <div class="batch-ai-bar" id="batchBar" style="display:none">
+    <div class="batch-ai-bar" id="batchBar">
       <button class="batch-ai-btn" id="batchAiBtn">✦ 一键填充所有描述</button>
     </div>
 
@@ -194,7 +206,7 @@
       </div>
     </div>
 
-    <div class="submit-bar" id="submitBar" style="display:none">
+    <div class="submit-bar" id="submitBar">
       <button class="submit-btn" id="submitBtn">上 传</button>
     </div>
   </div>
@@ -209,7 +221,6 @@
     const CATS = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
     const CAT_LABELS = { city: '城', nature: '林', people: '人', arch: '建', food: '食' };
 
-    // 英文副标题词库
     const EN_MAP = {
       city: ['Urban Whispers', 'City Lights', 'Street Symphony', 'Concrete Garden', 'Neon Dusk', 'Silent Lane', 'Urban Poetry', 'Night Bloom', 'Morning Rush', 'Quiet Corner'],
       nature: ['Morning Mist', 'Quiet Stream', 'Wild Whisper', 'Dawn Breath', 'Green Symphony', 'Forest Whispers', 'Quiet Earth', 'Wild Bloom', 'River Song', 'Quiet Growth'],
@@ -218,7 +229,6 @@
       food: ['Quiet Flavors', 'Still Life', 'Taste of Place', 'Table Poetry', 'Simple Pleasures', 'Flavor Notes', 'Quiet Appetite', 'Slow Morning', 'Table Still Life', 'Local Flavors']
     };
 
-    // 诗意描述词库
     const DESC_MAP = {
       city: [
         '城市的纹理在光影中展开，\n钢铁与玻璃映照出另一种天空。',
@@ -287,7 +297,7 @@
 
     let photos = [];
     let savedToken = localStorage.getItem('gh_upload_token') || '';
-    let nextSeq = 1; // 自动序号
+    let nextSeq = 1;
 
     const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('fileInput');
@@ -307,7 +317,7 @@
     const progressBar = document.getElementById('progressBar');
     const progressFinal = document.getElementById('progressFinal');
 
-    // Token
+    // Token 初始化
     function initToken() {
       if (savedToken) {
         tokenInput.value = savedToken;
@@ -317,6 +327,7 @@
       }
     }
     initToken();
+
     saveTokenBtn.addEventListener('click', () => {
       const val = tokenInput.value.trim();
       if (!val) { showToast('请输入 Token', 'error'); return; }
@@ -327,6 +338,7 @@
       tokenSavedMsg.style.display = 'inline';
       showToast('✓ Token 已保存', 'success');
     });
+
     clearTokenBtn.addEventListener('click', () => {
       savedToken = '';
       localStorage.removeItem('gh_upload_token');
@@ -337,7 +349,7 @@
       showToast('Token 已清除', '');
     });
 
-    // 初始化 seq（从 GitHub 读取最大值）
+    // 初始化序号
     async function initSeq() {
       try {
         const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
@@ -350,32 +362,56 @@
     }
     initSeq();
 
-    // 文件选择
-    uploadZone.addEventListener('click', () => fileInput.click());
-    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
-    fileInput.addEventListener('change', e => handleFiles(e.target.files));
+    // 文件选择处理
+    fileInput.addEventListener('change', e => {
+      handleFiles(e.target.files);
+      // 重置 input 以允许重复选择同一文件
+      fileInput.value = '';
+    });
+
+    // 拖拽支持
+    uploadZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    uploadZone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+    });
+    uploadZone.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
 
     function randItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
     function handleFiles(files) {
+      if (!files || files.length === 0) return;
+
       Array.from(files).forEach(file => {
-        if (!file.type.startsWith('image/')) return;
-        const id = 'p' + Date.now() + Math.random().toString(36).slice(2);
+        if (!file.type.startsWith('image/')) {
+          showToast(`「${file.name}」不是图片文件，已跳过`, 'error');
+          return;
+        }
+        const id = 'p' + Date.now() + Math.random().toString(36).slice(2, 6);
         const cat = 'city';
         const year = new Date().getFullYear().toString();
         photos.push({
           id, file, seq: nextSeq++,
           category: cat,
-          titleZh: '', // 用户自填
+          titleZh: '',
           titleEn: randItem(EN_MAP[cat]),
           location: '曼谷',
           year,
           desc: randItem(DESC_MAP[cat])
         });
       });
+
       renderPhotoList();
+      if (photos.length > 0) {
+        showToast(`✓ 已添加 ${files.length} 张照片，请填写标题`, 'success');
+      }
     }
 
     function previewUrl(file) {
@@ -383,61 +419,87 @@
     }
 
     function renderPhotoList() {
-      photoList.innerHTML = photos.map((p, i) => {
+      if (photos.length === 0) {
+        photoList.innerHTML = '';
+        batchBar.classList.remove('show');
+        submitBar.classList.remove('show');
+        return;
+      }
+
+      photoList.innerHTML = photos.map((p) => {
         const catLabel = CAT_LABELS[p.category] || '城';
-        const ext = p.file.name.split('.').pop() || 'jpg';
-        const filename = `IMG_${catLabel}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36)}.${ext}`;
+        const ext = (p.file.name.split('.').pop() || 'jpg').toLowerCase();
+        const filename = `IMG_${catLabel}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36).slice(0,5)}.${ext}`;
         return `
         <div class="photo-card" data-id="${p.id}">
           <div class="photo-card-header">
-            <img src="${previewUrl(p.file)}" class="photo-preview" alt="preview">
+            <img src="${previewUrl(p.file)}" class="photo-preview" alt="preview" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 60%22><rect fill=%22%23f5f0e8%22 width=%2280%22 height=%2260%22/><text x=%2240%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%239a9080%22 font-size=%2212%22>预览</text></svg>'">
             <div class="photo-meta">
               <div class="photo-name">${p.file.name}</div>
               <div class="photo-filename">${filename}</div>
             </div>
-            <button class="remove-btn" onclick="removePhoto('${p.id}')">✕</button>
+            <button class="remove-btn" data-id="${p.id}" type="button">✕</button>
           </div>
           <div class="form-grid">
             <div class="form-group">
               <label>序号（出现在首页的位置）</label>
-              <input type="number" value="${p.seq}" min="1" onchange="updatePhoto('${p.id}','seq',parseInt(this.value)||1)">
+              <input type="number" value="${p.seq}" min="1" data-id="${p.id}" data-field="seq">
             </div>
             <div class="form-group">
               <label>分类</label>
-              <select onchange="updateCatFields('${p.id}', this.value)">
+              <select data-id="${p.id}" data-field="category">
                 ${Object.entries(CATS).map(([k,v]) => `<option value="${k}" ${p.category===k?'selected':''}>${v}</option>`).join('')}
               </select>
             </div>
             <div class="form-group full">
               <label>中文标题（必填）</label>
-              <input type="text" value="${p.titleZh}" placeholder="如：夜归、晨雾、街头…"
-                onchange="updatePhoto('${p.id}','titleZh',this.value)">
+              <input type="text" value="${p.titleZh}" placeholder="如：夜归、晨雾、街头…" data-id="${p.id}" data-field="titleZh">
             </div>
             <div class="form-group">
               <label>英文副标题（自动生成，可修改）</label>
-              <input type="text" value="${p.titleEn}" onchange="updatePhoto('${p.id}','titleEn',this.value)">
+              <input type="text" value="${p.titleEn}" data-id="${p.id}" data-field="titleEn">
             </div>
             <div class="form-group">
               <label>拍摄地点</label>
-              <input type="text" value="${p.location}" onchange="updatePhoto('${p.id}','location',this.value)">
+              <input type="text" value="${p.location}" data-id="${p.id}" data-field="location">
             </div>
             <div class="form-group">
               <label>拍摄年份</label>
-              <input type="text" value="${p.year}" onchange="updatePhoto('${p.id}','year',this.value)">
+              <input type="text" value="${p.year}" data-id="${p.id}" data-field="year">
             </div>
             <div class="form-group full">
               <label>诗意描述</label>
-              <textarea onchange="updatePhoto('${p.id}','desc',this.value)">${p.desc}</textarea>
+              <textarea data-id="${p.id}" data-field="desc">${p.desc}</textarea>
             </div>
           </div>
           <div class="ai-btn-row">
-            <button class="ai-btn" onclick="regenerateAi('${p.id}')">✦ 重新生成描述</button>
+            <button class="ai-btn" data-id="${p.id}" type="button">✦ 重新生成描述</button>
           </div>
         </div>`;
       }).join('');
-      const hasPhotos = photos.length > 0;
-      batchBar.style.display = hasPhotos ? 'flex' : 'none';
-      submitBar.style.display = hasPhotos ? 'flex' : 'none';
+
+      batchBar.classList.add('show');
+      submitBar.classList.add('show');
+
+      // 绑定表单事件
+      photoList.querySelectorAll('input, select, textarea').forEach(el => {
+        el.addEventListener('change', onFieldChange);
+        el.addEventListener('input', onFieldChange);
+      });
+      photoList.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => removePhoto(btn.dataset.id));
+      });
+      photoList.querySelectorAll('.ai-btn').forEach(btn => {
+        btn.addEventListener('click', () => regenerateAi(btn.dataset.id));
+      });
+    }
+
+    function onFieldChange(e) {
+      const id = e.target.dataset.id;
+      const field = e.target.dataset.field;
+      let val = e.target.value;
+      if (e.target.type === 'number') val = parseInt(val) || 1;
+      updatePhoto(id, field, val);
     }
 
     function removePhoto(id) {
@@ -448,15 +510,6 @@
     function updatePhoto(id, key, val) {
       const p = photos.find(x => x.id === id);
       if (p) p[key] = val;
-    }
-
-    function updateCatFields(id, cat) {
-      const p = photos.find(x => x.id === id);
-      if (!p) return;
-      p.category = cat;
-      p.titleEn = randItem(EN_MAP[cat]);
-      p.desc = randItem(DESC_MAP[cat]);
-      renderPhotoList();
     }
 
     function regenerateAi(id) {
@@ -477,7 +530,7 @@
       showToast('✨ 所有描述已重新生成');
     });
 
-    // ── GitHub 上传 ──────────────────────────────────────
+    // GitHub API
     function ghHeaders() {
       return {
         'Authorization': `Bearer ${savedToken}`,
@@ -489,7 +542,7 @@
 
     async function ghGet(path) {
       const r = await fetch(`https://api.github.com${path}`, { headers: ghHeaders() });
-      if (!r.ok) throw new Error(`GitHub ${r.status}`);
+      if (!r.ok) throw new Error(`GitHub ${r.status}: ${await r.text()}`);
       return r.json();
     }
 
@@ -498,12 +551,13 @@
         method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body)
       });
       const d = await r.json();
-      if (!r.ok) throw new Error(`GitHub ${r.status}: ${JSON.stringify(d)}`);
+      if (!r.ok) throw new Error(`GitHub ${r.status}: ${d.message || JSON.stringify(d)}`);
       return d;
     }
 
     function setStep(id, state, icon) {
       const el = document.getElementById(id);
+      if (!el) return;
       el.className = 'progress-step ' + state;
       el.querySelector('.step-icon').textContent = icon;
     }
@@ -512,7 +566,7 @@
 
     async function uploadToGitHub() {
       if (!savedToken) { showToast('请先保存 GitHub Token', 'error'); return; }
-      // 验证标题
+
       const missingTitle = photos.some(p => !p.titleZh.trim());
       if (missingTitle) { showToast('请填写所有照片的中文标题', 'error'); return; }
       if (photos.length === 0) return;
@@ -522,37 +576,44 @@
       uploadProgress.classList.add('show');
       progressFinal.textContent = '';
       setProgress(0);
+      ['step1','step2','step3','step4'].forEach(id => setStep(id, '', '○'));
 
       try {
-        // Step 1: 读取 photos.json
         setStep('step1', 'active', '◐');
-        let photosJson, photosSha;
+        let photosJson = { photos: [] };
+        let photosSha = null;
         try {
           const existing = await ghGet(`/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`);
           photosSha = existing.sha;
           const r = await fetch(existing.download_url);
           photosJson = await r.json();
         } catch {
-          photosJson = { photos: [] };
-          photosSha = null;
+          // 文件不存在，从头创建
         }
         setStep('step1', 'done', '✓');
         setProgress(10);
 
-        // Step 2: 上传图片
         setStep('step2', 'active', '◐');
         const newEntries = [];
         for (let i = 0; i < photos.length; i++) {
           const p = photos[i];
           const catLabel = CAT_LABELS[p.category] || '城';
-          const ext = p.file.name.split('.').pop() || 'jpg';
-          const filename = `IMG_${catLabel}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36)}.${ext}`;
+          const ext = (p.file.name.split('.').pop() || 'jpg').toLowerCase();
+          const filename = `IMG_${catLabel}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36).slice(0,5)}.${ext}`;
           const imagePath = `images/${filename}`;
 
           const arrayBuffer = await p.file.arrayBuffer();
-          const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+          const uint8 = new Uint8Array(arrayBuffer);
+          let base64 = '';
+          for (let j = 0; j < uint8.length; j += 3) {
+            base64 += String.fromCharCode(uint8[j], uint8[j+1] || 0, uint8[j+2] || 0);
+          }
+          base64 = btoa(base64).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
           await ghPut(`/repos/${GH_OWNER}/${GH_REPO}/contents/${imagePath}`, {
-            message: `upload: ${filename}`, content: base64, branch: 'main'
+            message: `upload: ${filename}`,
+            content: base64,
+            branch: 'main'
           });
 
           newEntries.push({
@@ -572,21 +633,28 @@
         }
         setStep('step2', 'done', '✓');
 
-        // Step 3: 更新 photos.json
         setStep('step3', 'active', '◐');
         const allPhotos = [...(photosJson.photos || []), ...newEntries];
         const newContent = JSON.stringify({ photos: allPhotos }, null, 2);
-        const newBase64 = btoa(unescape(encodeURIComponent(newContent)));
+        const encoder = new TextEncoder();
+        const uint8Content = encoder.encode(newContent);
+        let newBase64 = '';
+        for (let j = 0; j < uint8Content.length; j += 3) {
+          newBase64 += String.fromCharCode(uint8Content[j], uint8Content[j+1] || 0, uint8Content[j+2] || 0);
+        }
+        newBase64 = btoa(newBase64);
+
         await ghPut(`/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`, {
           message: `docs: add ${newEntries.length} photo(s)`,
-          content: newBase64, sha: photosSha, branch: 'main'
+          content: newBase64,
+          sha: photosSha,
+          branch: 'main'
         });
         setStep('step3', 'done', '✓');
         setProgress(60);
 
-        // Step 4: 提交
         setStep('step4', 'active', '◐');
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 500));
         setStep('step4', 'done', '✓');
         setProgress(100);
 
@@ -600,7 +668,7 @@
         console.error(e);
         ['step1','step2','step3','step4'].forEach(id => {
           const el = document.getElementById(id);
-          if (!el.classList.contains('done')) {
+          if (el && !el.classList.contains('done')) {
             el.className = 'progress-step error';
             el.querySelector('.step-icon').textContent = '✕';
           }
@@ -610,7 +678,7 @@
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '上 传';
-        setTimeout(() => { uploadProgress.classList.remove('show'); }, 5000);
+        setTimeout(() => uploadProgress.classList.remove('show'), 6000);
       }
     }
 
@@ -619,7 +687,8 @@
     function showToast(msg, cls = '') {
       toast.textContent = msg;
       toast.className = 'toast show ' + cls;
-      setTimeout(() => toast.className = 'toast', 3000);
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.className = 'toast', 3000);
     }
   </script>
 </body>
