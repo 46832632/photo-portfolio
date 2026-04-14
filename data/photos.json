@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "photos": [
+    {
+      "id": "legacy-01",
+      "filename": "01.jpg",
+      "titleZh": "喧",
+      "titleEn": "Noise",
+      "location": "Bangkok · Asok",
+      "year": "2024",
+      "category": "city",
+      "catLabel": "城市",
+      "desc": "高架横亘，车流如注。\n城市的喧嚣在云层下凝固，\n钢铁与混凝土编织出另一种山川。",
+      "addedAt": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "legacy-02",
+      "filename": "02.jpg",
+      "titleZh": "仰",
+      "titleEn": "Ascent",
+      "location": "Bangkok · CentralWorld",
+      "year": "2024",
+      "category": "arch",
+      "catLabel": "建筑",
+      "desc": "云在楼顶生，光在玻璃燃。\n仰望之际，世界的边界\n悄然向天空敞开。",
+      "addedAt": "2024-01-02T00:00:00Z"
+    }
+  ]
+}
