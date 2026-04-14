@@ -437,18 +437,25 @@
   </section>
 
   <script>
-    // 从 GitHub 读取照片数据
+    // 从 GitHub 读取照片数据，按 seq 排序
     async function loadPhotos() {
       try {
         const r = await fetch('https://raw.githubusercontent.com/46832632/photo-portfolio/main/data/photos.json');
         if (!r.ok) throw new Error('加载失败');
         const data = await r.json();
-        return data.photos || [];
+        const list = data.photos || [];
+        // 按 seq 升序排列；无 seq 则按 date 降序
+        return list.sort((a, b) => {
+          if (a.seq != null && b.seq != null) return a.seq - b.seq;
+          if (a.seq != null) return -1;
+          if (b.seq != null) return 1;
+          return (b.date || '').localeCompare(a.date || '');
+        });
       } catch {
         // Fallback: 默认两张照片
         return [
-          { id: 'legacy-01', filename: '01.jpg', titleZh: '喧', titleEn: 'Noise', location: 'Bangkok · Asok', year: '2024', category: 'city', catLabel: '城市', desc: '高架横亘，车流如注。\n城市的喧嚣在云层下凝固，\n钢铁与混凝土编织出另一种山川。' },
-          { id: 'legacy-02', filename: '02.jpg', titleZh: '仰', titleEn: 'Ascent', location: 'Bangkok · CentralWorld', year: '2024', category: 'arch', catLabel: '建筑', desc: '云在楼顶生，光在玻璃燃。\n仰望之际，世界的边界\n悄然向天空敞开。' }
+          { id: 'legacy-01', filename: '01.jpg', titleZh: '喧', titleEn: 'Noise', location: '曼谷 · Asok', year: '2024', category: 'city', catLabel: '城市', desc: '高架横亘，车流如注。\n城市的喧嚣在云层下凝固，\n钢铁与混凝土编织出另一种山川。', seq: 1 },
+          { id: 'legacy-02', filename: '02.jpg', titleZh: '仰', titleEn: 'Ascent', location: '曼谷 · CentralWorld', year: '2024', category: 'arch', catLabel: '建筑', desc: '云在楼顶生，光在玻璃燃。\n仰望之际，世界的边界\n悄然向天空敞开。', seq: 2 }
         ];
       }
     }
