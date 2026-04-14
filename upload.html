@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>春涧中 — 上传</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #fefefe; --accent: #b08d57; --text: #2c2a24; --muted: #9a9080; --light: #f5f0e8; --border: #e8e0d0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'Noto Serif SC', serif; min-height: 100vh; display: flex; flex-direction: column; }
+    nav { padding: 1.2rem 2rem; display: flex; align-items: center; gap: 2.5rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(254,254,254,0.92); backdrop-filter: blur(12px); z-index: 100; }
+    .logo { font-family: 'ZCOOL XiaoWei', serif; font-size: 1.35rem; color: var(--accent); text-decoration: none; letter-spacing: 0.15em; }
+    .logo span { font-size: 0.65em; display: block; color: var(--muted); font-weight: 300; margin-top: -2px; letter-spacing: 0.25em; }
+    .nav-links { display: flex; gap: 0.3rem; margin-left: auto; }
+    .nav-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.8rem; border-radius: 4px; transition: all 0.2s; letter-spacing: 0.08em; }
+    .nav-links a:hover { color: var(--text); background: var(--light); }
+    .nav-links a.active { color: var(--accent); }
+    .dropdown { position: relative; }
+    .dropdown-btn { cursor: pointer; display: flex; align-items: center; gap: 0.3rem; }
+    .dropdown-btn::after { content: '▾'; font-size: 0.7em; }
+    .dropdown-menu { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 0; min-width: 120px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu a { display: block; padding: 0.5rem 1.2rem; font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: all 0.15s; white-space: nowrap; text-align: center; }
+    .dropdown-menu a:hover { color: var(--accent); background: var(--light); }
+    .container { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 5rem; flex: 1; width: 100%; }
+    .page-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 2.2rem; color: var(--text); text-align: center; margin-bottom: 0.5rem; letter-spacing: 0.2em; }
+    .page-subtitle { text-align: center; color: var(--muted); font-size: 0.82rem; margin-bottom: 3rem; font-weight: 300; letter-spacing: 0.12em; }
+    .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; position: relative; }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #faf5ed; }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      opacity: 0; cursor: pointer; z-index: 1;
+    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
+    .upload-text strong { color: var(--accent); }
+    .photo-list { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; }
+    .photo-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; position: relative; }
+    .photo-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+    .photo-preview { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+    .photo-name { font-size: 0.88rem; color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.2rem; padding: 0.3rem; border-radius: 4px; transition: all 0.2s; }
+    .remove-btn:hover { color: #c0392b; background: #fdf0ee; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.55rem 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-family: 'Noto Serif SC', serif; font-size: 0.88rem; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; width: 100%; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+    .ai-btn { font-size: 0.75rem; color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: 20px; padding: 0.25rem 0.8rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; align-self: flex-end; }
+    .ai-btn:hover { background: var(--accent); color: #fff; }
+    .ai-btn-row { display: flex; justify-content: space-between; align-items: center; }
+    .batch-ai-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 2.5rem; }
+    .batch-ai-btn { background: var(--accent); color: #fff; border: none; border-radius: 24px; padding: 0.7rem 2rem; font-family: 'Noto Serif SC', serif; font-size: 0.88rem; cursor: pointer; transition: all 0.3s; letter-spacing: 0.1em; }
+    .batch-ai-btn:hover { background: #96703e; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(176,141,87,0.3); }
+    .batch-ai-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .submit-bar { display: flex; justify-content: center; }
+    .submit-btn { background: var(--text); color: var(--bg); border: none; border-radius: 24px; padding: 0.85rem 3.5rem; font-family: 'ZCOOL XiaoWei', serif; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; letter-spacing: 0.25em; }
+    .submit-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(44,42,36,0.2); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 3rem 0 2.5rem; }
+    .gallery-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 1.5rem; text-align: center; color: var(--text); margin-bottom: 2rem; letter-spacing: 0.2em; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .gallery-card { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--bg); transition: all 0.3s; }
+    .gallery-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+    .gallery-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .gallery-card-body { padding: 1rem 1.2rem; }
+    .gallery-card h3 { font-family: 'ZCOOL XiaoWei', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 0.15rem; letter-spacing: 0.15em; }
+    .gallery-card .sub { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 300; letter-spacing: 0.08em; }
+    .gallery-card .cat { display: inline-block; font-size: 0.7rem; color: var(--accent); border: 1px solid var(--accent); border-radius: 20px; padding: 0.1rem 0.6rem; margin-bottom: 0.5rem; letter-spacing: 0.08em; }
+    .gallery-card .desc { font-size: 0.78rem; color: var(--muted); line-height: 1.7; font-weight: 300; }
+    .gallery-card-actions { padding: 0.8rem 1.2rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+    .del-btn { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 0.75rem; padding: 0.35rem 0.9rem; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-family: 'Noto Serif SC', serif; }
+    .del-btn:hover { border-color: #c0392b; color: #c0392b; background: #fdf0ee; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--text); color: var(--bg); padding: 0.8rem 2rem; border-radius: 24px; font-size: 0.85rem; opacity: 0; transition: all 0.4s; z-index: 999; white-space: nowrap; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.success { background: #2e7d32; }
+    .toast.error { background: #c0392b; }
+    .empty-gallery { text-align: center; color: var(--muted); padding: 3rem 0; font-size: 0.88rem; }
+    .back-home-bar { text-align: center; padding: 2.5rem 0 1rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+    .back-home-link { font-family: 'Noto Serif SC', serif; font-size: 0.82rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; padding: 0.5rem 1.2rem; border: 1px solid var(--border); border-radius: 20px; }
+    .back-home-link:hover { color: var(--accent); border-color: var(--accent); }
+    .guide-box { background: var(--light); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 2rem; margin-bottom: 2.5rem; }
+    .guide-title { font-family: 'ZCOOL XiaoWei', serif; font-size: 1rem; color: var(--text); margin-bottom: 1rem; letter-spacing: 0.15em; }
+    .guide-steps { padding-left: 1.5rem; color: var(--muted); font-size: 0.85rem; line-height: 2; }
+    .guide-steps li { margin-bottom: 0.3rem; }
+    .guide-steps code { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.5rem; font-size: 0.8rem; color: var(--accent); display: block; margin-top: 0.3rem; }
+    .guide-note { font-size: 0.78rem; color: var(--muted); margin-top: 1rem; }
+    .guide-note a { color: var(--accent); }
+    @media (max-width: 640px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      nav { padding: 1rem; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">桂花落<span>Bird Singing in the Spring Ravine</span></a>
+    <div class="nav-links">
+      <div class="dropdown">
+        <a href="index.html" class="dropdown-btn">作品</a>
+        <div class="dropdown-menu">
+          <a href="gallery-city.html">城市</a>
+          <a href="gallery-nature.html">自然</a>
+          <a href="gallery-people.html">人物</a>
+          <a href="gallery-arch.html">建筑</a>
+          <a href="gallery-food.html">饮食</a>
+        </div>
+      </div>
+      <a href="upload.html" class="active">春涧中</a>
+      <a href="index.html#about">关于</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class="page-title">春涧中</h1>
+    <p class="page-subtitle">上传照片 · 静候春风</p>
+
+    <div class="guide-box">
+      <h3 class="guide-title">✦ 使用说明</h3>
+      <ol class="guide-steps">
+        <li>选择照片 → 填写标题、分类、地点</li>
+        <li>点击「<strong>上 传</strong>」下载 <code>upload-data.json</code></li>
+        <li>在终端运行：<br>
+          <code>node upload-photo.js --json upload-data.json</code>
+        </li>
+        <li>稍后刷新首页查看新照片</li>
+      </ol>
+      <p class="guide-note">💡 首次使用需安装 Node.js：<a href="https://nodejs.org" target="_blank">nodejs.org</a></p>
+    </div>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" accept="image/*" multiple>
+      <div class="upload-icon">📷</div>
+      <p class="upload-text">
+        点击这里选择照片<br>
+        <strong>支持多选 · 从相册直接选取</strong>
+      </p>
+    </div>
+
+    <div class="photo-list" id="photoList"></div>
+
+    <div class="batch-ai-bar" id="batchBar" style="display:none">
+      <button class="batch-ai-btn" id="batchAiBtn">✦ 一键 AI 生成所有描述</button>
+    </div>
+
+    <div class="submit-bar" id="submitBar" style="display:none">
+      <button class="submit-btn" id="submitBtn">上 传</button>
+    </div>
+
+    <hr class="divider">
+
+    <h2 class="gallery-title">已上传照片</h2>
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <p class="empty-gallery" id="emptyGallery" style="display:none">暂无照片</p>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="back-home-bar">
+    <a href="index.html" class="back-home-link">← 返回作品集</a>
+  </div>
+
+  <script>
+    const CATS = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
+    const EN_MAP = {
+      city: ['Urban Whispers', 'City Lights', 'Street Symphony', 'Concrete Garden', 'Neon Dusk', 'Silent Lane'],
+      nature: ['Morning Mist', 'Quiet Stream', 'Wild Whisper', 'Dawn Breath', 'Green Symphony', 'Forest Whispers'],
+      people: ['Quiet Moment', 'Still Life', 'Face of a Story', 'Silent Gaze', 'Between Words', 'Unspoken'],
+      arch: ['Geometry of Light', 'Silent Towers', 'Ascent', 'Line and Shadow', 'Urban Cathedral', 'Steel Garden'],
+      food: ['Quiet Flavors', 'Still Life', 'Taste of Place', 'Table Poetry', 'Simple Pleasures', 'Flavor Notes']
+    };
+    const DESC_MAP = {
+      city: ['城市的纹理在光影中展开，
+钢铁与玻璃映照出另一种天空。', '人流如织，光影交错。
+城市的呼吸在每一条街道上留下痕迹。', '夜色降临，万家灯火。
+喧嚣在此时化为宁静的旋律。', '晨光穿透高楼的缝隙，
+新的一天在城市上空悄然展开。', '雨后的街道，
+倒映出一个湿润而柔软的城市。', '小巷深处，
+时光在这里缓缓流淌。'],
+      nature: ['风过林梢，
+万物在寂静中生长。', '流水潺潺，
+山涧里藏着春天的私语。', '晨雾缭绕，
+山与天在朦胧中融为一体。', '草叶上的露珠，
+折射出整个清晨的光芒。', '花开花落，
+自然的节奏从不曾停歇。', '溪水绕过石头，
+唱着一支无人听见的歌。'],
+      people: ['目光交汇的瞬间，
+故事已在无声中展开。', '城市的一角，
+有人在等待一个回眸。', '口罩之上，
+眼睛依然在说着什么。', '背影比正面更有故事，
+因为那里藏着所有的想象。', '地铁车厢里，
+每个人都携带着自己的宇宙。', '低头的一瞬，
+世界仿佛按下了静音键。'],
+      arch: ['线条向天空延伸，
+光影在玻璃幕墙上作画。', '高楼林立，
+都市的森林在夜色中闪烁。', '仰视之际，
+世界的边界悄然向上敞开。', '几何与光，
+在建筑中找到了最美的语言。', '钢铁与混凝土，
+编织出现代城市的天际线。', '窗外的世界，
+被一格格地切割成画框。'],
+      food: ['简单的食材，
+在厨师的手中化为诗篇。', '热气腾腾的街头，
+烟火气是最真实的人间。', '色彩与香气的对话，
+在一盘一碟中展开。', '清晨的菜市场，
+是一天中最有生命力的风景。', '咖啡的香气，
+开启一个城市的早晨。', '一碗热汤，
+足以抚慰所有的疲惫。']
+    };
+    const ZH_TITLES = {
+      city: ['喧', '灯', '街', '巷', '夜', '晨'],
+      nature: ['涧', '林', '雾', '露', '花', '溪'],
+      people: ['眸', '影', '待', '归', '默', '息'],
+      arch: ['仰', '线', '塔', '影', '城', '窗'],
+      food: ['味', '烟', '盘', '食', '晨', '汤']
+    };
+
+    let photos = [];
+    let uploadedIds = [];
+
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const photoList = document.getElementById('photoList');
+    const batchBar = document.getElementById('batchBar');
+    const submitBar = document.getElementById('submitBar');
+    const submitBtn = document.getElementById('submitBtn');
+    const batchAiBtn = document.getElementById('batchAiBtn');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const emptyGallery = document.getElementById('emptyGallery');
+    const toast = document.getElementById('toast');
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+    function handleFiles(files) {
+      Array.from(files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const id = 'p' + Date.now() + Math.random().toString(36).slice(2);
+        const cat = 'city';
+        const titleZh = ZH_TITLES[cat][Math.floor(Math.random() * 6)];
+        const titleEn = EN_MAP[cat][Math.floor(Math.random() * 6)];
+        const year = new Date().getFullYear().toString();
+        const desc = DESC_MAP[cat][Math.floor(Math.random() * 6)];
+        photos.push({ id, file, category: cat, titleZh, titleEn, location: '曼谷', year, desc, preview: URL.createObjectURL(file) });
+      });
+      renderPhotoList();
+    }
+
+    function renderPhotoList() {
+      photoList.innerHTML = photos.map((p, i) => `
+        <div class="photo-card" data-id="${p.id}">
+          <div class="photo-card-header">
+            <img src="${p.preview}" class="photo-preview" alt="preview">
+            <span class="photo-name">${p.file.name}</span>
+            <button class="remove-btn" onclick="removePhoto('${p.id}')">✕</button>
+          </div>
+          <div class="ai-btn-row">
+            <div class="form-group" style="flex:1">
+              <label>中文标题</label>
+              <input type="text" value="${p.titleZh}" onchange="updatePhoto('${p.id}', 'titleZh', this.value)">
+            </div>
+            <div class="form-group" style="flex:1">
+              <label>英文副标题</label>
+              <input type="text" value="${p.titleEn}" onchange="updatePhoto('${p.id}', 'titleEn', this.value)">
+            </div>
+            <button class="ai-btn" onclick="generateAi('${p.id}')">✦ AI 生成</button>
+          </div>
+          <div class="form-grid" style="margin-top:1rem">
+            <div class="form-group">
+              <label>分类</label>
+              <select onchange="updatePhoto('${p.id}', 'category', this.value); updateCatFields('${p.id}', this.value)">
+                ${Object.entries(CATS).map(([k,v]) => `<option value="${k}" ${p.category===k?'selected':''}>${v}</option>`).join('')}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>拍摄地点</label>
+              <input type="text" value="${p.location}" onchange="updatePhoto('${p.id}', 'location', this.value)">
+            </div>
+            <div class="form-group">
+              <label>拍摄年份</label>
+              <input type="text" value="${p.year}" onchange="updatePhoto('${p.id}', 'year', this.value)">
+            </div>
+            <div class="form-group full">
+              <label>诗意描述</label>
+              <textarea onchange="updatePhoto('${p.id}', 'desc', this.value)">${p.desc}</textarea>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      const hasPhotos = photos.length > 0;
+      batchBar.style.display = hasPhotos ? 'flex' : 'none';
+      submitBar.style.display = hasPhotos ? 'flex' : 'none';
+    }
+
+    function removePhoto(id) {
+      photos = photos.filter(p => p.id !== id);
+      renderPhotoList();
+    }
+
+    function updatePhoto(id, key, val) {
+      const p = photos.find(x => x.id === id);
+      if (p) p[key] = val;
+    }
+
+    function updateCatFields(id, cat) {
+      const p = photos.find(x => x.id === id);
+      if (!p) return;
+      p.category = cat;
+      p.titleZh = ZH_TITLES[cat][Math.floor(Math.random() * 6)];
+      p.titleEn = EN_MAP[cat][Math.floor(Math.random() * 6)];
+      p.desc = DESC_MAP[cat][Math.floor(Math.random() * 6)];
+      renderPhotoList();
+    }
+
+    function generateAi(id) {
+      const p = photos.find(x => x.id === id);
+      if (!p) return;
+      p.titleZh = ZH_TITLES[p.category][Math.floor(Math.random() * 6)];
+      p.titleEn = EN_MAP[p.category][Math.floor(Math.random() * 6)];
+      p.desc = DESC_MAP[p.category][Math.floor(Math.random() * 6)];
+      renderPhotoList();
+      showToast('✨ AI 描述已生成');
+    }
+
+    batchAiBtn.addEventListener('click', () => {
+      photos.forEach(p => {
+        p.titleZh = ZH_TITLES[p.category][Math.floor(Math.random() * 6)];
+        p.titleEn = EN_MAP[p.category][Math.floor(Math.random() * 6)];
+        p.desc = DESC_MAP[p.category][Math.floor(Math.random() * 6)];
+      });
+      renderPhotoList();
+      showToast('✨ 所有描述已重新生成');
+    });
+
+    const GH_OWNER = '46832632';
+    const GH_REPO = 'photo-portfolio';
+
+    async function loadPhotosData() {
+      try {
+        const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
+        if (!r.ok) throw new Error('加载失败');
+        return r.json();
+      } catch {
+        return { photos: [] };
+      }
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (photos.length === 0) return;
+      // 生成 JSON 数据文件并触发下载
+      const entries = photos.map(p => ({
+        imagePath: p.file.name,
+        titleZh: p.titleZh,
+        titleEn: p.titleEn,
+        location: p.location,
+        year: p.year,
+        category: p.category,
+        descLines: p.desc.split('\n').filter(Boolean),
+      }));
+      const jsonData = entries.length === 1 ? entries[0] : entries;
+      const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'upload-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      showToast(`📦 已下载 upload-data.json，请运行上传命令`, 'success');
+      submitBtn.textContent = '已准备好';
+      setTimeout(() => { submitBtn.textContent = '上 传'; }, 2000);
+    });
+
+    async function loadGallery() {
+      try {
+        const data = await loadPhotosData();
+        const list = (data.photos || []).slice(0, 20);
+        if (list.length === 0) {
+          galleryGrid.innerHTML = '';
+          emptyGallery.style.display = 'block';
+          return;
+        }
+        emptyGallery.style.display = 'none';
+        galleryGrid.innerHTML = list.map(p => `
+          <div class="gallery-card">
+            <img src="https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/images/${p.filename}" alt="${p.titleZh}" loading="lazy">
+            <div class="gallery-card-body">
+              <h3>${p.titleZh}</h3>
+              <p class="sub">${p.titleEn || ''} ${p.location ? ' · ' + p.location : ''} ${p.year ? ' · ' + p.year : ''}</p>
+              <span class="cat">${p.catLabel || '城市'}</span>
+              <p class="desc">${(p.desc || '').replace(/\n/g, '<br>')}</p>
+            </div>
+            <div class="gallery-card-actions">
+              <button class="del-btn" onclick="deletePhoto('${p.id}')">删除</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (e) {
+        console.error('loadGallery error:', e);
+        emptyGallery.style.display = 'block';
+      }
+    }
+
+    async function deletePhoto(id) {
+      if (!confirm('确定删除这张照片？\n此操作需在本地运行删除命令。')) return;
+      const data = await loadPhotosData();
+      const photo = (data.photos || []).find(p => p.id === id);
+      if (!photo) { showToast('照片不存在', 'error'); return; }
+      const deleteData = { delete_id: id, imagePath: `images/${photo.filename}` };
+      const blob = new Blob([JSON.stringify(deleteData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'delete-data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('📦 已下载 delete-data.json，请运行删除命令', 'success');
+    }
+
+    function showToast(msg, cls = '') {
+      toast.textContent = msg;
+      toast.className = 'toast show ' + cls;
+      setTimeout(() => toast.className = 'toast', 3000);
+    }
+
+    loadGallery();
+  </script>
+</body>
+</html>
