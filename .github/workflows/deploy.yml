@@ -1,0 +1,37 @@
+name: Deploy Photo Portfolio
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify data/photos.json
+        run: |
+          if [ -f "data/photos.json" ]; then
+            echo "data/photos.json exists"
+            cat data/photos.json | head -5
+          else
+            echo "Warning: data/photos.json not found"
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
