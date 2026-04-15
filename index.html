@@ -440,7 +440,7 @@
     // 从 GitHub 读取照片数据，按 seq 排序
     async function loadPhotos() {
       try {
-        const r = await fetch('https://raw.githubusercontent.com/ghlo/photo-portfolio/main/data/photos.json');
+        const r = await fetch('https://raw.githubusercontent.com/46832632/photo-portfolio/main/data/photos.json');
         if (!r.ok) throw new Error('加载失败');
         const data = await r.json();
         const list = data.photos || [];
@@ -466,7 +466,7 @@
 
     async function renderGallery() {
       const photos = await loadPhotos();
-      const GH_OWNER = 'ghlo';
+      const GH_OWNER = '46832632';
       const GH_REPO = 'photo-portfolio';
 
       const sections = photos.map((p,i) => {
