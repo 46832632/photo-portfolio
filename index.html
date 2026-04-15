@@ -1,874 +1,391 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>桂花落 · 夜静春山空</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #faf9f7;
-      --accent: #a08060;
-      --accent-light: #d4c4a8;
-      --text: #2c2a26;
-      --muted: #8a8278;
-      --light: #f0ede6;
-      --border: #e8e3db;
-      --ink: #3d3830;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桂花落 | Photography Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fefefe;
+            --bg-secondary: #faf9f7;
+            --text-primary: #2c2a24;
+            --text-secondary: #6b6560;
+            --accent: #b08d57;
+            --accent-light: #d4b896;
+            --border: #e8e4df;
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
-    }
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Noto Serif SC', serif;
-      min-height: 100vh;
-      line-height: 1.8;
-      overflow-x: hidden;
-    }
+        /* 导航 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+        }
 
-    /* 导航 */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 1.2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(250,249,247,0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
 
-    .logo {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.5rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.2em;
-    }
+        .logo span {
+            color: var(--accent);
+        }
 
-    .logo-sub {
-      font-size: 0.55em;
-      color: var(--muted);
-      display: block;
-      letter-spacing: 0.35em;
-      margin-top: 2px;
-    }
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
 
-    .nav-links {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
+        .nav-links a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
 
-    .nav-links a {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      transition: all 0.2s;
-      letter-spacing: 0.05em;
-    }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
 
-    .nav-links a:hover { color: var(--text); background: var(--light); }
+        /* 首屏 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
 
-    /* 英雄区 */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      padding: 2rem;
-      scroll-snap-align: start;
-    }
+        .hero-content {
+            max-width: 600px;
+        }
 
-    .hero-poem {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: clamp(1.8rem, 5vw, 3.5rem);
-      color: var(--ink);
-      letter-spacing: 0.3em;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 400;
-    }
+        .hero h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: clamp(4rem, 10vw, 7rem);
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
 
-    .hero-en {
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      margin-bottom: 4rem;
-    }
+        .hero .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
 
-    .hero-scroll {
-      position: absolute;
-      bottom: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      animation: float 2s ease-in-out infinite;
-    }
+        .hero .poetic-line {
+            font-size: 1rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 4rem;
+            opacity: 0.8;
+        }
 
-    .hero-scroll::after {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--muted), transparent);
-    }
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--text-secondary);
+            animation: float 2s ease-in-out infinite;
+        }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(8px); }
-    }
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
 
-    /* 作品集幻灯片区 */
-    .portfolio-section {
-      min-height: 100vh;
-      scroll-snap-align: start;
-      position: relative;
-    }
+        /* 分类区域 */
+        .categories {
+            padding: 8rem 4rem;
+            background-color: var(--bg-secondary);
+        }
 
-    .slideshow-container {
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
-    }
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
 
-    .slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+        }
 
-    .slide.active {
-      opacity: 1;
-    }
+        .section-header p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+        }
 
-    .slide-image {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .slide-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.85);
-    }
+        .category-card {
+            position: relative;
+            aspect-ratio: 4/5;
+            background-color: var(--bg-primary);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
 
-    /* 幻灯片信息覆盖层 */
-    .slide-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.1) 0%,
-        rgba(0,0,0,0) 30%,
-        rgba(0,0,0,0) 60%,
-        rgba(0,0,0,0.6) 100%
-      );
-    }
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
 
-    .slide-content {
-      position: absolute;
-      bottom: 12vh;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      text-align: center;
-      color: white;
-      width: 90%;
-      max-width: 800px;
-    }
+        .category-card .image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e8e4df 0%, #d4cfc8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .slide-category {
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      opacity: 0.8;
-      margin-bottom: 1rem;
-    }
+        .category-card .image-placeholder::after {
+            content: '照片';
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.2em;
+        }
 
-    .slide-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 400;
-      letter-spacing: 0.15em;
-      margin-bottom: 0.8rem;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-    }
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
 
-    .slide-subtitle {
-      font-size: 1rem;
-      letter-spacing: 0.2em;
-      opacity: 0.9;
-      margin-bottom: 1.5rem;
-      font-style: italic;
-    }
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
 
-    .slide-meta {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      font-size: 0.85rem;
-      opacity: 0.8;
-    }
+        .category-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(44,42,36,0.9) 0%, transparent 100%);
+            color: var(--bg-primary);
+        }
 
-    .slide-meta span {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .category-info h3 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
 
-    /* 幻灯片导航 */
-    .slide-nav {
-      position: absolute;
-      bottom: 4vh;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      gap: 0.8rem;
-    }
+        .category-info .poetic-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+        }
 
-    .slide-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      cursor: pointer;
-      transition: all 0.3s;
-      border: none;
-    }
+        /* 页脚 */
+        footer {
+            padding: 4rem;
+            text-align: center;
+            background-color: var(--bg-primary);
+            border-top: 1px solid var(--border);
+        }
 
-    .slide-dot.active {
-      background: white;
-      transform: scale(1.3);
-    }
+        footer p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+        }
 
-    .slide-dot:hover {
-      background: rgba(255,255,255,0.7);
-    }
+        footer .social-links {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
 
-    .slide-arrows {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      transform: translateY(-50%);
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 2rem;
-      pointer-events: none;
-    }
+        footer .social-links a {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
 
-    .slide-arrow {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      pointer-events: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        footer .social-links a:hover {
+            color: var(--accent);
+        }
 
-    .slide-arrow:hover {
-      background: rgba(255,255,255,0.25);
-      transform: scale(1.1);
-    }
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
 
-    /* 幻灯片计数器 */
-    .slide-counter {
-      position: absolute;
-      top: 50%;
-      right: 3rem;
-      transform: translateY(-50%);
-      z-index: 10;
-      color: white;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      opacity: 0.7;
-    }
+            .nav-links {
+                display: none;
+            }
 
-    /* 关于区 */
-    .about {
-      min-height: 100vh;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 6rem 2rem;
-      position: relative;
-    }
+            .hero {
+                padding: 5rem 1.5rem;
+            }
 
-    .about-content {
-      max-width: 700px;
-      text-align: center;
-      position: relative;
-    }
+            .hero h1 {
+                font-size: 2rem;
+                letter-spacing: 0.2em;
+            }
 
-    .about-decoration {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 1px solid var(--accent-light);
-      opacity: 0.3;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-    }
+            .categories {
+                padding: 5rem 1.5rem;
+            }
 
-    .about-poem {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      color: var(--ink);
-      letter-spacing: 0.25em;
-      line-height: 2.2;
-      margin-bottom: 3rem;
-    }
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
 
-    .about-poem-en {
-      font-size: 0.85rem;
-      color: var(--muted);
-      letter-spacing: 0.3em;
-      margin-bottom: 3rem;
-      font-style: italic;
-    }
-
-    .about-text {
-      font-size: 1rem;
-      color: var(--muted);
-      line-height: 2.2;
-      font-weight: 300;
-    }
-
-    .about-divider {
-      width: 60px;
-      height: 1px;
-      background: var(--accent-light);
-      margin: 3rem auto;
-    }
-
-    .about-scroll-up {
-      position: absolute;
-      bottom: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .about-scroll-up:hover { color: var(--accent); }
-
-    .about-scroll-up::before {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to top, var(--muted), transparent);
-      margin-bottom: 0.5rem;
-    }
-
-    /* 页脚 */
-    footer {
-      text-align: center;
-      padding: 3rem 2rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.8rem;
-      scroll-snap-align: start;
-    }
-
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    /* 分类筛选 - 浮动在幻灯片上 */
-    .category-filter {
-      position: absolute;
-      top: 50%;
-      left: 3rem;
-      transform: translateY(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .cat-btn {
-      padding: 0.6rem 1.2rem;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: white;
-      font-family: 'Noto Serif SC', serif;
-      font-size: 0.8rem;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s;
-      white-space: nowrap;
-    }
-
-    .cat-btn:hover, .cat-btn.active {
-      background: rgba(255,255,255,0.25);
-      border-color: rgba(255,255,255,0.5);
-    }
-
-    .cat-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
-    /* 加载状态 */
-    .loading-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.5s;
-    }
-
-    .loading-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .loading-text {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.5rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      margin-bottom: 2rem;
-    }
-
-    .loading-dots {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .loading-dots span {
-      width: 8px;
-      height: 8px;
-      background: var(--accent-light);
-      border-radius: 50%;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-
-    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.5; }
-      50% { transform: scale(1.5); opacity: 1; }
-    }
-
-    /* 移动端适配 */
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      .logo { font-size: 1.2rem; }
-      .nav-links { gap: 0.2rem; }
-      .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.75rem; }
-      
-      .category-filter {
-        left: 1rem;
-        gap: 0.5rem;
-      }
-      
-      .cat-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.75rem;
-      }
-      
-      .slide-content {
-        bottom: 15vh;
-      }
-      
-      .slide-meta {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .slide-arrows {
-        padding: 0 1rem;
-      }
-      
-      .slide-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-      }
-      
-      .slide-counter {
-        display: none;
-      }
-      
-      .about-poem {
-        font-size: 1.3rem;
-      }
-    }
-  </style>
+            footer {
+                padding: 3rem 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- 加载状态 -->
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-text">桂花落</div>
-    <div class="loading-dots">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
+    <!-- 导航 -->
+    <nav>
+        <a href="#" class="logo">桂花<span>落</span></a>
+        <ul class="nav-links">
+            <li><a href="#works">作品</a></li>
+            <li><a href="#about">关于</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </nav>
 
-  <!-- 导航 -->
-  <nav>
-    <a href="#" class="logo">
-      桂花落
-      <span class="logo-sub">PHOTOGRAPHY</span>
-    </a>
-    <div class="nav-links">
-      <a href="#portfolio">作品</a>
-      <a href="#about">关于</a>
-      <a href="admin.html">管理</a>
-    </div>
-  </nav>
+    <!-- 首屏 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>桂花落</h1>
+            <p class="subtitle">人闲桂花落，夜静春山空</p>
+            <p class="poetic-line">月出惊山鸟，时鸣春涧中</p>
+        </div>
+        <div class="scroll-hint">SCROLL</div>
+    </section>
 
-  <!-- 英雄区 -->
-  <section class="hero">
-    <p class="hero-poem">人闲桂花落</p>
-    <p class="hero-poem" style="margin-top:-1rem; color: var(--muted);">夜静春山空</p>
-    <p class="hero-en">Photography Portfolio</p>
-    <div class="hero-scroll">SCROLL</div>
-  </section>
-
-  <!-- 作品集幻灯片区 -->
-  <section class="portfolio-section" id="portfolio">
-    <div class="slideshow-container" id="slideshow">
-      <!-- 幻灯片将由JS动态生成 -->
-      <div class="loading-overlay" id="slideshowLoading" style="position:absolute;inset:0;background:var(--bg);z-index:5;">
-        <div class="loading-text" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">加载中...</div>
-      </div>
-    </div>
-
-    <!-- 分类筛选 -->
-    <div class="category-filter" id="categoryFilter">
-      <button class="cat-btn active" data-cat="all">全部</button>
-      <button class="cat-btn" data-cat="city">城市</button>
-      <button class="cat-btn" data-cat="nature">自然</button>
-      <button class="cat-btn" data-cat="people">人物</button>
-      <button class="cat-btn" data-cat="arch">建筑</button>
-      <button class="cat-btn" data-cat="food">饮食</button>
-    </div>
-
-    <!-- 左右箭头 -->
-    <div class="slide-arrows">
-      <button class="slide-arrow" id="prevBtn">&#8249;</button>
-      <button class="slide-arrow" id="nextBtn">&#8250;</button>
-    </div>
-
-    <!-- 计数器 -->
-    <div class="slide-counter" id="slideCounter">01 / 12</div>
-
-    <!-- 底部导航点 -->
-    <div class="slide-nav" id="slideNav"></div>
-  </section>
-
-  <!-- 关于区 -->
-  <section class="about" id="about">
-    <div class="about-content">
-      <div class="about-decoration"></div>
-      <p class="about-poem">
-        人闲桂花落<br>
-        夜静春山空
-      </p>
-      <p class="about-poem-en">
-        When the osmanthus falls, the night is still<br>
-        The spring mountain empty, the moon bright
-      </p>
-      <div class="about-divider"></div>
-      <p class="about-text">
-        用镜头捕捉静谧中的诗意，<br>
-        在光影间寻找内心的宁静。<br><br>
-        每一张照片，都是时光的切片，<br>
-        记录着那些稍纵即逝的美好。
-      </p>
-    </div>
-    <a href="#portfolio" class="about-scroll-up">BACK TO TOP</a>
-  </section>
-
-  <!-- 页脚 -->
-  <footer>
-    <p>&copy; 2026 桂花落 · Photography Portfolio</p>
-  </footer>
-
-  <script>
-    // ============ 配置 ============
-    const CONFIG = {
-      GITHUB_OWNER: '46832632',
-      GITHUB_REPO: 'photo-portfolio',
-      BRANCH: 'main'
-    };
-
-    // ============ 状态 ============
-    let allPhotos = [];
-    let filteredPhotos = [];
-    let currentSlide = 0;
-    let slideInterval = null;
-    let currentCategory = 'all';
-
-    // ============ DOM ============
-    const slideshow = document.getElementById('slideshow');
-    const slideNav = document.getElementById('slideNav');
-    const slideCounter = document.getElementById('slideCounter');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const catBtns = document.querySelectorAll('.cat-btn');
-    const loadingOverlay = document.getElementById('loadingOverlay');
-    const slideshowLoading = document.getElementById('slideshowLoading');
-
-    // ============ 加载照片 ============
-    async function loadPhotos() {
-      try {
-        const response = await fetch(`https://api.github.com/repos/${CONFIG.GITHUB_OWNER}/${CONFIG.GITHUB_REPO}/contents/data/photos.json`);
-        const data = await response.json();
-        const content = atob(data.content);
-        const json = JSON.parse(content);
-        allPhotos = json.photos || [];
-        allPhotos.sort((a, b) => (a.seq || 999) - (b.seq || 999));
+    <!-- 分类展示 -->
+    <section class="categories" id="works">
+        <div class="section-header">
+            <h2>作品集</h2>
+            <p>WORKS COLLECTION</p>
+        </div>
         
-        // 隐藏加载状态
-        setTimeout(() => {
-          loadingOverlay.classList.add('hidden');
-        }, 500);
-        
-        // 筛选照片
-        filterPhotos();
-      } catch (e) {
-        console.error('加载失败:', e);
-        loadingOverlay.innerHTML = '<p style="color:var(--muted);">加载失败，请刷新重试</p>';
-      }
-    }
-
-    // ============ 筛选照片 ============
-    function filterPhotos() {
-      if (currentCategory === 'all') {
-        filteredPhotos = [...allPhotos];
-      } else {
-        filteredPhotos = allPhotos.filter(p => p.category === currentCategory);
-      }
-      
-      if (filteredPhotos.length === 0) {
-        slideshow.innerHTML = '<div style="height:100vh;display:flex;align-items:center;justify-content:center;color:var(--muted);">暂无作品</div>';
-        slideNav.innerHTML = '';
-        slideCounter.textContent = '00 / 00';
-        return;
-      }
-      
-      renderSlideshow();
-      slideshowLoading.style.display = 'none';
-    }
-
-    // ============ 渲染幻灯片 ============
-    function renderSlideshow() {
-      // 清空并重建
-      slideshow.innerHTML = '';
-      
-      filteredPhotos.forEach((photo, index) => {
-        const slide = document.createElement('div');
-        slide.className = 'slide' + (index === 0 ? ' active' : '');
-        slide.innerHTML = `
-          <div class="slide-image">
-            <img src="images/${photo.filename}" alt="${photo.titleZh || photo.titleEn}" 
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23f0ede6%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%238a8278%22 font-size=%2212%22>Image</text></svg>'">
-          </div>
-          <div class="slide-overlay"></div>
-          <div class="slide-content">
-            <div class="slide-category">${photo.catLabel || photo.category || ''}</div>
-            <h2 class="slide-title">${photo.titleZh || ''}</h2>
-            <p class="slide-subtitle">${photo.titleEn || ''}</p>
-            <div class="slide-meta">
-              ${photo.year ? `<span>📅 ${photo.year}</span>` : ''}
-              ${photo.location ? `<span>📍 ${photo.location}</span>` : ''}
+        <div class="category-grid">
+            <div class="category-card">
+                <img src="images/nature-2.jpg" alt="自然">
+                <div class="category-info">
+                    <h3>自然</h3>
+                    <p class="poetic-name">碧海蓝天间 · NATURE</p>
+                </div>
             </div>
-          </div>
-        `;
-        slideshow.appendChild(slide);
-      });
-      
-      // 渲染导航点
-      renderNavDots();
-      updateCounter();
-      
-      // 启动自动播放
-      startAutoPlay();
-    }
+            
+            <div class="category-card">
+                <img src="images/nature-1.jpg" alt="自然">
+                <div class="category-info">
+                    <h3>自然</h3>
+                    <p class="poetic-name">一跃入清凉 · NATURE</p>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <img src="images/portrait-1.jpg" alt="人物">
+                <div class="category-info">
+                    <h3>人物</h3>
+                    <p class="poetic-name">冰雪映红颜 · PORTRAIT</p>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <img src="images/nature-3.jpg" alt="自然">
+                <div class="category-info">
+                    <h3>自然</h3>
+                    <p class="poetic-name">枯木卧白沙 · NATURE</p>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <img src="images/nature-4.jpg" alt="自然">
+                <div class="category-info">
+                    <h3>自然</h3>
+                    <p class="poetic-name">剑指苍穹处 · NATURE</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // ============ 导航点 ============
-    function renderNavDots() {
-      slideNav.innerHTML = filteredPhotos.map((_, i) => 
-        `<button class="slide-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`
-      ).join('');
-      
-      slideNav.querySelectorAll('.slide-dot').forEach(dot => {
-        dot.addEventListener('click', () => {
-          goToSlide(parseInt(dot.dataset.index));
-          resetAutoPlay();
-        });
-      });
-    }
-
-    // ============ 切换幻灯片 ============
-    function goToSlide(index) {
-      const slides = slideshow.querySelectorAll('.slide');
-      const dots = slideNav.querySelectorAll('.slide-dot');
-      
-      if (slides.length === 0) return;
-      
-      // 移除当前状态
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide]?.classList.remove('active');
-      
-      // 更新索引
-      currentSlide = index;
-      if (currentSlide < 0) currentSlide = slides.length - 1;
-      if (currentSlide >= slides.length) currentSlide = 0;
-      
-      // 添加新状态
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide]?.classList.add('active');
-      
-      updateCounter();
-    }
-
-    function nextSlide() {
-      goToSlide(currentSlide + 1);
-    }
-
-    function prevSlide() {
-      goToSlide(currentSlide - 1);
-    }
-
-    function updateCounter() {
-      const total = filteredPhotos.length;
-      const current = String(currentSlide + 1).padStart(2, '0');
-      const totalStr = String(total).padStart(2, '0');
-      slideCounter.textContent = `${current} / ${totalStr}`;
-    }
-
-    // ============ 自动播放 ============
-    function startAutoPlay() {
-      if (slideInterval) clearInterval(slideInterval);
-      slideInterval = setInterval(nextSlide, 5000); // 每5秒切换
-    }
-
-    function resetAutoPlay() {
-      startAutoPlay();
-    }
-
-    // ============ 事件绑定 ============
-    prevBtn.addEventListener('click', () => {
-      prevSlide();
-      resetAutoPlay();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      nextSlide();
-      resetAutoPlay();
-    });
-
-    // 分类筛选
-    catBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        catBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentCategory = btn.dataset.cat;
-        currentSlide = 0;
-        filterPhotos();
-      });
-    });
-
-    // 键盘导航
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        prevSlide();
-        resetAutoPlay();
-      }
-      if (e.key === 'ArrowRight') {
-        nextSlide();
-        resetAutoPlay();
-      }
-    });
-
-    // 触摸滑动支持
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    slideshow.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    slideshow.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-
-    function handleSwipe() {
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
-        resetAutoPlay();
-      }
-    }
-
-    // ============ 初始化 ============
-    loadPhotos();
-  </script>
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 桂花落 · Photography Portfolio</p>
+        <div class="social-links">
+            <a href="#">微信</a>
+            <a href="#">微博</a>
+            <a href="#">Instagram</a>
+        </div>
+    </footer>
 </body>
 </html>
