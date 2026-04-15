@@ -12,6 +12,32 @@
       "catLabel": "城市",
       "desc": "此为自动测试上传的照片，\\n请在首页删除。",
       "date": "2026-04-15"
+    },
+    {
+      "id": "img_1776241630977_0",
+      "filename": "IMG_C_001_mnzse.jpeg",
+      "seq": 1,
+      "titleZh": "2",
+      "titleEn": "Silent Lane",
+      "location": "曼谷",
+      "year": "2026",
+      "category": "city",
+      "catLabel": "城市",
+      "desc": "人流如织，光影交错。\\n城市的呼吸在每一条街道上留下痕迹。",
+      "date": "2026-04-15"
+    },
+    {
+      "id": "img_1776241634898_1",
+      "filename": "IMG_A_002_mnzse.jpeg",
+      "seq": 2,
+      "titleZh": "3",
+      "titleEn": "Urban Poetry",
+      "location": "曼谷",
+      "year": "2026",
+      "category": "arch",
+      "catLabel": "建筑",
+      "desc": "人流如织，光影交错。\\n城市的呼吸在每一条街道上留下痕迹。",
+      "date": "2026-04-15"
     }
   ]
 }
