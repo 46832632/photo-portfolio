@@ -459,7 +459,7 @@
       // 按优先级尝试多个 CDN（国内可能只有部分能访问）
       const cdnList = [
         'https://fastly.jsdelivr.net/gh/' + GH_OWNER + '/' + GH_REPO + '/data/photos.json',
-        'https://quantil.jsdelivr.net/gh/' + GH_OWNER + '/' + GH_REPO + '/data/photos.json',
+        'https://fastly.jsdelivr.net/gh/' + GH_OWNER + '/' + GH_REPO + '/data/photos.json',
         'https://' + GH_OWNER + '.github.io/' + GH_REPO + '/data/photos.json?t=' + Date.now(),
       ];
 
