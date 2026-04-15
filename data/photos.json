@@ -1,1 +1,30 @@
-{"photos":[]}
+{
+  "photos": [
+    {
+      "id": "new_1776251352504_u5wbv",
+      "filename": "IMG_NATURE__u5wbv.jpeg",
+      "seq": 1,
+      "titleZh": "",
+      "titleEn": "",
+      "location": "",
+      "year": "2026",
+      "category": "nature",
+      "catLabel": "自然",
+      "desc": "",
+      "date": "2026-04-15"
+    },
+    {
+      "id": "new_1776251352504_wednp",
+      "filename": "IMG_NATURE__wednp.jpeg",
+      "seq": 2,
+      "titleZh": "",
+      "titleEn": "",
+      "location": "",
+      "year": "2026",
+      "category": "nature",
+      "catLabel": "自然",
+      "desc": "",
+      "date": "2026-04-15"
+    }
+  ]
+}
