@@ -291,6 +291,78 @@
       object-fit: cover;
     }
 
+    .preview-item.editing {
+      border: 2px solid var(--accent);
+    }
+
+    .preview-edit-form {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.95);
+      padding: 0.8rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.4rem;
+      overflow-y: auto;
+    }
+
+    .preview-item.editing .preview-edit-form {
+      display: flex;
+    }
+
+    .preview-edit-form .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .preview-edit-form label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .preview-edit-form input,
+    .preview-edit-form select {
+      padding: 0.3rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.7rem;
+    }
+
+    .preview-edit-form input:focus,
+    .preview-edit-form select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .preview-item-actions {
+      display: flex;
+      gap: 0.3rem;
+      margin-top: auto;
+    }
+
+    .preview-item-actions button {
+      flex: 1;
+      padding: 0.3rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preview-item-actions .save-btn {
+      background: var(--accent);
+      color: white;
+    }
+
+    .preview-item-actions .cancel-btn {
+      background: var(--light);
+      color: var(--text);
+    }
+
     .preview-remove {
       position: absolute;
       top: 0.5rem;
@@ -1478,14 +1550,28 @@
         
         const reader = new FileReader();
         reader.onload = (e) => {
+          // 从文件名提取中文标题
+          const rawName = file.name.replace(/\.[^/.]+$/, ''); // 去掉扩展名
+          const autoTitleZh = rawName
+            .replace(/[-_]/g, ' ')
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/IMG_?\d*_?/i, '')
+            .replace(/DSC_?\d*_?/i, '')
+            .replace(/PHOTO_?/i, '')
+            .replace(/\d{8,}/g, '')
+            .trim();
+          
+          const catMap = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
+          const cat = document.getElementById('defaultCategory').value;
+          
           pendingPhotos.push({
             id,
             file,
             preview: e.target.result,
-            filename: generateFilename(file.name, id),
-            titleZh: '',
+            filename: '',
+            titleZh: autoTitleZh || '',
             titleEn: '',
-            category: document.getElementById('defaultCategory').value,
+            category: cat,
             location: document.getElementById('defaultLocation').value,
             year: document.getElementById('defaultYear').value,
             seq: photos.length + pendingPhotos.length + 1,
@@ -1497,11 +1583,18 @@
       });
     }
 
-    function generateFilename(originalName, id) {
-      const ext = originalName.split('.').pop().toLowerCase() || 'jpg';
-      const prefix = (document.getElementById('defaultCategory').value || 'IMG').toUpperCase();
-      const shortId = id.substr(-6);
-      return 'IMG_' + prefix + '_' + shortId + '.' + ext;
+    function generateFilename(photo) {
+      if (!photo.filename || photo.filename.trim() === '') {
+        const id = photo.id.substr(-6);
+        const cat = photo.category || 'IMG';
+        return 'IMG_' + cat.toUpperCase() + '_' + id + '.jpg';
+      }
+      // 确保有扩展名
+      const ext = photo.filename.split('.').pop();
+      if (!ext || ext.length > 5) {
+        return photo.filename + '.jpg';
+      }
+      return photo.filename;
     }
 
     function renderPreviews() {
@@ -1513,12 +1606,68 @@
       }
 
       container.innerHTML = pendingPhotos.map(p => {
-        return '<div class="preview-item" data-id="' + p.id + '">' +
+        const catOptions = Object.entries({ city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' })
+          .map(([v, l]) => `<option value="${v}"${p.category === v ? ' selected' : ''}>${l}</option>`).join('');
+        
+        return '<div class="preview-item" data-id="' + p.id + '" id="preview-' + p.id + '">' +
           '<img src="' + p.preview + '" alt="Preview">' +
           '<button class="preview-remove" onclick="removePending(\'' + p.id + '\')">&times;</button>' +
-          '<div class="preview-info">' + p.filename + '</div>' +
+          '<div class="preview-info" onclick="toggleEdit(\'' + p.id + '\')" style="cursor:pointer;">' + 
+            '<strong>' + (p.titleZh || '点击填写信息') + '</strong>' +
+            '<br><small>' + p.location + ' · ' + p.year + '</small>' +
+          '</div>' +
+          '<div class="preview-edit-form">' +
+            '<div class="form-group">' +
+              '<label>文件名</label>' +
+              '<input type="text" id="fn-' + p.id + '" value="' + p.filename + '" placeholder="留空自动生成" oninput="updatePending(\'' + p.id + '\', \'filename\', this.value)">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>中文标题</label>' +
+              '<input type="text" id="tz-' + p.id + '" value="' + p.titleZh + '" placeholder="照片标题" oninput="updatePending(\'' + p.id + '\', \'titleZh\', this.value)">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>英文副标题</label>' +
+              '<input type="text" id="te-' + p.id + '" value="' + p.titleEn + '" placeholder="英文标题" oninput="updatePending(\'' + p.id + '\', \'titleEn\', this.value)">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>分类</label>' +
+              '<select id="tc-' + p.id + '" onchange="updatePending(\'' + p.id + '\', \'category\', this.value)">' +
+                catOptions +
+              '</select>' +
+            '</div>' +
+            '<div class="form-group" style="flex-direction:row;gap:0.3rem;">' +
+              '<div style="flex:1;">' +
+                '<label>地点</label>' +
+                '<input type="text" id="tl-' + p.id + '" value="' + p.location + '" placeholder="拍摄地点" oninput="updatePending(\'' + p.id + '\', \'location\', this.value)">' +
+              '</div>' +
+              '<div style="width:60px;">' +
+                '<label>年份</label>' +
+                '<input type="text" id="ty-' + p.id + '" value="' + p.year + '" placeholder="年份" oninput="updatePending(\'' + p.id + '\', \'year\', this.value)">' +
+              '</div>' +
+            '</div>' +
+            '<div class="preview-item-actions">' +
+              '<button class="cancel-btn" onclick="toggleEdit(\'' + p.id + '\')">收起</button>' +
+            '</div>' +
+          '</div>' +
         '</div>';
       }).join('');
+    }
+    
+    function toggleEdit(id) {
+      const item = document.getElementById('preview-' + id);
+      item.classList.toggle('editing');
+    }
+    
+    function updatePending(id, field, value) {
+      const photo = pendingPhotos.find(p => p.id === id);
+      if (photo) {
+        photo[field] = value;
+        // 如果更新了分类，同步更新 catLabel
+        if (field === 'category') {
+          const catMap = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
+          photo.catLabel = catMap[value] || '';
+        }
+      }
     }
 
     function removePending(id) {
@@ -1552,11 +1701,13 @@
           const p = pendingPhotos[i];
           setStep('step1', 'active', '◐', '上传 ' + (i + 1) + '/' + pendingPhotos.length + '...');
           
-          await ghUploadImage(p.filename, p.file);
+          // 使用用户填写的文件名或自动生成
+          const filename = generateFilename(p);
+          await ghUploadImage(filename, p.file);
           
           const entry = {
             id: p.id,
-            filename: p.filename,
+            filename: filename,
             seq: p.seq,
             titleZh: p.titleZh || '',
             titleEn: p.titleEn || '',
