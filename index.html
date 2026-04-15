@@ -439,29 +439,57 @@
   <script>
     // 从 GitHub 读取照片数据，按 seq 排序
     async function loadPhotos() {
-      try {
-        // 优先用 jsDelivr CDN（国内可访问），失败则用 GitHub raw
-        let r = await fetch('https://quantil.jsdelivr.net/gh/46832632/photo-portfolio/data/photos.json').catch(() => null);
-        if (!r || !r.ok) {
-          r = await fetch('https://raw.githubusercontent.com/46832632/photo-portfolio/main/data/photos.json');
+      const GH_OWNER = '46832632';
+      const GH_REPO = 'photo-portfolio';
+
+      // 带超时的 fetch（国内网络可能很慢，最多等 15 秒）
+      async function fetchWithTimeout(url, timeout = 15000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeout);
+        try {
+          const r = await fetch(url, { signal: controller.signal });
+          clearTimeout(timer);
+          return r;
+        } catch (e) {
+          clearTimeout(timer);
+          throw e;
         }
-        if (!r.ok) throw new Error('加载失败');
-        const data = await r.json();
-        const list = data.photos || [];
-        // 按 seq 升序排列；无 seq 则按 date 降序
-        return list.sort((a, b) => {
-          if (a.seq != null && b.seq != null) return a.seq - b.seq;
-          if (a.seq != null) return -1;
-          if (b.seq != null) return 1;
-          return (b.date || '').localeCompare(a.date || '');
-        });
-      } catch {
-        // Fallback: 默认两张照片
-        return [
-          { id: 'legacy-01', filename: '01.jpg', titleZh: '喧', titleEn: 'Noise', location: '曼谷 · Asok', year: '2024', category: 'city', catLabel: '城市', desc: '高架横亘，车流如注。\n城市的喧嚣在云层下凝固，\n钢铁与混凝土编织出另一种山川。', seq: 1 },
-          { id: 'legacy-02', filename: '02.jpg', titleZh: '仰', titleEn: 'Ascent', location: '曼谷 · CentralWorld', year: '2024', category: 'arch', catLabel: '建筑', desc: '云在楼顶生，光在玻璃燃。\n仰望之际，世界的边界\n悄然向天空敞开。', seq: 2 }
-        ];
       }
+
+      // 按优先级尝试多个 CDN（国内可能只有部分能访问）
+      const cdnList = [
+        'https://fastly.jsdelivr.net/gh/' + GH_OWNER + '/' + GH_REPO + '/data/photos.json',
+        'https://quantil.jsdelivr.net/gh/' + GH_OWNER + '/' + GH_REPO + '/data/photos.json',
+        'https://' + GH_OWNER + '.github.io/' + GH_REPO + '/data/photos.json?t=' + Date.now(),
+      ];
+
+      let lastError = null;
+      for (const url of cdnList) {
+        try {
+          const r = await fetchWithTimeout(url, 15000);
+          if (r.ok) {
+            const data = await r.json();
+            const list = data.photos || [];
+            return list.sort((a, b) => {
+              if (a.seq != null && b.seq != null) return a.seq - b.seq;
+              if (a.seq != null) return -1;
+              if (b.seq != null) return 1;
+              return (b.date || '').localeCompare(a.date || '');
+            });
+          }
+        } catch (e) {
+          lastError = e;
+          // 继续尝试下一个 CDN
+        }
+      }
+
+      // 全部失败：显示友好提示
+      const errMsg = '无法加载照片数据，请检查网络或开启 VPN（GitHub 相关资源在国内可能需要 VPN）';
+      var loadingEl = document.getElementById('loadingMsg');
+      if (loadingEl) loadingEl.innerHTML = '<p style="color:#b08d57;padding:2em;text-align:center;font-size:14px;line-height:1.8">' + errMsg + '</p>';
+      console.error('loadPhotos failed:', lastError);
+      return [];
+    }
     }
 
     function toCN(n) { const c=['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾']; if(n<=10)return c[n]||n; if(n<20)return'拾'+(n>10?c[n-10]:''); if(n<100)return c[Math.floor(n/10)]+'拾'+(n%10?c[n%10]:''); return n.toString(); }
@@ -478,7 +506,7 @@
       console.log('照片列表:', photos.map(p => p.filename));
 
       const sections = photos.map((p,i) => {
-        const imgUrl = `https://quantil.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`;
+        const imgUrl = `https://fastly.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`;
         const descLines = (p.desc||'').split('\n').filter(Boolean).map(l=>esc(l)).join('<br>');
         return `<section class="photo-section fade-in" id="photo${i+1}"><div class="photo-container"><div class="photo-wrapper loading"><img src="${imgUrl}" alt="${esc(p.titleZh)}" loading="${i<2?'eager':'lazy'}" onclick="openLightbox(${i})" class="parallax-img" onload="this.classList.add('loaded');this.parentElement.classList.remove('loading')" onerror="handleImageError(this)"></div><div class="photo-info"><div class="camera-params">${esc(p.location)} <span>${esc(p.year)}</span></div><p class="photo-number">${toCN(i+1)} / ${toCN(photos.length)}</p><h2 class="photo-title">${esc(p.titleZh)}</h2><p class="photo-subtitle">${esc(p.titleEn)}</p><p class="photo-desc">${descLines}</p></div></div></section>`;
       }).join('\n');
@@ -490,7 +518,7 @@
 
       // Set photo data for lightbox
       window.photos = photos.map(p => ({
-        src: `https://quantil.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`,
+        src: `https://fastly.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`,
         title: p.titleZh
       }));
 
