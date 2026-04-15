@@ -50,19 +50,35 @@
     #tokenTestMsg { display: none; font-size: 0.72rem; margin-top: 0.3rem; color: #666; }
 
     /* 上传区 */
-    .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; position: relative; }
+    .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; }
     .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #faf5ed; }
-    .upload-zone input[type="file"] {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%;
-      opacity: 0;
-      filter: alpha(opacity=0);
+    /* iOS Safari 兼容：文件输入直接可见但在视觉上融入背景 */
+    #fileInput {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.5rem 0;
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      color: var(--accent);
       cursor: pointer;
-      z-index: 1;
-      font-size: 0;
+      text-align: center;
+      -webkit-appearance: none;
     }
-    .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; position: relative; z-index: 0; }
-    .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; position: relative; z-index: 0; }
+    #fileInput::-webkit-file-upload-button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.5rem 1.5rem;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; }
     .upload-text strong { color: var(--accent); }
 
     /* 照片卡片 */
@@ -178,18 +194,18 @@
         </div>
         <div id="tokenSavedMsg">✓ Token 验证通过，已保存</div>
         <div id="tokenErrorMsg"></div>
-        <div id="tokenTestMsg"></div>
+        <button class="clear-token-btn" id="clearTokenBtn">清除 Token</button>
       </div>
     </div>
 
     <!-- 上传区域 -->
     <div class="upload-zone" id="uploadZone">
-      <input type="file" id="fileInput" accept="image/*" multiple>
       <div class="upload-icon">📷</div>
       <p class="upload-text">
-        点击这里选择照片<br>
+        点击下方按钮选择照片<br>
         <strong>支持多选 · 从相册直接选取</strong>
       </p>
+      <input type="file" id="fileInput" accept="image/*" multiple>
     </div>
 
     <div class="photo-list" id="photoList"></div>
@@ -317,7 +333,6 @@
     const tokenStatusText = document.getElementById('tokenStatusText');
     const tokenSavedMsg = document.getElementById('tokenSavedMsg');
     const tokenErrorMsg = document.getElementById('tokenErrorMsg');
-    const tokenTestMsg = document.getElementById('tokenTestMsg');
     const uploadProgress = document.getElementById('uploadProgress');
     const progressBar = document.getElementById('progressBar');
     const progressFinal = document.getElementById('progressFinal');
@@ -345,93 +360,82 @@
     }
 
     async function ghGet(path) {
-      const r = await fetch('https://api.github.com' + path, {
-        headers: {
-          'Authorization': makeBasicAuth(savedToken),
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-          'User-Agent': 'photo-portfolio-uploader/1.0'
+      try {
+        const r = await fetch('https://api.github.com' + path, {
+          headers: {
+            'Authorization': makeBasicAuth(savedToken),
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'User-Agent': 'photo-portfolio-uploader/1.0'
+          }
+        });
+        const text = await r.text();
+        if (!r.ok) {
+          let msg = text;
+          try { msg = JSON.parse(text).message || msg; } catch {}
+          throw new Error('GitHub ' + r.status + ': ' + msg);
         }
-      });
-      const text = await r.text();
-      if (!r.ok) {
-        let msg = text;
-        try { msg = JSON.parse(text).message || msg; } catch {}
-        throw new Error('GitHub ' + r.status + ': ' + msg);
+        return JSON.parse(text);
+      } catch (e) {
+        if (e.message === 'Failed to fetch' || e.message.includes('NetworkError') || e.message.includes('fetch')) {
+          throw new Error('无法连接 GitHub，请检查网络或开启 VPN（GitHub 在国内需要 VPN 才能访问）');
+        }
+        throw e;
       }
-      return JSON.parse(text);
     }
 
     async function ghPut(path, body) {
-      const r = await fetch('https://api.github.com' + path, {
-        method: 'PUT',
-        headers: {
-          'Authorization': makeBasicAuth(savedToken),
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-          'Content-Type': 'application/json',
-          'User-Agent': 'photo-portfolio-uploader/1.0'
-        },
-        body: JSON.stringify(body)
-      });
-      const text = await r.text();
-      if (!r.ok) {
-        let msg = text;
-        try { msg = JSON.parse(text).message || msg; } catch {}
-        throw new Error('GitHub ' + r.status + ': ' + msg);
-      }
-      return JSON.parse(text);
-    }
-
-    // ===== Token 验证 =====
-    async function verifyToken(token) {
-      const r = await fetch('https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO, {
-        headers: {
-          'Authorization': makeBasicAuth(token),
-          'Accept': 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-          'User-Agent': 'photo-portfolio-uploader/1.0'
-        }
-      });
-      if (!r.ok) {
+      try {
+        const r = await fetch('https://api.github.com' + path, {
+          method: 'PUT',
+          headers: {
+            'Authorization': makeBasicAuth(savedToken),
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            'Content-Type': 'application/json',
+            'User-Agent': 'photo-portfolio-uploader/1.0'
+          },
+          body: JSON.stringify(body)
+        });
         const text = await r.text();
-        let msg = text;
-        try { msg = JSON.parse(text).message || msg; } catch {}
-        throw new Error(msg);
+        if (!r.ok) {
+          let msg = text;
+          try { msg = JSON.parse(text).message || msg; } catch {}
+          throw new Error('GitHub ' + r.status + ': ' + msg);
+        }
+        return JSON.parse(text);
+      } catch (e) {
+        if (e.message === 'Failed to fetch' || e.message.includes('NetworkError') || e.message.includes('fetch')) {
+          throw new Error('无法连接 GitHub，请检查网络或开启 VPN（GitHub 在国内需要 VPN 才能访问）');
+        }
+        throw e;
       }
-      return await r.json();
     }
 
-    // Token 初始化
+    // ===== Token 验证（纯格式检查，不需要联网，国内可用）=====
+    function checkTokenFormat(token) {
+      if (!token || !token.startsWith('ghp_')) return 'Token 必须以 ghp_ 开头';
+      if (token.length !== 40) return 'Token 长度应为 40 位，当前 ' + token.length + ' 位';
+      return null;
+    }
+
+    // Token 初始化（只显示已保存，不自动联网验证）
     function initToken() {
       if (savedToken) {
         tokenInput.value = savedToken;
-        tokenDot.classList.add('saved');
-        tokenStatusText.textContent = '已保存（待验证）';
-        tokenSavedMsg.style.display = 'none';
-        tokenErrorMsg.style.display = 'none';
-        tokenTestMsg.style.display = 'block';
-        tokenTestMsg.textContent = '正在验证权限…';
-        tokenTestMsg.style.color = '#666';
-        verifyToken(savedToken)
-          .then(repo => {
-            tokenDot.classList.add('saved');
-            tokenDot.classList.remove('error');
-            tokenStatusText.textContent = '✓ 已验证';
-            tokenSavedMsg.style.display = 'block';
-            tokenSavedMsg.style.color = '#2e7d32';
-            tokenErrorMsg.style.display = 'none';
-            tokenTestMsg.style.display = 'none';
-          })
-          .catch(err => {
-            tokenDot.classList.remove('saved');
-            tokenDot.classList.add('error');
-            tokenStatusText.textContent = '验证失败';
-            tokenSavedMsg.style.display = 'none';
-            tokenErrorMsg.style.display = 'block';
-            tokenErrorMsg.textContent = '❌ ' + err.message;
-            tokenTestMsg.style.display = 'none';
-          });
+        const err = checkTokenFormat(savedToken);
+        if (!err) {
+          tokenDot.classList.add('saved');
+          tokenStatusText.textContent = '✓ 已保存（未联网验证）';
+          tokenSavedMsg.style.display = 'block';
+          tokenSavedMsg.style.color = '#888';
+          tokenSavedMsg.textContent = '⚡ Token 格式正确，已本地保存（联网验证在上传时自动进行）';
+        } else {
+          tokenDot.classList.add('error');
+          tokenStatusText.textContent = '格式错误';
+          tokenErrorMsg.style.display = 'block';
+          tokenErrorMsg.textContent = err;
+        }
       }
     }
     initToken();
@@ -440,39 +444,28 @@
       const val = tokenInput.value.trim();
       if (!val) { showToast('请输入 Token', 'error'); return; }
 
-      saveTokenBtn.disabled = true;
-      saveTokenBtn.textContent = '验证中…';
-      tokenSavedMsg.style.display = 'none';
-      tokenErrorMsg.style.display = 'none';
-      tokenTestMsg.style.display = 'block';
-      tokenTestMsg.textContent = '正在连接 GitHub…';
-      tokenTestMsg.style.color = '#666';
-
-      try {
-        const repo = await verifyToken(val);
-        savedToken = val;
-        localStorage.setItem('gh_upload_token', savedToken);
-        tokenDot.classList.add('saved');
-        tokenDot.classList.remove('error');
-        tokenStatusText.textContent = '✓ 已验证';
-        tokenSavedMsg.style.display = 'block';
-        tokenSavedMsg.style.color = '#2e7d32';
-        tokenErrorMsg.style.display = 'none';
-        tokenTestMsg.style.display = 'none';
-        showToast('✓ Token 验证通过，已保存', 'success');
-      } catch (err) {
+      const err = checkTokenFormat(val);
+      if (err) {
         tokenDot.classList.remove('saved');
         tokenDot.classList.add('error');
-        tokenStatusText.textContent = '验证失败';
+        tokenStatusText.textContent = '格式错误';
         tokenSavedMsg.style.display = 'none';
         tokenErrorMsg.style.display = 'block';
-        tokenErrorMsg.textContent = '❌ ' + err.message;
-        tokenTestMsg.style.display = 'none';
-        showToast('❌ ' + err.message, 'error');
-      } finally {
-        saveTokenBtn.disabled = false;
-        saveTokenBtn.textContent = '保存';
+        tokenErrorMsg.textContent = err;
+        showToast(err, 'error');
+        return;
       }
+
+      savedToken = val;
+      localStorage.setItem('gh_upload_token', savedToken);
+      tokenDot.classList.add('saved');
+      tokenDot.classList.remove('error');
+      tokenStatusText.textContent = '✓ 已保存';
+      tokenSavedMsg.style.display = 'block';
+      tokenSavedMsg.style.color = '#2e7d32';
+      tokenSavedMsg.textContent = '⚡ Token 格式正确，已本地保存（上传时自动联网验证）';
+      tokenErrorMsg.style.display = 'none';
+      showToast('✓ Token 已保存（联网验证将在上传时进行）', 'success');
     });
 
     clearTokenBtn.addEventListener('click', () => {
