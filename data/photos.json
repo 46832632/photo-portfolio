@@ -38,6 +38,32 @@
       "catLabel": "建筑",
       "desc": "人流如织，光影交错。\\n城市的呼吸在每一条街道上留下痕迹。",
       "date": "2026-04-15"
+    },
+    {
+      "id": "img_1776244522957_0",
+      "filename": "IMG_C_1000_mnzu4.jpeg",
+      "seq": 1000,
+      "titleZh": "你",
+      "titleEn": "Silent Lane",
+      "location": "曼谷",
+      "year": "2026",
+      "category": "city",
+      "catLabel": "城市",
+      "desc": "城市的纹理在光影中展开，\\n钢铁与玻璃映照出另一种天空。",
+      "date": "2026-04-15"
+    },
+    {
+      "id": "img_1776244526962_1",
+      "filename": "IMG_C_1001_mnzu4.jpeg",
+      "seq": 1001,
+      "titleZh": "那",
+      "titleEn": "Silent Lane",
+      "location": "曼谷",
+      "year": "2026",
+      "category": "city",
+      "catLabel": "城市",
+      "desc": "夜色降临，万家灯火。\\n喧嚣在此时化为宁静的旋律。",
+      "date": "2026-04-15"
     }
   ]
 }
