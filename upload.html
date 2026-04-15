@@ -37,6 +37,7 @@
     .token-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; }
     .token-dot { width: 7px; height: 7px; border-radius: 50%; background: #bbb; }
     .token-dot.saved { background: #2e7d32; }
+    .token-dot.error { background: #c0392b; }
     .token-input-row { display: flex; gap: 0.6rem; align-items: center; }
     .token-input { flex: 1; padding: 0.55rem 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-family: monospace; font-size: 0.82rem; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
     .token-input:focus { border-color: var(--accent); }
@@ -45,8 +46,10 @@
     .clear-token-btn { background: none; border: none; color: var(--muted); font-size: 0.72rem; cursor: pointer; text-decoration: underline; padding: 0.2rem; }
     .clear-token-btn:hover { color: #c0392b; }
     #tokenSavedMsg { display: none; font-size: 0.75rem; color: #2e7d32; }
+    #tokenErrorMsg { display: none; font-size: 0.75rem; color: #c0392b; margin-top: 0.3rem; }
+    #tokenTestMsg { display: none; font-size: 0.72rem; margin-top: 0.3rem; color: #666; }
 
-    /* 上传区 - 使用 label 方案，更可靠 */
+    /* 上传区 */
     .upload-zone { border: 2px dashed var(--border); border-radius: 16px; padding: 3rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--light); margin-bottom: 2rem; position: relative; }
     .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: #faf5ed; }
     .upload-zone input[type="file"] {
@@ -56,7 +59,7 @@
       filter: alpha(opacity=0);
       cursor: pointer;
       z-index: 1;
-      font-size: 0; /* 消除文件输入默认样式 */
+      font-size: 0;
     }
     .upload-icon { font-size: 2.5rem; margin-bottom: 0.8rem; position: relative; z-index: 0; }
     .upload-text { color: var(--muted); font-size: 0.9rem; line-height: 1.8; position: relative; z-index: 0; }
@@ -104,6 +107,7 @@
     .progress-step.error { color: #c0392b; }
     .step-icon { width: 20px; text-align: center; font-size: 0.9rem; flex-shrink: 0; }
     .step-msg { flex: 1; }
+    .step-detail { font-size: 0.72rem; color: var(--muted); margin-left: 1.8rem; }
     .progress-bar-wrap { margin-top: 1rem; background: var(--border); border-radius: 8px; height: 6px; overflow: hidden; }
     .progress-bar { height: 100%; background: var(--accent); border-radius: 8px; transition: width 0.4s ease; width: 0%; }
     .progress-final { margin-top: 1.2rem; text-align: center; font-size: 0.88rem; color: #2e7d32; }
@@ -161,7 +165,7 @@
         <div class="token-header">
           <div>
             <div class="token-title">🔑 GitHub 上传授权</div>
-            <div class="token-hint">Token 仅存储在本地浏览器</div>
+            <div class="token-hint">Token 仅存储在本地浏览器 · 保存时自动验证</div>
           </div>
           <div class="token-status">
             <span class="token-dot" id="tokenDot"></span>
@@ -172,15 +176,14 @@
           <input type="password" class="token-input" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
           <button class="save-token-btn" id="saveTokenBtn">保存</button>
         </div>
-        <div id="tokenSavedMsg">✓ Token 已保存，下次自动填充
-          <button class="clear-token-btn" id="clearTokenBtn">清除</button>
-        </div>
+        <div id="tokenSavedMsg">✓ Token 验证通过，已保存</div>
+        <div id="tokenErrorMsg"></div>
+        <div id="tokenTestMsg"></div>
       </div>
     </div>
 
     <!-- 上传区域 -->
     <div class="upload-zone" id="uploadZone">
-      <!-- 文件输入：透明覆盖整个区域，pointer-events 捕获点击 -->
       <input type="file" id="fileInput" accept="image/*" multiple>
       <div class="upload-icon">📷</div>
       <p class="upload-text">
@@ -197,10 +200,10 @@
 
     <div class="upload-progress" id="uploadProgress">
       <div class="progress-box">
-        <div class="progress-step" id="step1"><span class="step-icon">○</span><span class="step-msg">读取当前数据…</span></div>
+        <div class="progress-step" id="step1"><span class="step-icon">○</span><span class="step-msg">验证仓库访问权限…</span></div>
         <div class="progress-step" id="step2"><span class="step-icon">○</span><span class="step-msg">上传图片文件…</span></div>
         <div class="progress-step" id="step3"><span class="step-icon">○</span><span class="step-msg">写入照片数据…</span></div>
-        <div class="progress-step" id="step4"><span class="step-icon">○</span><span class="step-msg">提交 GitHub…</span></div>
+        <div class="progress-step" id="step4"><span class="step-icon">○</span><span class="step-msg">完成部署…</span></div>
         <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
         <div class="progress-final" id="progressFinal"></div>
       </div>
@@ -219,7 +222,6 @@
 
   <script>
     const CATS = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
-    const CAT_LABELS = { city: '城', nature: '林', people: '人', arch: '建', food: '食' };
 
     const EN_MAP = {
       city: ['Urban Whispers', 'City Lights', 'Street Symphony', 'Concrete Garden', 'Neon Dusk', 'Silent Lane', 'Urban Poetry', 'Night Bloom', 'Morning Rush', 'Quiet Corner'],
@@ -299,6 +301,7 @@
     let savedToken = localStorage.getItem('gh_upload_token') || '';
     let nextSeq = 1;
 
+    // DOM 元素
     const uploadZone = document.getElementById('uploadZone');
     const fileInput = document.getElementById('fileInput');
     const photoList = document.getElementById('photoList');
@@ -313,51 +316,185 @@
     const tokenDot = document.getElementById('tokenDot');
     const tokenStatusText = document.getElementById('tokenStatusText');
     const tokenSavedMsg = document.getElementById('tokenSavedMsg');
+    const tokenErrorMsg = document.getElementById('tokenErrorMsg');
+    const tokenTestMsg = document.getElementById('tokenTestMsg');
     const uploadProgress = document.getElementById('uploadProgress');
     const progressBar = document.getElementById('progressBar');
     const progressFinal = document.getElementById('progressFinal');
+
+    // ===== 核心修复：使用 Basic Auth 代替 Bearer =====
+    // GitHub API 对 PUT 请求 + Authorization 头会触发 CORS preflight
+    // Safari/iOS 对此处理有问题，改为 Basic Auth 完全避免 preflight
+    function b64EncodeUnicode(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+        (_, p1) => String.fromCharCode(parseInt(p1, 16))));
+    }
+    function makeBasicAuth(token) {
+      // GitHub Basic Auth: username = 任意值，password = token
+      return 'Basic ' + b64EncodeUnicode('x-access:' + token);
+    }
+
+    function ghHeaders() {
+      return {
+        'Authorization': makeBasicAuth(savedToken),
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json',
+        'User-Agent': 'photo-portfolio-uploader/1.0'
+      };
+    }
+
+    async function ghGet(path) {
+      const r = await fetch('https://api.github.com' + path, {
+        headers: {
+          'Authorization': makeBasicAuth(savedToken),
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'User-Agent': 'photo-portfolio-uploader/1.0'
+        }
+      });
+      const text = await r.text();
+      if (!r.ok) {
+        let msg = text;
+        try { msg = JSON.parse(text).message || msg; } catch {}
+        throw new Error('GitHub ' + r.status + ': ' + msg);
+      }
+      return JSON.parse(text);
+    }
+
+    async function ghPut(path, body) {
+      const r = await fetch('https://api.github.com' + path, {
+        method: 'PUT',
+        headers: {
+          'Authorization': makeBasicAuth(savedToken),
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'Content-Type': 'application/json',
+          'User-Agent': 'photo-portfolio-uploader/1.0'
+        },
+        body: JSON.stringify(body)
+      });
+      const text = await r.text();
+      if (!r.ok) {
+        let msg = text;
+        try { msg = JSON.parse(text).message || msg; } catch {}
+        throw new Error('GitHub ' + r.status + ': ' + msg);
+      }
+      return JSON.parse(text);
+    }
+
+    // ===== Token 验证 =====
+    async function verifyToken(token) {
+      const r = await fetch('https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO, {
+        headers: {
+          'Authorization': makeBasicAuth(token),
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+          'User-Agent': 'photo-portfolio-uploader/1.0'
+        }
+      });
+      if (!r.ok) {
+        const text = await r.text();
+        let msg = text;
+        try { msg = JSON.parse(text).message || msg; } catch {}
+        throw new Error(msg);
+      }
+      return await r.json();
+    }
 
     // Token 初始化
     function initToken() {
       if (savedToken) {
         tokenInput.value = savedToken;
         tokenDot.classList.add('saved');
-        tokenStatusText.textContent = '已保存';
-        tokenSavedMsg.style.display = 'inline';
+        tokenStatusText.textContent = '已保存（待验证）';
+        tokenSavedMsg.style.display = 'none';
+        tokenErrorMsg.style.display = 'none';
+        tokenTestMsg.style.display = 'block';
+        tokenTestMsg.textContent = '正在验证权限…';
+        tokenTestMsg.style.color = '#666';
+        verifyToken(savedToken)
+          .then(repo => {
+            tokenDot.classList.add('saved');
+            tokenDot.classList.remove('error');
+            tokenStatusText.textContent = '✓ 已验证';
+            tokenSavedMsg.style.display = 'block';
+            tokenSavedMsg.style.color = '#2e7d32';
+            tokenErrorMsg.style.display = 'none';
+            tokenTestMsg.style.display = 'none';
+          })
+          .catch(err => {
+            tokenDot.classList.remove('saved');
+            tokenDot.classList.add('error');
+            tokenStatusText.textContent = '验证失败';
+            tokenSavedMsg.style.display = 'none';
+            tokenErrorMsg.style.display = 'block';
+            tokenErrorMsg.textContent = '❌ ' + err.message;
+            tokenTestMsg.style.display = 'none';
+          });
       }
     }
     initToken();
 
-    saveTokenBtn.addEventListener('click', () => {
+    saveTokenBtn.addEventListener('click', async () => {
       const val = tokenInput.value.trim();
       if (!val) { showToast('请输入 Token', 'error'); return; }
-      savedToken = val;
-      localStorage.setItem('gh_upload_token', savedToken);
-      tokenDot.classList.add('saved');
-      tokenStatusText.textContent = '已保存';
-      tokenSavedMsg.style.display = 'inline';
-      showToast('✓ Token 已保存', 'success');
+
+      saveTokenBtn.disabled = true;
+      saveTokenBtn.textContent = '验证中…';
+      tokenSavedMsg.style.display = 'none';
+      tokenErrorMsg.style.display = 'none';
+      tokenTestMsg.style.display = 'block';
+      tokenTestMsg.textContent = '正在连接 GitHub…';
+      tokenTestMsg.style.color = '#666';
+
+      try {
+        const repo = await verifyToken(val);
+        savedToken = val;
+        localStorage.setItem('gh_upload_token', savedToken);
+        tokenDot.classList.add('saved');
+        tokenDot.classList.remove('error');
+        tokenStatusText.textContent = '✓ 已验证';
+        tokenSavedMsg.style.display = 'block';
+        tokenSavedMsg.style.color = '#2e7d32';
+        tokenErrorMsg.style.display = 'none';
+        tokenTestMsg.style.display = 'none';
+        showToast('✓ Token 验证通过，已保存', 'success');
+      } catch (err) {
+        tokenDot.classList.remove('saved');
+        tokenDot.classList.add('error');
+        tokenStatusText.textContent = '验证失败';
+        tokenSavedMsg.style.display = 'none';
+        tokenErrorMsg.style.display = 'block';
+        tokenErrorMsg.textContent = '❌ ' + err.message;
+        tokenTestMsg.style.display = 'none';
+        showToast('❌ ' + err.message, 'error');
+      } finally {
+        saveTokenBtn.disabled = false;
+        saveTokenBtn.textContent = '保存';
+      }
     });
 
     clearTokenBtn.addEventListener('click', () => {
       savedToken = '';
       localStorage.removeItem('gh_upload_token');
       tokenInput.value = '';
-      tokenDot.classList.remove('saved');
+      tokenDot.classList.remove('saved', 'error');
       tokenStatusText.textContent = '未设置';
       tokenSavedMsg.style.display = 'none';
+      tokenErrorMsg.style.display = 'none';
+      tokenTestMsg.style.display = 'none';
       showToast('Token 已清除', '');
     });
 
     // 初始化序号
     async function initSeq() {
       try {
-        const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
-        if (r.ok) {
-          const data = await r.json();
-          const maxSeq = (data.photos || []).reduce((m, p) => Math.max(m, p.seq || 0), 0);
-          nextSeq = maxSeq + 1;
-        }
+        const data = await ghGet('/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/data/photos.json');
+        const r = await fetch(data.download_url);
+        const json = await r.json();
+        const maxSeq = (json.photos || []).reduce((m, p) => Math.max(m, p.seq || 0), 0);
+        nextSeq = maxSeq + 1;
       } catch {}
     }
     initSeq();
@@ -365,7 +502,6 @@
     // 文件选择处理
     fileInput.addEventListener('change', e => {
       handleFiles(e.target.files);
-      // 重置 input 以允许重复选择同一文件
       fileInput.value = '';
     });
 
@@ -391,7 +527,7 @@
 
       Array.from(files).forEach(file => {
         if (!file.type.startsWith('image/')) {
-          showToast(`「${file.name}」不是图片文件，已跳过`, 'error');
+          showToast('「' + file.name + '」不是图片文件，已跳过', 'error');
           return;
         }
         const id = 'p' + Date.now() + Math.random().toString(36).slice(2, 6);
@@ -410,12 +546,8 @@
 
       renderPhotoList();
       if (photos.length > 0) {
-        showToast(`✓ 已添加 ${files.length} 张照片，请填写标题`, 'success');
+        showToast('✓ 已添加 ' + files.length + ' 张照片，请填写标题', 'success');
       }
-    }
-
-    function previewUrl(file) {
-      return URL.createObjectURL(file);
     }
 
     function renderPhotoList() {
@@ -426,62 +558,79 @@
         return;
       }
 
+      const catCodeMap = { city: 'C', nature: 'N', people: 'P', arch: 'A', food: 'F' };
+
       photoList.innerHTML = photos.map((p) => {
-        const catCode = { city: 'C', nature: 'N', people: 'P', arch: 'A', food: 'F' }[p.category] || 'C';
+        const catCode = catCodeMap[p.category] || 'C';
         const ext = (p.file.name.split('.').pop() || 'jpg').toLowerCase();
-        const filename = `IMG_${catCode}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36).slice(0,5)}.${ext}`;
-        return `
-        <div class="photo-card" data-id="${p.id}">
-          <div class="photo-card-header">
-            <img src="${previewUrl(p.file)}" class="photo-preview" alt="preview" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 60%22><rect fill=%22%23f5f0e8%22 width=%2280%22 height=%2260%22/><text x=%2240%22 y=%2235%22 text-anchor=%22middle%22 fill=%22%239a9080%22 font-size=%2212%22>预览</text></svg>'">
-            <div class="photo-meta">
-              <div class="photo-name">${p.file.name}</div>
-              <div class="photo-filename">${filename}</div>
-            </div>
-            <button class="remove-btn" data-id="${p.id}" type="button">✕</button>
-          </div>
-          <div class="form-grid">
-            <div class="form-group">
-              <label>序号（出现在首页的位置）</label>
-              <input type="number" value="${p.seq}" min="1" data-id="${p.id}" data-field="seq">
-            </div>
-            <div class="form-group">
-              <label>分类</label>
-              <select data-id="${p.id}" data-field="category">
-                ${Object.entries(CATS).map(([k,v]) => `<option value="${k}" ${p.category===k?'selected':''}>${v}</option>`).join('')}
-              </select>
-            </div>
-            <div class="form-group full">
-              <label>中文标题（必填）</label>
-              <input type="text" value="${p.titleZh}" placeholder="如：夜归、晨雾、街头…" data-id="${p.id}" data-field="titleZh">
-            </div>
-            <div class="form-group">
-              <label>英文副标题（自动生成，可修改）</label>
-              <input type="text" value="${p.titleEn}" data-id="${p.id}" data-field="titleEn">
-            </div>
-            <div class="form-group">
-              <label>拍摄地点</label>
-              <input type="text" value="${p.location}" data-id="${p.id}" data-field="location">
-            </div>
-            <div class="form-group">
-              <label>拍摄年份</label>
-              <input type="text" value="${p.year}" data-id="${p.id}" data-field="year">
-            </div>
-            <div class="form-group full">
-              <label>诗意描述</label>
-              <textarea data-id="${p.id}" data-field="desc">${p.desc}</textarea>
-            </div>
-          </div>
-          <div class="ai-btn-row">
-            <button class="ai-btn" data-id="${p.id}" type="button">✦ 重新生成描述</button>
-          </div>
-        </div>`;
+        const filename = 'IMG_' + catCode + '_' + String(p.seq).padStart(3, '0') + '_' + Date.now().toString(36).slice(0, 5) + '.' + ext;
+        const titleZhEsc = p.titleZh.replace(/"/g, '&quot;');
+        const titleEnEsc = p.titleEn.replace(/"/g, '&quot;');
+        const locationEsc = p.location.replace(/"/g, '&quot;');
+        const yearEsc = p.year.replace(/"/g, '&quot;');
+        const descEsc = p.desc.replace(/"/g, '&quot;');
+        return '<div class="photo-card" data-id="' + p.id + '">' +
+          '<div class="photo-card-header">' +
+            '<img src="" data-id="' + p.id + '" class="photo-preview" alt="preview">' +
+            '<div class="photo-meta">' +
+              '<div class="photo-name">' + p.file.name.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+              '<div class="photo-filename">' + filename + '</div>' +
+            '</div>' +
+            '<button class="remove-btn" data-id="' + p.id + '" type="button">✕</button>' +
+          '</div>' +
+          '<div class="form-grid">' +
+            '<div class="form-group">' +
+              '<label>序号</label>' +
+              '<input type="number" value="' + p.seq + '" min="1" data-id="' + p.id + '" data-field="seq">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>分类</label>' +
+              '<select data-id="' + p.id + '" data-field="category">' +
+                Object.entries(CATS).map(([k, v]) => '<option value="' + k + '"' + (p.category === k ? ' selected' : '') + '>' + v + '</option>').join('') +
+              '</select>' +
+            '</div>' +
+            '<div class="form-group full">' +
+              '<label>中文标题（必填）</label>' +
+              '<input type="text" value="' + titleZhEsc + '" placeholder="如：夜归、晨雾…" data-id="' + p.id + '" data-field="titleZh">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>英文副标题</label>' +
+              '<input type="text" value="' + titleEnEsc + '" data-id="' + p.id + '" data-field="titleEn">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>拍摄地点</label>' +
+              '<input type="text" value="' + locationEsc + '" data-id="' + p.id + '" data-field="location">' +
+            '</div>' +
+            '<div class="form-group">' +
+              '<label>年份</label>' +
+              '<input type="text" value="' + yearEsc + '" data-id="' + p.id + '" data-field="year">' +
+            '</div>' +
+            '<div class="form-group full">' +
+              '<label>诗意描述</label>' +
+              '<textarea data-id="' + p.id + '" data-field="desc">' + descEsc.replace(/&lt;br&gt;/g, '\n') + '</textarea>' +
+            '</div>' +
+          '</div>' +
+          '<div class="ai-btn-row">' +
+            '<button class="ai-btn" data-id="' + p.id + '" type="button">✦ 重新生成</button>' +
+          '</div>' +
+        '</div>';
       }).join('');
+
+      // 异步加载缩略图
+      photos.forEach(p => {
+        const img = document.querySelector('.photo-preview[data-id="' + p.id + '"]');
+        if (img) {
+          img.src = URL.createObjectURL(p.file);
+          img.onerror = function() {
+            this.src = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60"><rect fill="#f5f0e8" width="80" height="60"/><text x="40" y="35" text-anchor="middle" fill="#9a9080" font-size="11">预览</text></svg>');
+          };
+        }
+      });
 
       batchBar.classList.add('show');
       submitBar.classList.add('show');
 
-      // 绑定表单事件
+      // 绑定表单事件（用事件委托）
       photoList.querySelectorAll('input, select, textarea').forEach(el => {
         el.addEventListener('change', onFieldChange);
         el.addEventListener('input', onFieldChange);
@@ -530,40 +679,27 @@
       showToast('✨ 所有描述已重新生成');
     });
 
-    // GitHub API
-    function ghHeaders() {
-      return {
-        'Authorization': `Bearer ${savedToken}`,
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json'
-      };
-    }
-
-    async function ghGet(path) {
-      const r = await fetch(`https://api.github.com${path}`, { headers: ghHeaders() });
-      if (!r.ok) throw new Error(`GitHub ${r.status}: ${await r.text()}`);
-      return r.json();
-    }
-
-    async function ghPut(path, body) {
-      const r = await fetch(`https://api.github.com${path}`, {
-        method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body)
-      });
-      const d = await r.json();
-      if (!r.ok) throw new Error(`GitHub ${r.status}: ${d.message || JSON.stringify(d)}`);
-      return d;
-    }
-
-    function setStep(id, state, icon) {
+    // ===== 进度显示 =====
+    function setStep(id, state, icon, detail) {
       const el = document.getElementById(id);
       if (!el) return;
       el.className = 'progress-step ' + state;
       el.querySelector('.step-icon').textContent = icon;
+      const msgEl = el.querySelector('.step-msg');
+      if (detail) {
+        let detailEl = el.querySelector('.step-detail');
+        if (!detailEl) {
+          detailEl = document.createElement('div');
+          detailEl.className = 'step-detail';
+          el.appendChild(detailEl);
+        }
+        detailEl.textContent = detail;
+      }
     }
 
     function setProgress(pct) { progressBar.style.width = pct + '%'; }
 
+    // ===== 上传流程 =====
     async function uploadToGitHub() {
       if (!savedToken) { showToast('请先保存 GitHub Token', 'error'); return; }
 
@@ -576,49 +712,63 @@
       uploadProgress.classList.add('show');
       progressFinal.textContent = '';
       setProgress(0);
-      ['step1','step2','step3','step4'].forEach(id => setStep(id, '', '○'));
+      ['step1', 'step2', 'step3', 'step4'].forEach(id => setStep(id, '', '○'));
+      document.querySelectorAll('.step-detail').forEach(el => el.remove());
 
       try {
+        // Step 1: 验证仓库访问 + 获取现有 photos.json
         setStep('step1', 'active', '◐');
         let photosJson = { photos: [] };
         let photosSha = null;
         try {
-          const existing = await ghGet(`/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`);
+          const existing = await ghGet('/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/data/photos.json');
           photosSha = existing.sha;
           const r = await fetch(existing.download_url);
           photosJson = await r.json();
-        } catch {
-          // 文件不存在，从头创建
+          setStep('step1', 'done', '✓', '已连接 ' + GH_OWNER + '/' + GH_REPO);
+        } catch (err) {
+          if (err.message && err.message.includes('404')) {
+            setStep('step1', 'done', '✓', '新建 photos.json');
+          } else {
+            throw err;
+          }
         }
-        setStep('step1', 'done', '✓');
         setProgress(10);
 
+        // Step 2: 上传图片
         setStep('step2', 'active', '◐');
         const newEntries = [];
+        const catCodeMap = { city: 'C', nature: 'N', people: 'P', arch: 'A', food: 'F' };
+
         for (let i = 0; i < photos.length; i++) {
           const p = photos[i];
-          const catCode = { city: 'C', nature: 'N', people: 'P', arch: 'A', food: 'F' }[p.category] || 'C';
+          const catCode = catCodeMap[p.category] || 'C';
           const ext = (p.file.name.split('.').pop() || 'jpg').toLowerCase();
-          const filename = `IMG_${catCode}_${String(p.seq).padStart(3,'0')}_${Date.now().toString(36).slice(0,5)}.${ext}`;
-          const imagePath = `images/${filename}`;
+          const ts = Date.now().toString(36).slice(0, 5);
+          const filename = 'IMG_' + catCode + '_' + String(p.seq).padStart(3, '0') + '_' + ts + '.' + ext;
+          const imagePath = 'images/' + filename;
 
-          // 正确的 Base64 编码
+          // 正确编码：ArrayBuffer → Uint8Array → binary → Base64 → URL-safe
           const arrayBuffer = await p.file.arrayBuffer();
           const uint8 = new Uint8Array(arrayBuffer);
           let binary = '';
           for (let j = 0; j < uint8.length; j++) {
             binary += String.fromCharCode(uint8[j]);
           }
-          let base64 = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+          const base64 = btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-          await ghPut(`/repos/${GH_OWNER}/${GH_REPO}/contents/${imagePath}`, {
-            message: `upload: ${filename}`,
-            content: base64,
-            branch: 'main'
-          });
+          try {
+            await ghPut('/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + imagePath, {
+              message: 'upload: ' + filename,
+              content: base64,
+              branch: 'main'
+            });
+          } catch (err) {
+            throw new Error('图片「' + p.titleZh + '」上传失败：' + err.message);
+          }
 
           newEntries.push({
-            id: `img_${Date.now()}_${i}`,
+            id: 'img_' + Date.now() + '_' + i,
             filename,
             seq: p.seq,
             titleZh: p.titleZh.trim(),
@@ -630,66 +780,70 @@
             desc: p.desc.replace(/\n/g, '\\n'),
             date: new Date().toISOString().slice(0, 10)
           });
-          setProgress(10 + Math.round((i + 1) / photos.length * 35));
-        }
-        setStep('step2', 'done', '✓');
 
+          setProgress(10 + Math.round((i + 1) / photos.length * 40));
+        }
+        setStep('step2', 'done', '✓', newEntries.length + ' 张图片已上传');
+        setProgress(55);
+
+        // Step 3: 写入 photos.json
         setStep('step3', 'active', '◐');
         const allPhotos = [...(photosJson.photos || []), ...newEntries];
         const newContent = JSON.stringify({ photos: allPhotos }, null, 2);
         const encoder = new TextEncoder();
         const uint8Content = encoder.encode(newContent);
-        let binary = '';
+        let binaryContent = '';
         for (let j = 0; j < uint8Content.length; j++) {
-          binary += String.fromCharCode(uint8Content[j]);
+          binaryContent += String.fromCharCode(uint8Content[j]);
         }
-        const newBase64 = btoa(binary);
+        const newBase64 = btoa(binaryContent);
 
-        await ghPut(`/repos/${GH_OWNER}/${GH_REPO}/contents/data/photos.json`, {
-          message: `docs: add ${newEntries.length} photo(s)`,
+        await ghPut('/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/data/photos.json', {
+          message: 'docs: add ' + newEntries.length + ' photo(s)',
           content: newBase64,
           sha: photosSha,
           branch: 'main'
         });
-        setStep('step3', 'done', '✓');
-        setProgress(60);
+        setStep('step3', 'done', '✓', '已写入 ' + allPhotos.length + ' 条记录');
+        setProgress(75);
 
+        // Step 4: 完成
         setStep('step4', 'active', '◐');
-        await new Promise(r => setTimeout(r, 500));
-        setStep('step4', 'done', '✓');
+        setStep('step4', 'done', '✓', 'GitHub Actions 自动部署中');
         setProgress(100);
 
-        progressFinal.innerHTML = `✓ ${newEntries.length} 张照片已上传至首页！<br>
-          <span style="font-size:0.78rem;color:var(--muted)">GitHub Actions 正在部署，稍后刷新首页查看效果</span><br>
-          <a href="index.html" style="display:inline-block;margin-top:0.8rem;font-size:0.8rem;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:20px;padding:0.3rem 1rem;" target="_blank">→ 前往首页查看</a>`;
-        showToast(`✓ ${newEntries.length} 张照片上传成功！`, 'success');
+        progressFinal.innerHTML = '✓ ' + newEntries.length + ' 张照片已上传至首页！<br>' +
+          '<span style="font-size:0.78rem;color:var(--muted)">GitHub Actions 正在部署，约 1-2 分钟后刷新首页查看</span><br>' +
+          '<a href="index.html" style="display:inline-block;margin-top:0.8rem;font-size:0.8rem;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:20px;padding:0.3rem 1rem;" target="_blank">→ 前往首页查看</a>';
+        showToast('✓ ' + newEntries.length + ' 张照片上传成功！', 'success');
         photos = [];
         renderPhotoList();
+
       } catch (e) {
-        console.error(e);
-        ['step1','step2','step3','step4'].forEach(id => {
+        console.error('上传失败:', e);
+        ['step1', 'step2', 'step3', 'step4'].forEach(id => {
           const el = document.getElementById(id);
           if (el && !el.classList.contains('done')) {
             el.className = 'progress-step error';
             el.querySelector('.step-icon').textContent = '✕';
           }
         });
-        progressFinal.innerHTML = `<span style="color:#c0392b">上传失败：${e.message}</span>`;
+        progressFinal.innerHTML = '<span style="color:#c0392b">上传失败：' + e.message + '</span>';
         showToast('❌ ' + e.message, 'error');
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = '上 传';
-        setTimeout(() => uploadProgress.classList.remove('show'), 6000);
+        setTimeout(() => uploadProgress.classList.remove('show'), 8000);
       }
     }
 
     submitBtn.addEventListener('click', uploadToGitHub);
 
-    function showToast(msg, cls = '') {
+    function showToast(msg, cls) {
       toast.textContent = msg;
-      toast.className = 'toast show ' + cls;
+      toast.className = 'toast show ' + (cls || '');
       clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => toast.className = 'toast', 3000);
+      toast._timer = setTimeout(() => toast.className = 'toast', 4000);
     }
   </script>
 </body>
