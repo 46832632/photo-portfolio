@@ -473,6 +473,10 @@
       const GH_OWNER = '46832632';
       const GH_REPO = 'photo-portfolio';
 
+      // 调试：临时在页面上显示加载结果
+      console.log('加载到的照片数量:', photos.length);
+      console.log('照片列表:', photos.map(p => p.filename));
+
       const sections = photos.map((p,i) => {
         const imgUrl = `https://quantil.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`;
         const descLines = (p.desc||'').split('\n').filter(Boolean).map(l=>esc(l)).join('<br>');
@@ -505,6 +509,15 @@
       }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
       window.photoObserver = ob;
       document.querySelectorAll('.fade-in').forEach(function(el){ ob.observe(el); });
+
+      // 兜底：3秒后强制显示所有照片（iOS Safari IntersectionObserver 有时不触发）
+      setTimeout(function() {
+        document.querySelectorAll('.fade-in:not(.visible)').forEach(function(el) {
+          el.classList.add('visible');
+          var img = el.querySelector('.parallax-img');
+          if (img) setTimeout(function(){ img.classList.add('visible'); }, 200);
+        });
+      }, 3000);
     }
 
     // All code below runs after renderGallery sets window.photos
