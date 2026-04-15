@@ -5,6 +5,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# 并发控制：同一时间只允许一个部署运行，新的会取消旧的
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
