@@ -440,7 +440,11 @@
     // 从 GitHub 读取照片数据，按 seq 排序
     async function loadPhotos() {
       try {
-        const r = await fetch('https://raw.githubusercontent.com/46832632/photo-portfolio/main/data/photos.json');
+        // 优先用 jsDelivr CDN（国内可访问），失败则用 GitHub raw
+        let r = await fetch('https://cdn.jsdelivr.net/gh/46832632/photo-portfolio/data/photos.json').catch(() => null);
+        if (!r || !r.ok) {
+          r = await fetch('https://raw.githubusercontent.com/46832632/photo-portfolio/main/data/photos.json');
+        }
         if (!r.ok) throw new Error('加载失败');
         const data = await r.json();
         const list = data.photos || [];
@@ -470,7 +474,7 @@
       const GH_REPO = 'photo-portfolio';
 
       const sections = photos.map((p,i) => {
-        const imgUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/images/${p.filename}`;
+        const imgUrl = `https://cdn.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`;
         const descLines = (p.desc||'').split('\n').filter(Boolean).map(l=>esc(l)).join('<br>');
         return `<section class="photo-section fade-in" id="photo${i+1}"><div class="photo-container"><div class="photo-wrapper loading"><img src="${imgUrl}" alt="${esc(p.titleZh)}" loading="${i<2?'eager':'lazy'}" onclick="openLightbox(${i})" class="parallax-img" onload="this.classList.add('loaded');this.parentElement.classList.remove('loading')" onerror="handleImageError(this)"></div><div class="photo-info"><div class="camera-params">${esc(p.location)} <span>${esc(p.year)}</span></div><p class="photo-number">${toCN(i+1)} / ${toCN(photos.length)}</p><h2 class="photo-title">${esc(p.titleZh)}</h2><p class="photo-subtitle">${esc(p.titleEn)}</p><p class="photo-desc">${descLines}</p></div></div></section>`;
       }).join('\n');
@@ -482,7 +486,7 @@
 
       // Set photo data for lightbox
       window.photos = photos.map(p => ({
-        src: `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/images/${p.filename}`,
+        src: `https://cdn.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}`,
         title: p.titleZh
       }));
 
