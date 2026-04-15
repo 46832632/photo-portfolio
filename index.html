@@ -490,7 +490,6 @@
       console.error('loadPhotos failed:', lastError);
       return [];
     }
-    }
 
     function toCN(n) { const c=['零','壹','贰','叁','肆','伍','陆','柒','捌','玖','拾']; if(n<=10)return c[n]||n; if(n<20)return'拾'+(n>10?c[n-10]:''); if(n<100)return c[Math.floor(n/10)]+'拾'+(n%10?c[n%10]:''); return n.toString(); }
 
