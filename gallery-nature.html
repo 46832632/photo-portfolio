@@ -55,14 +55,14 @@
     const CAT = 'nature';
     async function loadPhotos() {
       try {
-        const r = await fetch(`https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/data/photos.json`);
+        const r = await fetch(`https://cdn.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/data/photos.json`);
         if (!r.ok) throw new Error();
         const data = await r.json();
         const grid = document.getElementById('photoGrid');
         const list = (data.photos || []).filter(p => p.category === CAT)
           .sort((a, b) => (a.seq||999) - (b.seq||999));
         if (!list.length) { grid.innerHTML='<p class="empty">暂无自然摄影作品</p>'; return; }
-        grid.innerHTML = list.map(p => `<div class="photo-card"><img src="https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/images/${p.filename}" alt="${p.titleZh}" loading="lazy"><div class="photo-card-body"><h3>${p.titleZh}</h3><p class="sub">${p.titleEn||''} · ${p.location||''} ${p.year?'· '+p.year:''}</p><p>${(p.desc||'').replace(/\\n/g,'<br>').split('<br>').filter(Boolean).join('<br>')}</p></div></div>`).join('');
+        grid.innerHTML = list.map(p => `<div class="photo-card"><img src="https://cdn.jsdelivr.net/gh/${GH_OWNER}/${GH_REPO}/images/${p.filename}" alt="${p.titleZh}" loading="lazy"><div class="photo-card-body"><h3>${p.titleZh}</h3><p class="sub">${p.titleEn||''} · ${p.location||''} ${p.year?'· '+p.year:''}</p><p>${(p.desc||'').replace(/\\n/g,'<br>').split('<br>').filter(Boolean).join('<br>')}</p></div></div>`).join('');
       } catch(e) { document.getElementById('photoGrid').innerHTML='<p class="empty">加载失败，请刷新重试</p>'; }
     }
     loadPhotos();
