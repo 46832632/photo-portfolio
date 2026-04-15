@@ -1,12 +1,12 @@
 {
   "photos": [
     {
-      "id": "test_1776239593383",
-      "filename": "IMG_城_999_mnzr6x4u.jpg",
+      "id": "test_1776239725263",
+      "filename": "IMG_TEST_999_mnzr9qry.jpg",
       "seq": 999,
       "titleZh": "测试照片（可删除）",
       "titleEn": "Test Photo",
-      "location": "测试地点",
+      "location": "曼谷",
       "year": "2026",
       "category": "city",
       "catLabel": "城市",
