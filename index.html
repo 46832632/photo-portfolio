@@ -363,12 +363,12 @@
 <body>
 
 <header id="siteHeader">
-  <a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/admin.html" class="logo">桂花落</a>
+  <a href="admin.html" class="logo">桂花落</a>
   <div class="header-right">
     <ul class="nav-links">
       <li><a href="#work">作品</a></li>
-      <li><a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/index.html">春山空</a></li>
-      <li><a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/admin.html">春涧中</a></li>
+      <li><a href="index.html">春山空</a></li>
+      <li><a href="admin.html">春涧中</a></li>
     </ul>
 </div>
 </header>
@@ -439,7 +439,7 @@ async function loadPhotos() {
     allPhotos = (data.photos || []).sort((a, b) => (a.seq || 999) - (b.seq || 999));
     render();
   } catch (e) {
-    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
+    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
     PHOTO_COUNT.textContent = '0 张作品';
   }
 }
