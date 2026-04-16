@@ -464,7 +464,7 @@
 </div>
 
 <script>
-const allPhotos = [{"id": "v2-001", "filename": "hero-01.jpg", "titleZh": "静", "titleEn": "Stillness", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 1, "desc": ""}, {"id": "v2-002", "filename": "gallery-02.jpg", "titleZh": "痕", "titleEn": "Trace", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 2, "desc": ""}, {"id": "v2-003", "filename": "gallery-03.jpg", "titleZh": "暖", "titleEn": "Warmth", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 3, "desc": ""}, {"id": "v2-004", "filename": "01.jpg", "titleZh": "留", "titleEn": "Remain", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 4, "desc": ""}, {"id": "v2-005", "filename": "02.jpg", "titleZh": "念", "titleEn": "Memories", "category": "people", "catLabel": "人物", "location": "", "year": "2026", "seq": 5, "desc": ""}];
+var allPhotos = [{"id": "v2-001", "filename": "hero-01.jpg", "titleZh": "静", "titleEn": "Stillness", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 1, "desc": ""}, {"id": "v2-002", "filename": "gallery-02.jpg", "titleZh": "痕", "titleEn": "Trace", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 2, "desc": ""}, {"id": "v2-003", "filename": "gallery-03.jpg", "titleZh": "暖", "titleEn": "Warmth", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 3, "desc": ""}, {"id": "v2-004", "filename": "01.jpg", "titleZh": "留", "titleEn": "Remain", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 4, "desc": ""}, {"id": "v2-005", "filename": "02.jpg", "titleZh": "念", "titleEn": "Memories", "category": "people", "catLabel": "人物", "location": "", "year": "2026", "seq": 5, "desc": ""}];
 
 // ============ Photo System ============
 const GRID = document.getElementById('photoGrid');
@@ -525,7 +525,7 @@ FILTER_BAR.addEventListener('click', function(e) {
   if (!e.target.classList.contains('filter-btn')) return;
   currentCat = e.target.dataset.cat;
   document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.toggle('active', b === e.target); });
-  render();
+  
   window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
 });
 
@@ -533,7 +533,7 @@ document.querySelector('.nav-links').addEventListener('click', function(e) {
   if (!e.target.dataset.cat) return;
   currentCat = e.target.dataset.cat;
   document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.cat === currentCat); });
-  render();
+  
   window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
 });
 
