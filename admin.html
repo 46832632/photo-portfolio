@@ -1110,26 +1110,52 @@
       loadPhotos();
     }
 
-    function testConnection() {
-      const config = getConfig();
-      if (!config.token) {
-        showToast('请先配置 Token', 'error');
-        return;
-      }
+    async function testConnection() {
+      const btn = document.getElementById('testBtn');
+      const orig = btn ? btn.textContent : 'Test';
+      if (btn) { btn.textContent = 'Testing...'; btn.disabled = true; }
+      const status = document.getElementById('connStatus') || document.getElementById('statusLine');
+      const setMsg = (msg, ok) => {
+        if (status) { status.textContent = msg; status.style.color = ok ? 'green' : 'red'; }
+      };
 
-      fetch(`https://api.github.com/repos/${config.owner}/${config.repo}`, {
-        headers: { 'Authorization': `token ${config.token}` }
-      })
-      .then(r => {
-        if (!r.ok) throw new Error('连接失败');
-        return r.json();
-      })
-      .then(data => {
-        showToast('连接成功：' + data.full_name, 'success');
-      })
-      .catch(e => {
-        showToast('连接失败：' + e.message, 'error');
-      });
+      try {
+        const config = getConfig();
+        if (!config.token || !config.owner || !config.repo) {
+          setMsg('Fill in all three fields first', false);
+          return;
+        }
+
+        // Step 1: Verify token
+        setMsg('Verifying token...', null);
+        const me = await ghApi('GET', '/user');
+        setMsg('Token OK as: ' + (me.login || me.name || 'ok'), true);
+
+        // Step 2: Check repo exists + has write access
+        setMsg('Checking repo...', null);
+        await ghApi('GET', '/repos/' + config.owner + '/' + config.repo);
+        setMsg('Repo accessible: ' + config.owner + '/' + config.repo, true);
+
+        // Step 3: Upload a tiny test pixel to images/ (then delete it)
+        setMsg('Testing upload permission...', null);
+        const testPixel = '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAALCAAKAAoBAREA/8QAFgABAQEAAAAAAAAAAAAAAAAAAAII/8QAHhAAAgICAwEBAAAAAAAAAAAABAUBAwACBgcICf/aAAgBAQAAPwC7ZVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+        const testSha = await ghApi('GET', '/repos/' + config.owner + '/' + config.repo + '/contents/images/.lobster_test_pixel.jpg')
+          .then(r => r.sha).catch(() => null);
+        const testPayload = { message: 'lobster test', content: testPixel, branch: 'main' };
+        if (testSha) testPayload.sha = testSha;
+        await ghApi('PUT', '/repos/' + config.owner + '/' + config.repo + '/contents/images/.lobster_test_pixel.jpg', testPayload);
+        // Clean up
+        const sha2 = (await ghApi('GET', '/repos/' + config.owner + '/' + config.repo + '/contents/images/.lobster_test_pixel.jpg')).sha;
+        await ghApi('DELETE', '/repos/' + config.owner + '/' + config.repo + '/contents/images/.lobster_test_pixel.jpg',
+          { message: 'cleanup', sha: sha2, branch: 'main' });
+
+        setMsg('All checks passed! Ready to upload.', true);
+        if (btn) { btn.textContent = 'OK'; }
+        setTimeout(() => { if (btn) { btn.textContent = orig; btn.disabled = false; }}, 2000);
+      } catch (e) {
+        setMsg('Error: ' + e.message, false);
+        if (btn) { btn.textContent = 'Failed'; btn.disabled = false; }
+      }
     }
 
     function updateStatus(connected) {
