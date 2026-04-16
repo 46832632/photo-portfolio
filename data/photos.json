@@ -1,0 +1,40 @@
+{
+  "photos": [
+    {
+      "id": "v2-001",
+      "filename": "hero-01.jpg",
+      "titleZh": "静",
+      "titleEn": "Stillness",
+      "category": "city",
+      "catLabel": "城市",
+      "location": "",
+      "year": "2026",
+      "seq": 1,
+      "desc": ""
+    },
+    {
+      "id": "v2-002",
+      "filename": "gallery-02.jpg",
+      "titleZh": "痕",
+      "titleEn": "Trace",
+      "category": "nature",
+      "catLabel": "自然",
+      "location": "",
+      "year": "2026",
+      "seq": 2,
+      "desc": ""
+    },
+    {
+      "id": "v2-003",
+      "filename": "gallery-03.jpg",
+      "titleZh": "暖",
+      "titleEn": "Warmth",
+      "category": "nature",
+      "catLabel": "自然",
+      "location": "",
+      "year": "2026",
+      "seq": 3,
+      "desc": ""
+    }
+  ]
+}
