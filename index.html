@@ -2,413 +2,590 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>春涧 · Photography</title>
-  <meta name="description" content="人闲桂花落，夜静春山空 · 个人摄影作品">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，人闲桂花落，夜静春山空">
   <meta name="theme-color" content="#ffffff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+SC:wght@300;400&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
     :root {
-      --text: #111;
-      --dim: #999;
-      --light: #ccc;
-      --accent: #b08d57;
+      --bg: #ffffff;
+      --bg-cream: #fafaf8;
+      --text: #1a1a1a;
+      --text-dim: #888;
+      --text-light: #aaa;
+      --accent: #c9a84c;
       --border: rgba(0,0,0,0.06);
+      --shadow: 0 8px 40px rgba(0,0,0,0.08);
+      --shadow-hover: 0 16px 60px rgba(0,0,0,0.12);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-    body { font-family: 'Noto Serif SC', serif; background: #fff; color: var(--text); overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    /* Header */
+    /* ── Header ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       padding: 1.5rem 2.5rem;
-      background: rgba(255,255,255,0.88);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      transition: opacity 0.4s;
     }
     .logo {
       font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.1rem; color: var(--text);
-      text-decoration: none; letter-spacing: 0.25em;
+      font-size: 1.15rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.2em;
     }
-    .nav-links { list-style: none; display: flex; gap: 2rem; }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: relative;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
     .nav-links a {
-      font-size: 0.75rem; color: var(--dim); text-decoration: none;
-      letter-spacing: 0.12em; transition: color 0.2s;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--accent); }
-    .progress-bar {
-      position: fixed; top: 0; left: 0; height: 2px;
-      background: var(--accent); z-index: 300;
-      width: 0; transition: width 0.1s linear;
+    .nav-links a.active { color: var(--accent); }
+    .admin-link {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      transition: all 0.2s;
+      letter-spacing: 0.1em;
+    }
+    .admin-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Hero ── */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 2rem;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--text-light), transparent);
+      animation: scrollHint 2s ease-in-out infinite;
+    }
+    @keyframes scrollHint {
+      0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(8px); }
+    }
+    .hero-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--text);
+      letter-spacing: 0.4em;
+      margin-bottom: 0.5rem;
+      text-indent: 0.4em;
+    }
+    .hero-sub {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+    }
+    .hero-count {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.2em;
     }
 
-    /* Photo pages */
-    .photo-page {
-      height: 100vh; scroll-snap-align: start;
-      display: flex; flex-direction: column;
-      overflow: hidden; position: relative;
+    /* ── Filter bar ── */
+    .filter-bar {
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      padding: 0.8rem 2.5rem;
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
     }
-    .photo-wrap {
-      flex: 1; overflow: hidden; position: relative;
+    .filter-btn {
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.75rem;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.08em;
     }
-    .photo-wrap img {
-      width: 100%; height: 100%; object-fit: contain;
-      display: block; cursor: zoom-in;
-      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
-    }
-    .photo-wrap img:hover { transform: scale(1.02); }
-    .photo-meta {
-      padding: 1.2rem 2.5rem 1.8rem;
-      display: flex; align-items: baseline;
-      gap: 1.5rem; border-top: 1px solid var(--border);
-      min-height: 64px;
-    }
-    .photo-title-en {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem; font-weight: 300; font-style: italic;
-      color: var(--text); letter-spacing: 0.06em;
-      min-width: 160px;
-    }
-    .photo-location, .photo-year {
-      font-size: 0.72rem; color: var(--dim); letter-spacing: 0.12em;
-    }
-    .photo-sep { color: var(--light); font-size: 0.7rem; }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--text); color: white; border-color: var(--text); }
 
-    /* Loading */
-    .loading-screen {
-      height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 1rem;
+    /* ── Photo grid ── */
+    .photo-grid {
+      padding: 3rem 2rem 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      columns: 3;
+      column-gap: 0.8rem;
     }
-    .loading-screen p { font-size: 0.8rem; color: var(--dim); letter-spacing: 0.2em; }
+    @media (max-width: 1024px) { .photo-grid { columns: 2; } }
+    @media (max-width: 600px) { .photo-grid { columns: 1; } }
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--bg-cream);
+      display: block;
+      margin-bottom: 0.8rem;
+      break-inside: avoid;
+    }
+    .photo-card img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .photo-card:hover img { transform: scale(1.03); }
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+    .photo-card:hover .photo-overlay { opacity: 1; }
+    .photo-overlay-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.3rem;
+      color: white;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.3rem;
+    }
+    .photo-overlay-meta {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.1em;
+    }
+    .photo-overlay-cat {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.65rem;
+      color: white;
+      background: rgba(0,0,0,0.4);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+    }
 
-    /* Footer */
-    .site-footer {
-      min-height: 100vh; scroll-snap-align: start;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 0.8rem;
-      padding: 5rem 2rem; text-align: center;
+    /* ── States ── */
+    .empty-state {
+      text-align: center;
+      padding: 6rem 2rem;
+      color: var(--text-light);
+      column-span: all;
+    }
+    .empty-state-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+    .loading-state {
+      text-align: center;
+      padding: 6rem 2rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      column-span: all;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-size: 2rem;
+      color: var(--text-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: var(--bg-cream); }
+    .lightbox-info {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .lightbox-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      letter-spacing: 0.2em;
+    }
+    .lightbox-meta {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+      letter-spacing: 0.1em;
+    }
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid var(--border);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 4rem 2rem;
       border-top: 1px solid var(--border);
     }
     .footer-title {
-      font-family: 'ZCOOL XiaoWei', serif; font-size: 1.3rem;
-      letter-spacing: 0.4em; color: var(--text); text-indent: 0.4em;
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
     }
-    .footer-verse {
-      font-size: 0.75rem; color: var(--light); letter-spacing: 0.15em;
-    }
-    .footer-admin {
-      margin-top: 2rem;
-      font-size: 0.7rem; color: var(--dim); text-decoration: none;
-      letter-spacing: 0.1em; border-bottom: 1px solid var(--border);
-      padding-bottom: 1px; transition: all 0.2s;
-    }
-    .footer-admin:hover { color: var(--accent); border-color: var(--accent); }
-    .footer-count {
-      font-size: 0.7rem; color: var(--light); letter-spacing: 0.15em;
+    .footer-sub {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      letter-spacing: 0.15em;
     }
 
-    /* Page indicator */
-    .page-indicator {
-      position: fixed; right: 2rem; top: 50%; transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 0.5rem; z-index: 200;
+    /* ── Scroll fade ── */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    .dot {
-      width: 4px; height: 4px; border-radius: 50%;
-      background: var(--light); cursor: pointer;
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Mobile ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      width: 36px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
       transition: all 0.3s;
     }
-    .dot.active { background: var(--accent); height: 16px; border-radius: 2px; }
-
-    /* Mobile */
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 1rem 2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      padding: 0.8rem 0;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.1em;
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
     @media (max-width: 768px) {
       header { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
-      .photo-meta { padding: 1rem 1.5rem 1.4rem; flex-wrap: wrap; gap: 0.5rem; }
-      .photo-title-en { font-size: 0.95rem; min-width: unset; }
-      .page-indicator { display: none; }
-    }
-  
-    /*
-.hero-scroll-hint::before {
-      content: '';
-      display: block;
-      width: 1px; height: 2rem;
-      background: var(--light);
-      margin: 0 auto 0.5rem;
-    }
-    @media (max-width: 768px) {
-      .hero-overlay { bottom: 3.5rem; padding: 1.5rem 1rem; }
-      .hero-title { font-size: clamp(1.3rem, 6vw, 2rem); }
-      .hero-scroll-hint { bottom: 1.5rem; }
+      .hamburger { display: flex; }
+      .header-right { position: relative; }
+      .filter-bar { padding: 0.7rem 1rem; }
+      .photo-grid { padding: 2rem 1rem 4rem; }
+      .lightbox-prev { left: 0.5rem; }
+      .lightbox-next { right: 0.5rem; }
     }
 
-
-    /* Cover page — v2.1 style title */
-    .cover-page {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-    }
-    .cover-inner {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.2rem;
-    }
-    .cover-title {
-      font-family: 'Noto Serif SC', serif;
-      font-size: clamp(2rem, 7vw, 4.5rem);
-      font-weight: 300;
-      color: #111;
-      letter-spacing: 0.35em;
-      text-indent: 0.35em;
-      margin: 0;
-    }
-    .cover-subtitle {
-      font-size: 0.78rem;
-      color: #bbb;
-      letter-spacing: 0.3em;
-      margin: 0;
-    }
-    .cover-arrow {
-      margin-top: 0.5rem;
-      color: #ccc;
-      cursor: pointer;
-      animation: float-down 2.2s ease-in-out infinite;
-      transition: color 0.3s;
-    }
-    .cover-arrow:hover { color: #888; }
-    @keyframes float-down {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(7px); }
-    }
-    @media (max-width: 768px) {
-      .cover-title { letter-spacing: 0.25em; text-indent: 0.25em; }
-    }
-
-
-    /* Cover page — v2.1 style title */
-    .cover-page {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-    }
-    .cover-inner {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.2rem;
-    }
-    .cover-title {
-      font-family: 'Noto Serif SC', serif;
-      font-size: clamp(2rem, 7vw, 4.5rem);
-      font-weight: 300;
-      color: #111;
-      letter-spacing: 0.35em;
-      text-indent: 0.35em;
-      margin: 0;
-    }
-    .cover-subtitle {
-      font-size: 0.78rem;
-      color: #bbb;
-      letter-spacing: 0.3em;
-      margin: 0;
-    }
-    .cover-arrow {
-      margin-top: 0.5rem;
-      color: #ccc;
-      cursor: pointer;
-      animation: float-down 2.2s ease-in-out infinite;
-      transition: color 0.3s;
-    }
-    .cover-arrow:hover { color: #888; }
-    @keyframes float-down {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(7px); }
-    }
-    @media (max-width: 768px) {
-      .cover-title { letter-spacing: 0.25em; text-indent: 0.25em; }
-    }
-
-    /* ensure snap on all pages */
-    .photo-page, .cover-page { scroll-snap-align: start; scroll-snap-stop: always; }
-</style>
+    /* ── Favicon ── */
+    link[rel="icon"] { display: none; }
+  </style>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
-
-<header>
-  <a href="#" class="logo">春涧</a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="scrollToPage(0);return false;">Home</a></li>
-  </ul>
+<!-- Header -->
+<header id="siteHeader">
+  <a href="admin.html" class="logo">桂花落</a>
+  <div class="header-right">
+    <ul class="nav-links">
+      <li><a href="#work">作品</a></li>
+      <li><a href="index.html">春山空</a></li>
+      <li><a href="admin.html">春涧中</a></li>
+    </ul>
+  </div>
 </header>
 
-<div id="photoContainer">
-
-    <!-- 封面：第一屏文字布局 -->
-    <div class="cover-page" id="page0">
-      <div class="cover-inner">
-        <h1 class="cover-title">人闲桂花落</h1>
-        <p class="cover-subtitle">夜静春山空</p>
-        <div class="cover-arrow" id="coverArrow">
-          <svg width="18" height="26" viewBox="0 0 18 26" fill="none">
-            <path d="M9 2 L9 20 M3 14 L9 20 L15 14"
-                  stroke="currentColor" stroke-width="1.2"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <section class="photo-page" id="page1" data-index="1">
-      <div class="photo-wrap">
-        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/hero-01.jpg" alt="Stillness" loading="eager"
-             onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="photo-meta">
-        <span class="photo-title-en">Stillness</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
-      </div>
-    </section>
-    <section class="photo-page" id="page2" data-index="2">
-      <div class="photo-wrap">
-        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-02.jpg" alt="Trace" loading="eager"
-             onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="photo-meta">
-        <span class="photo-title-en">Trace</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
-      </div>
-    </section>
-    <section class="photo-page" id="page3" data-index="3">
-      <div class="photo-wrap">
-        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-03.jpg" alt="Warmth" loading="lazy"
-             onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="photo-meta">
-        <span class="photo-title-en">Warmth</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
-      </div>
-    </section>
-    <section class="photo-page" id="page4" data-index="4">
-      <div class="photo-wrap">
-        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/01.jpg" alt="Remain" loading="lazy"
-             onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="photo-meta">
-        <span class="photo-title-en">Remain</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
-      </div>
-    </section>
-    <section class="photo-page" id="page5" data-index="5">
-      <div class="photo-wrap">
-        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/02.jpg" alt="Memories" loading="lazy"
-             onerror="this.parentElement.style.display='none'">
-      </div>
-      <div class="photo-meta">
-        <span class="photo-title-en">Memories</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
-      </div>
-    </section>
-</div>
-
-<div class="page-indicator" id="pageIndicator"><div class="dot active" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div><div class="dot" onclick="scrollToPage(5)"></div></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div><div class="dot" onclick="scrollToPage(5)"></div></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div> id="pageIndicator"><div class="dot active" onclick="scrollToPage(0)"></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div>
-
-<section class="site-footer">
-  <p class="footer-title">人闲桂花落</p>
-  <p class="footer-verse">夜静春山空 · 月出惊山鸟</p>
-  <p class="footer-count" id="footerCount">5 works</p>
-  <a href="admin.html" class="footer-admin">Admin →</a>
+<!-- Hero -->
+<section class="hero fade-section" id="heroSection">
+  <h1 class="hero-title">人闲桂花落</h1>
+  <p class="hero-sub">夜静春山空</p>
+  <p class="hero-count" id="photoCount">加载中...</p>
 </section>
 
+<!-- Filter -->
+<div class="filter-bar" id="filterBar" style="display:none;">
+  <button class="filter-btn active" data-cat="all">全部</button>
+  <button class="filter-btn" data-cat="city">城市</button>
+  <button class="filter-btn" data-cat="nature">自然</button>
+  <button class="filter-btn" data-cat="people">人物</button>
+  <button class="filter-btn" data-cat="arch">建筑</button>
+  <button class="filter-btn" data-cat="food">饮食</button>
+</div>
 
-<script>(function(){
-  var currentPage = 0;
-  var lastWheel = 0;
+<!-- Photo grid -->
+<div class="photo-grid" id="photoGrid">
+  <div class="loading-state">正在加载作品...</div>
+</div>
 
-  function getPages(){ return document.querySelectorAll('.photo-page'); }
-  function getDots(){ return document.querySelectorAll('.dot'); }
-  function getBar(){ return document.getElementById('progressBar'); }
+<!-- Footer -->
+<section class="footer">
+  <p class="footer-title">人闲桂花落</p>
+  <p class="footer-sub">夜静春山空 · 月出惊山鸟</p>
+</section>
 
-  function updateUI(idx){
-    var pages = getPages(), dots = getDots(), n = pages.length;
-    if(n === 0) return;
-    idx = Math.max(0, Math.min(idx, n-1));
-    currentPage = idx;
-    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active', j===currentPage-1 || (j===0&&idx===0));
-    var bar = getBar();
-    if(bar) bar.style.width = (n>2 ? ((currentPage-1)/(n-2)*100) : 0) + '%';
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-prev" id="lbPrev" onclick="lbNav(-1)">&#8592;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lightbox-next" id="lbNext" onclick="lbNav(1)">&#8594;</button>
+  <div class="lightbox-info">
+    <div class="lightbox-title" id="lbTitle"></div>
+    <div class="lightbox-meta" id="lbMeta"></div>
+  </div>
+</div>
+
+<script>
+const allPhotos = [{"id": "v2-001", "filename": "hero-01.jpg", "titleZh": "静", "titleEn": "Stillness", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 1, "desc": ""}, {"id": "v2-002", "filename": "gallery-02.jpg", "titleZh": "痕", "titleEn": "Trace", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 2, "desc": ""}, {"id": "v2-003", "filename": "gallery-03.jpg", "titleZh": "暖", "titleEn": "Warmth", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 3, "desc": ""}, {"id": "v2-004", "filename": "01.jpg", "titleZh": "留", "titleEn": "Remain", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 4, "desc": ""}, {"id": "v2-005", "filename": "02.jpg", "titleZh": "念", "titleEn": "Memories", "category": "people", "catLabel": "人物", "location": "", "year": "2026", "seq": 5, "desc": ""}];
+
+// ============ Photo System ============
+const GRID = document.getElementById('photoGrid');
+const FILTER_BAR = document.getElementById('filterBar');
+const PHOTO_COUNT = document.getElementById('photoCount');
+const LIGHTBOX = document.getElementById('lightbox');
+const LB_IMG = document.getElementById('lbImg');
+const LB_TITLE = document.getElementById('lbTitle');
+const LB_META = document.getElementById('lbMeta');
+
+const CAT_MAP = { city:'城市', nature:'自然', people:'人物', arch:'建筑', food:'饮食' };
+const IMG_BASE = 'https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/';
+
+let currentCat = 'all';
+let currentIndex = 0;
+let visiblePhotos = [];
+
+function getVisible() {
+  if (currentCat === 'all') return allPhotos;
+  return allPhotos.filter(p => p.category === currentCat);
+}
+
+function render() {
+  visiblePhotos = getVisible();
+  PHOTO_COUNT.textContent = allPhotos.length + ' 张作品';
+
+  if (visiblePhotos.length === 0) {
+    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;">该分类暂无照片</p></div>';
+    FILTER_BAR.style.display = allPhotos.length > 0 ? 'flex' : 'none';
+    return;
   }
 
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting && e.intersectionRatio >= 0.5){
-        updateUI(parseInt(e.target.getAttribute('data-index')||'0', 10));
-      }
+  FILTER_BAR.style.display = 'flex';
+  GRID.innerHTML = visiblePhotos.map(function(p, i) {
+    var title = p.titleZh || p.titleEn || '';
+    var catLabel = CAT_MAP[p.category] || '';
+    var meta = [p.location, p.year].filter(Boolean).join(' · ');
+    return '<div class="photo-card fade-section" data-index="' + i + '" onclick="openLightbox(' + i + ')">' +
+      '<img src="' + IMG_BASE + p.filename + '" alt="' + title + '" loading="lazy" onerror="this.parentElement.style.display='none'">' +
+      '<div class="photo-overlay">' +
+        (catLabel ? '<span class="photo-overlay-cat">' + catLabel + '</span>' : '') +
+        (title ? '<div class="photo-overlay-title">' + title + '</div>' : '') +
+        (meta ? '<div class="photo-overlay-meta">' + meta + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Fade in staggered
+  setTimeout(function() {
+    document.querySelectorAll('.photo-card').forEach(function(el, i) {
+      setTimeout(function() { el.classList.add('visible'); }, i * 80);
     });
-  }, {root:null, threshold:0.5});
+  }, 50);
+}
 
-  function observePages(){
-    observer.disconnect();
-    getPages().forEach(function(p){ observer.observe(p); });
-    updateUI(0);
-  }
+// Filter clicks
+FILTER_BAR.addEventListener('click', function(e) {
+  if (!e.target.classList.contains('filter-btn')) return;
+  currentCat = e.target.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.toggle('active', b === e.target); });
+  render();
+  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
+});
 
-  document.addEventListener('wheel', function(e){
-    if(Date.now() - lastWheel < 900) return;
-    var pages = getPages(), dir = e.deltaY > 0 ? 1 : -1;
-    var next = currentPage + dir;
-    if(next < 0 || next >= pages.length) return;
-    e.preventDefault();
-    lastWheel = Date.now();
-    pages[next].scrollIntoView({behavior:'smooth', block:'start'});
-  }, {passive:false});
+document.querySelector('.nav-links').addEventListener('click', function(e) {
+  if (!e.target.dataset.cat) return;
+  currentCat = e.target.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.cat === currentCat); });
+  render();
+  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
+});
 
-  var touchY = 0;
-  document.addEventListener('touchstart', function(e){ touchY = e.touches[0].clientY; }, {passive:true});
-  document.addEventListener('touchend', function(e){
-    var pages = getPages(), d = touchY - e.changedTouches[0].clientY;
-    if(Math.abs(d) < 50) return;
-    var next = currentPage + (d > 0 ? 1 : -1);
-    next = Math.max(0, Math.min(next, pages.length-1));
-    if(next !== currentPage) pages[next].scrollIntoView({behavior:'smooth', block:'start'});
-  }, {passive:true});
+// Lightbox
+function openLightbox(index) {
+  currentIndex = index;
+  var p = visiblePhotos[index];
+  LB_IMG.src = IMG_BASE + p.filename;
+  LB_TITLE.textContent = p.titleZh || p.titleEn || '';
+  var catLabel = CAT_MAP[p.category] || '';
+  var metaParts = [catLabel, p.location, p.year].filter(Boolean);
+  LB_META.textContent = metaParts.join(' · ');
+  LIGHTBOX.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-  var arrow = document.getElementById('coverArrow');
-  if(arrow) arrow.addEventListener('click', function(){
-    var pages = getPages();
-    if(pages[1]) pages[1].scrollIntoView({behavior:'smooth', block:'start'});
-  });
+function closeLightbox() {
+  LIGHTBOX.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
-  window.scrollToPage = function(idx){
-    var pages = getPages();
-    if(pages[idx]) pages[idx].scrollIntoView({behavior:'smooth', block:'start'});
-  };
+function lbNav(dir) {
+  currentIndex = (currentIndex + dir + visiblePhotos.length) % visiblePhotos.length;
+  openLightbox(currentIndex);
+}
 
-  window.addEventListener('scroll', function(){
-    var st = window.scrollY, pages = getPages(), n = pages.length;
-    if(n === 0) return;
-    var bar = getBar();
-    if(bar) bar.style.width = ((document.documentElement.scrollHeight-window.innerHeight)>0
-      ? (st/(document.documentElement.scrollHeight-window.innerHeight)*100) : 0)+'%';
-    var active = 0;
-    for(var i=0;i<n;i++) if(pages[i].offsetTop <= st+5) active = i;
-    var dots = getDots();
-    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active', j===active-1||(j===0&&active===0));
-  }, {passive:true});
+document.addEventListener('keydown', function(e) {
+  if (!LIGHTBOX.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
 
-  observePages();
-  new MutationObserver(observePages).observe(document.getElementById('photoContainer')||document.body,{childList:true,subtree:true});
-  updateUI(0);
-})();</script>
+LIGHTBOX.addEventListener('click', function(e) {
+  if (e.target === LIGHTBOX) closeLightbox();
+});
+
+// Hero fade in
+var heroObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-section').forEach(function(el) { heroObs.observe(el); });
+
+// Header hide on scroll
+window.addEventListener('scroll', function() {
+  var h = document.getElementById('siteHeader');
+  h.style.opacity = window.scrollY > 80 ? '0' : '1';
+}, { passive: true });
+
+// Init — no fetch needed, data is hardcoded
+allPhotos.sort(function(a, b) { return (a.seq || 999) - (b.seq || 999); });
+render();
+</script>
 </body>
 </html>
