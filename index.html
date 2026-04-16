@@ -1,802 +1,376 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>人闲桂花落 | 摄影作品集</title>
-  <meta name="description" content="人闲桂花落，夜静春山空 - 摄影作品集">
-  
-  <!-- 字体：ZCOOL XiaoWei + Noto Serif SC -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-  
-  <style>
-    /* ========== CSS 变量 ========== */
-    :root {
-      --bg-primary: #ffffff;
-      --bg-card: #f8f8f8;
-      --text-primary: #1a1a1a;
-      --text-secondary: rgba(0,0,0,0.55);
-      --text-muted: rgba(0,0,0,0.35);
-      --accent: #c8a96e;
-      --accent-dim: rgba(200,169,110,0.25);
-      --nav-bg: rgba(255,255,255,0.92);
-      --transition-fast: 0.2s ease;
-      --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      --gap: 0.7rem;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人闲桂花落 | 摄影作品集</title>
+<meta name="description" content="人闲桂花落，夜静春山空 - 摄影作品集">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Serif SC','STSong',serif;font-weight:300;background:#fff;color:#1a1a1a;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block}
+button{font-family:inherit;cursor:pointer}
+::selection{background:rgba(200,169,110,0.15)}
 
-    /* ========== Reset & Base ========== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y proximity;
-    }
-    
-    body {
-      font-family: 'Noto Serif SC', 'Songti SC', serif;
-      font-weight: 300;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+/* ── Progress ── */
+#progressBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#c8a96e,#e8d5a3);width:0;z-index:10002;transition:width 0.12s linear}
 
-    a { color: inherit; text-decoration: none; }
-    img { display: block; max-width: 100%; height: auto; }
+/* ── Nav ── */
+#siteNav{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;background:rgba(255,255,255,0.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;transition:box-shadow 0.3s,transform 0.4s}
+#siteNav.shadowed{box-shadow:0 1px 16px rgba(0,0,0,0.06)}
+#siteNav.hidden{transform:translateY(-100%)}
+.logo{font-family:'ZCOOL XiaoWei',serif;font-size:1.2rem;letter-spacing:0.12em}
+.nav-right{display:flex;align-items:center;gap:2rem;font-size:0.8rem;color:#666}
+.nav-right a{transition:color 0.2s}
+.nav-right a:hover{color:#c8a96e}
+.admin-btn{padding:0.3rem 0.8rem;border:1px solid rgba(0,0,0,0.1);border-radius:20px;transition:all 0.2s}
+.admin-btn:hover{border-color:#c8a96e;color:#c8a96e}
 
-    /* ========== 进度条 ========== */
-    #progressBar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), #e8d5a3);
-      width: 0%;
-      z-index: 10002;
-      transition: width 0.1s linear;
-    }
+/* ── Carousel ── */
+#carousel{position:relative;height:calc(100vh - 60px);min-height:400px;max-height:860px;overflow:hidden;background:#fafaf8}
+#carouselTrack{position:absolute;inset:0}
+.carousel-slide{position:absolute;inset:0;opacity:0;transition:opacity 0.9s;cursor:pointer}
+.carousel-slide.active{opacity:1}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+.carousel-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 25%,rgba(0,0,0,0.2) 55%,rgba(0,0,0,0.6) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:3rem 3rem;pointer-events:none}
+.carousel-meta{color:rgba(255,255,255,0.7);font-size:0.72rem;letter-spacing:0.2em;margin-bottom:0.5rem;opacity:0;transform:translateY(8px);transition:opacity 0.6s 0.3s,transform 0.6s 0.3s}
+.carousel-title{font-family:'ZCOOL XiaoWei',serif;font-size:clamp(1.5rem,4vw,2.8rem);color:#fff;letter-spacing:0.2em;text-shadow:0 2px 20px rgba(0,0,0,0.3);opacity:0;transform:translateY(12px);transition:opacity 0.7s 0.5s,transform 0.7s 0.5s}
+.carousel-sub{font-size:0.78rem;color:rgba(255,255,255,0.6);letter-spacing:0.2em;margin-top:0.4rem;opacity:0;transform:translateY(8px);transition:opacity 0.7s 0.7s,transform 0.7s 0.7s}
+.carousel-slide.active .carousel-meta,
+.carousel-slide.active .carousel-title,
+.carousel-slide.active .carousel-sub{opacity:1;transform:translateY(0)}
 
-    /* ========== 顶部导航 ========== */
-    #siteHeader {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 56px;
-      background: var(--nav-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      z-index: 1000;
-      transition: transform var(--transition-smooth), opacity var(--transition-smooth);
-    }
-    
-    #siteHeader.hidden {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
+.carousel-dots{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:0.5rem;z-index:10}
+.c-dot{width:28px;height:2px;background:rgba(255,255,255,0.4);border:none;border-radius:1px;cursor:pointer;transition:all 0.35s}
+.c-dot.active{background:#fff;width:40px}
+.c-dot:hover{background:rgba(255,255,255,0.8)}
 
-    .logo {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.25rem;
-      letter-spacing: 0.15em;
-      color: var(--text-primary);
-    }
+.c-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:50%;color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;backdrop-filter:blur(4px);transition:background 0.2s}
+.c-arrow:hover{background:rgba(255,255,255,0.35)}
+.c-arrow.prev{left:1.5rem}
+.c-arrow.next{right:1.5rem}
 
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
+/* ── Filter ── */
+#filterBar{position:sticky;top:60px;z-index:998;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.05);padding:0.85rem 2.5rem;display:flex;justify-content:center;gap:0.4rem;flex-wrap:wrap}
+.f-btn{background:transparent;border:1px solid rgba(0,0,0,0.09);color:#999;font-size:0.75rem;font-family:inherit;padding:0.35rem 0.9rem;letter-spacing:0.06em;border-radius:2px;cursor:pointer;transition:all 0.2s}
+.f-btn:hover{border-color:#c8a96e;color:#c8a96e}
+.f-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
 
-    .nav-links a {
-      transition: color var(--transition-fast);
-    }
-    .nav-links a:hover { color: var(--accent); }
+/* ── Grid ── */
+#photoGrid{padding:2.5rem 2rem 6rem;max-width:1560px;margin:0 auto;columns:3;column-gap:0.65rem}
+@media(max-width:1100px){#photoGrid{columns:2}}
+@media(max-width:580px){#photoGrid{columns:1;padding:1.5rem 1rem 5rem}}
 
-    /* ========== Hero 全屏标题页 ========== */
-    #heroPage {
-      position: relative;
-      height: 100vh;
-      min-height: 500px;
-      background: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      scroll-snap-align: start;
-      overflow: hidden;
-    }
+.p-card{break-inside:avoid;margin-bottom:0.65rem;position:relative;overflow:hidden;border-radius:3px;cursor:pointer;opacity:0;transform:translateY(16px);transition:opacity 0.55s,transform 0.55s,box-shadow 0.3s}
+.p-card.visible{opacity:1;transform:translateY(0)}
+.p-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.1)}
+.p-card img{width:100%;height:auto;display:block;transition:transform 0.6s cubic-bezier(0.4,0,0.2,1)}
+.p-card:hover img{transform:scale(1.04)}
+.p-info{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 50%);opacity:0;transition:opacity 0.3s;display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem}
+.p-card:hover .p-info{opacity:1}
+.p-ttl{font-family:'ZCOOL XiaoWei',serif;font-size:0.95rem;color:#fff;letter-spacing:0.08em}
+.p-sub{font-size:0.7rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;letter-spacing:0.04em}
+.no-result{text-align:center;padding:5rem 2rem;color:#999;font-size:0.9rem;column-span:all;-webkit-column-span:all}
 
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: #fff;
-      pointer-events: none;
-    }
+/* ── Lightbox ── */
+#lightbox{position:fixed;inset:0;z-index:9999;background:rgba(255,255,255,0.97);display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s}
+#lightbox.active{opacity:1;pointer-events:all}
+#lbImgWrap{flex:1;display:flex;align-items:center;justify-content:center;padding:68px 80px 0;overflow:hidden;min-height:0;cursor:grab}
+#lbImgWrap:active{cursor:grabbing}
+#lbImg{max-width:100%;max-height:100%;object-fit:contain;border-radius:2px;transform:scale(0.96);opacity:0;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.4s;user-select:none;-webkit-user-drag:none}
+#lbImg.loaded{transform:scale(1);opacity:1}
+#lbBar{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 2rem 1.2rem;border-top:1px solid rgba(0,0,0,0.06);gap:1rem;flex-shrink:0}
+.lb-info{flex:1;min-width:0}
+#lbTitle{font-family:'ZCOOL XiaoWei',serif;font-size:1.05rem;letter-spacing:0.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lbMeta{font-size:0.72rem;color:#999;margin-top:0.2rem;letter-spacing:0.04em}
+.lb-actions{display:flex;align-items:center;gap:0.5rem;flex-shrink:0}
+.lb-btn{width:38px;height:38px;background:transparent;border:1px solid rgba(0,0,0,0.1);border-radius:50%;color:#666;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s}
+.lb-btn:hover{border-color:#c8a96e;color:#c8a96e}
+#lbClose{font-size:1.3rem}
 
-    .hero-content {
-      position: relative;
-      text-align: center;
-      z-index: 2;
-      padding: 0 1.5rem;
-    }
+/* ── Footer ── */
+footer{text-align:center;padding:3.5rem 2rem;border-top:1px solid rgba(0,0,0,0.05);color:#999;font-size:0.72rem;letter-spacing:0.12em}
+footer em{color:#c8a96e;font-style:normal}
 
-    .hero-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: clamp(2.2rem, 7vw, 5rem);
-      letter-spacing: 0.5em;
-      text-indent: 0.5em;
-      line-height: 1.35;
-      margin-bottom: 1.2rem;
-      
-      animation: fadeInUp 1.2s ease forwards;
-    }
-
-    .hero-subtitle {
-      font-size: clamp(0.7rem, 1.8vw, 1rem);
-      color: var(--text-muted);
-      letter-spacing: 0.4em;
-      text-indent: 0.4em;
-      animation: fadeInUp 1.2s 0.3s ease forwards;
-      opacity: 0;
-    }
-
-    .hero-count {
-      margin-top: 3rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      letter-spacing: 0.15em;
-      animation: fadeInUp 1.2s 0.6s ease forwards;
-      opacity: 0;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      animation: bounce 2s infinite;
-      cursor: pointer;
-    }
-
-    .scroll-hint svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--text-muted);
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ========== 分类筛选栏 ========== */
-    #filterBar {
-      position: sticky;
-      top: 56px;
-      background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 0.9rem 1.5rem;
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .filter-btn {
-      background: transparent;
-      border: 1px solid rgba(0,0,0,0.1);
-      color: var(--text-secondary);
-      padding: 0.45rem 1rem;
-      font-size: 0.75rem;
-      font-family: inherit;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      border-radius: 2px;
-    }
-
-    .filter-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .filter-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: var(--bg-primary);
-    }
-
-    /* ========== 照片瀑布流 ========== */
-    #photoGrid {
-      padding: 2rem 1.5rem 6rem;
-      max-width: 1600px;
-      margin: 0 auto;
-      columns: 3;
-      column-gap: var(--gap);
-    }
-
-    @media (max-width: 1100px) {
-      #photoGrid { columns: 2; }
-    }
-
-    @media (max-width: 600px) {
-      #photoGrid { columns: 1; padding: 1rem; }
-    }
-
-    .photo-item {
-      break-inside: avoid;
-      margin-bottom: var(--gap);
-      position: relative;
-      cursor: pointer;
-      overflow: hidden;
-      
-      border-radius: 2px;
-    }
-
-    .photo-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform var(--transition-smooth), opacity var(--transition-smooth);
-    }
-
-    .photo-item:hover img {
-      transform: scale(1.03);
-    }
-
-    .photo-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity var(--transition-fast);
-      display: flex;
-      align-items: flex-end;
-      padding: 1rem;
-    }
-
-    .photo-item:hover .photo-overlay {
-      opacity: 1;
-    }
-
-    .photo-info {
-      color: #fff;
-    }
-
-    .photo-title {
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-    }
-
-    .photo-meta {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.7);
-      margin-top: 0.25rem;
-    }
-
-    /* 加载骨架屏 */
-    .skeleton {
-      background: linear-gradient(90deg, #e8e8e8 25%, #f2f2f2 50%, #e8e8e8 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    /* ========== 灯箱 ========== */
-    #lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.96);
-      z-index: 10001;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-fast);
-    }
-
-    #lightbox.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    #lbImg {
-      max-width: 92vw;
-      max-height: 92vh;
-      object-fit: contain;
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-    }
-
-    #lightbox.active #lbImg {
-      transform: scale(1);
-    }
-
-    .lb-close {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 44px;
-      height: 44px;
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all var(--transition-fast);
-      border-radius: 50%;
-    }
-
-    .lb-close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: var(--accent);
-    }
-
-    .lb-nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px;
-      height: 80px;
-      background: transparent;
-      border: none;
-      color: rgba(255,255,255,0.5);
-      font-size: 2rem;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lb-nav:hover {
-      color: var(--accent);
-    }
-
-    .lb-nav.prev { left: 1rem; }
-    .lb-nav.next { right: 1rem; }
-
-    .lb-info {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      color: rgba(255,255,255,0.8);
-    }
-
-    .lb-title {
-      font-size: 1rem;
-      letter-spacing: 0.1em;
-    }
-
-    .lb-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.3rem;
-    }
-
-    .lb-counter {
-      position: absolute;
-      bottom: 2rem;
-      right: 2rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* 移动端触摸滑动提示 */
-    .touch-hint {
-      display: none;
-    }
-
-    @media (hover: none) {
-      .touch-hint {
-        display: block;
-        position: absolute;
-        bottom: 4rem;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        opacity: 0.6;
-      }
-    }
-
-    /* ========== 页脚 ========== */
-    .site-footer {
-      text-align: center;
-      padding: 4rem 1.5rem;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      border-top: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .site-footer span {
-      color: var(--accent);
-    }
-
-    /* ========== 无图提示 ========== */
-    .no-photos {
-      text-align: center;
-      padding: 4rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-  </style>
+/* ── Responsive ── */
+@media(max-width:768px){
+  #siteNav{padding:0 1.2rem}
+  .nav-right{font-size:0.75rem;gap:1rem}
+  .carousel-overlay{padding:2rem 1.5rem}
+  .carousel-title{font-size:1.5rem}
+  .c-arrow{width:40px;height:40px;font-size:1rem}
+  .c-arrow.prev{left:0.75rem}
+  .c-arrow.next{right:0.75rem}
+  #lbImgWrap{padding:60px 0.75rem 0}
+  #lbBar{padding:0.7rem 1rem 1rem}
+  #lbTitle{font-size:0.95rem}
+}
+</style>
 </head>
 <body>
-  <!-- 进度条 -->
-  <div id="progressBar"></div>
 
-  <!-- 顶部导航 -->
-  <header id="siteHeader">
-    <a href="/" class="logo">人闲桂花落</a>
-    <nav class="nav-links">
-      <a href="#photoGrid">作品</a>
-      <a href="#heroPage">关于</a>
-    </nav>
-  </header>
+<div id="progressBar"></div>
 
-  <!-- Hero 标题页 -->
-  <section id="heroPage">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <h1 class="hero-title">人闲桂花落</h1>
-      <p class="hero-subtitle">夜静春山空</p>
-      <p class="hero-count">共 <span id="totalCount">0</span> 组作品</p>
-    </div>
-    <a href="#photoGrid" class="scroll-hint">
-      <span>探索</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
-        <path d="M12 5v14M5 12l7 7 7-7"/>
-      </svg>
-    </a>
-  </section>
-
-  <!-- 分类筛选 -->
-  <nav id="filterBar">
-    <button class="filter-btn active" data-cat="all">全部</button>
-    <button class="filter-btn" data-cat="city">城市</button>
-    <button class="filter-btn" data-cat="nature">自然</button>
-    <button class="filter-btn" data-cat="people">人物</button>
-    <button class="filter-btn" data-cat="arch">建筑</button>
-    <button class="filter-btn" data-cat="food">饮食</button>
-  </nav>
-
-  <!-- 照片瀑布流 -->
-  <main id="photoGrid">
-    <!-- 照片由 JS 渲染 -->
-  </main>
-
-  <!-- 灯箱 -->
-  <div id="lightbox">
-    <button class="lb-close" aria-label="关闭">×</button>
-    <button class="lb-nav prev" aria-label="上一张">‹</button>
-    <img id="lbImg" src="" alt="" width="1600" height="1067">
-    <button class="lb-nav next" aria-label="下一张">›</button>
-    <div class="lb-info">
-      <p class="lb-title" id="lbTitle"></p>
-      <p class="lb-meta" id="lbMeta"></p>
-    </div>
-    <p class="lb-counter"><span id="lbCurrent">1</span> / <span id="lbTotal">1</span></p>
-    <p class="touch-hint">左右滑动切换</p>
+<!-- Nav -->
+<nav id="siteNav">
+  <a href="/" class="logo">人闲桂花落</a>
+  <div class="nav-right">
+    <a href="#carousel">作品</a>
+    <a href="#photoGrid">影集</a>
+    <a href="admin.html" class="admin-btn">管理</a>
   </div>
+</nav>
 
-  <!-- 页脚 -->
-  <footer class="site-footer">
-    <p>人闲桂花落 · 夜静春山空 · <span>2024-2026</span></p>
-  </footer>
+<!-- Carousel Banner -->
+<section id="carousel">
+  <div id="carouselTrack"></div>
+  <button class="c-arrow prev" id="cPrev">&#8592;</button>
+  <button class="c-arrow next" id="cNext">&#8594;</button>
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
 
-  <script>
-    /* ========== 照片数据（静态嵌入，绕过 GitHub API 阻断）========== */
-    var allPhotos = [
-      {
-        "id": "001",
-        "filename": "01.jpg",
-        "titleZh": "静",
-        "titleEn": "Stillness",
-        "category": "city",
-        "location": "杭州",
-        "year": 2024,
-        "seq": 1,
-        "width": 1600,
-        "height": 1067
-      },
-      {
-        "id": "002",
-        "filename": "02.jpg",
-        "titleZh": "念",
-        "titleEn": "Memories",
-        "category": "people",
-        "location": "杭州",
-        "year": 2024,
-        "seq": 2,
-        "width": 1600,
-        "height": 1067
-      },
-      {
-        "id": "003",
-        "filename": "hero-01.jpg",
-        "titleZh": "暖",
-        "titleEn": "Warmth",
-        "category": "nature",
-        "location": "杭州",
-        "year": 2024,
-        "seq": 3,
-        "width": 1600,
-        "height": 1067
-      },
-      {
-        "id": "004",
-        "filename": "gallery-02.jpg",
-        "titleZh": "痕",
-        "titleEn": "Trace",
-        "category": "nature",
-        "location": "杭州",
-        "year": 2024,
-        "seq": 4,
-        "width": 1600,
-        "height": 1067
-      },
-      {
-        "id": "005",
-        "filename": "gallery-03.jpg",
-        "titleZh": "忆",
-        "titleEn": "Echo",
-        "category": "arch",
-        "location": "杭州",
-        "year": 2024,
-        "seq": 5,
-        "width": 1600,
-        "height": 1067
-      }
-    ];
+<!-- Filter -->
+<nav id="filterBar">
+  <button class="f-btn active" data-cat="all">全部</button>
+  <button class="f-btn" data-cat="city">城市</button>
+  <button class="f-btn" data-cat="nature">自然</button>
+  <button class="f-btn" data-cat="people">人物</button>
+  <button class="f-btn" data-cat="arch">建筑</button>
+  <button class="f-btn" data-cat="food">饮食</button>
+</nav>
 
-    /* ========== 配置 ========== */
-    var IMG_BASE = 'https://raw.githubusercontent.com/46832632/photo-portfolio/main/images';
-    var CAT_LABELS = { city: '城市', nature: '自然', people: '人物', arch: '建筑', food: '饮食' };
+<!-- Grid -->
+<main id="photoGrid"><p class="no-result">正在加载作品集...</p></main>
 
-    /* ========== 状态 ========== */
-    var currentCat = 'all';
-    var visiblePhotos = [];
-    var currentIndex = 0;
-    var isScrolling = false;
+<!-- Lightbox -->
+<div id="lightbox">
+  <div id="lbImgWrap">
+    <img id="lbImg" src="" alt="" draggable="false">
+  </div>
+  <div id="lbBar">
+    <div class="lb-info">
+      <p id="lbTitle"></p>
+      <p id="lbMeta"></p>
+    </div>
+    <div class="lb-actions">
+      <button class="lb-btn" id="lbPrevBtn">&#8592;</button>
+      <button class="lb-btn" id="lbNextBtn">&#8594;</button>
+      <button class="lb-btn" id="lbClose">&#215;</button>
+    </div>
+  </div>
+</div>
 
-    /* ========== DOM 元素 ========== */
-    var grid = document.getElementById('photoGrid');
-    var filterBtns = document.querySelectorAll('.filter-btn');
-    var lightbox = document.getElementById('lightbox');
-    var lbImg = document.getElementById('lbImg');
-    var lbTitle = document.getElementById('lbTitle');
-    var lbMeta = document.getElementById('lbMeta');
-    var lbCurrent = document.getElementById('lbCurrent');
-    var lbTotal = document.getElementById('lbTotal');
-    var totalCount = document.getElementById('totalCount');
+<!-- Footer -->
+<footer>
+  <p>人闲桂花落<em> · </em>夜静春山空<em> · </em>2024–2026</p>
+</footer>
 
-    /* ========== 初始化 ========== */
-    function init() {
-      // 从 URL 读取分类状态
-      var urlParams = new URLSearchParams(window.location.search);
-      var urlCat = urlParams.get('cat');
-      if (urlCat && ['all','city','nature','people','arch','food'].indexOf(urlCat) > -1) {
-        currentCat = urlCat;
-        updateFilterUI();
-      }
+<script>
+(function(){
+  /* ── Data ── */
+  var allPhotos = [
+    {id:'001',filename:'hero-01.jpg',titleZh:'静',titleEn:'Stillness',category:'city',location:'杭州',year:2024,seq:1},
+    {id:'002',filename:'gallery-02.jpg',titleZh:'痕',titleEn:'Trace',category:'nature',location:'杭州',year:2024,seq:2},
+    {id:'003',filename:'gallery-03.jpg',titleZh:'暖',titleEn:'Warmth',category:'nature',location:'杭州',year:2024,seq:3},
+    {id:'004',filename:'01.jpg',titleZh:'留',titleEn:'Remain',category:'city',location:'杭州',year:2024,seq:4},
+    {id:'005',filename:'02.jpg',titleZh:'念',titleEn:'Memories',category:'people',location:'杭州',year:2024,seq:5}
+  ];
+  var IMG = 'https://raw.githubusercontent.com/46832632/photo-portfolio/main/images';
 
-      // 更新总数
-      totalCount.textContent = allPhotos.length;
+  /* ── State ── */
+  var currentCat = 'all';
+  var visiblePhotos = [];
+  var carouselIdx = 0;
+  var lbIdx = 0;
+  var lbPhotos = [];
+  var carouselTimer = null;
 
-      // 按 seq 排序
-      allPhotos.sort(function(a, b) { return (a.seq || 999) - (b.seq || 999); });
+  /* ── DOM ── */
+  var $ = function(id){return document.getElementById(id);};
+  var grid = $('photoGrid');
+  var track = $('carouselTrack');
+  var dots = $('carouselDots');
+  var lb = $('lightbox');
+  var lbImgEl = $('lbImg');
 
-      // 渲染
-      render();
+  /* ── Init ── */
+  allPhotos.sort(function(a,b){return (a.seq||999)-(b.seq||999);});
+  buildCarousel();
+  bindEvents();
 
-      // 绑定事件
-      bindEvents();
+  /* ── Carousel ── */
+  function buildCarousel(){
+    track.innerHTML = '';
+    dots.innerHTML = '';
+    for(var i=0;i<allPhotos.length;i++){
+      var p = allPhotos[i];
+      var slide = document.createElement('div');
+      slide.className = 'carousel-slide' + (i===0?' active':'');
+      slide.dataset.index = i;
+      slide.onclick = function(e){e.stopPropagation(); openLbxFromAll(this.dataset.index);};
+      slide.innerHTML =
+        '<img src="'+IMG+'/'+p.filename+'?v=20260416" alt="'+p.titleZh+'" '+
+        'loading="eager" fetchpriority="high" width="1600" height="1067">'+
+        '<div class="carousel-overlay">'+
+        '<p class="carousel-meta">'+(p.location||'')+(p.year?' · '+p.year:'')+'</p>'+
+        '<h2 class="carousel-title">'+p.titleZh+'</h2>'+
+        '<p class="carousel-sub">'+p.titleEn+'</p></div>';
+      track.appendChild(slide);
+
+      var dot = document.createElement('button');
+      dot.className = 'c-dot' + (i===0?' active':'');
+      dot.setAttribute('aria-label','第'+(i+1)+'张');
+      dot.onclick = function(ev){ev.stopPropagation(); goCarousel(+this.dataset.i);};
+      dot.dataset.i = i;
+      dots.appendChild(dot);
     }
+    startTimer();
+  }
 
-    /* ========== 渲染照片 ========== */
-    function render() {
-      // 筛选
-      visiblePhotos = currentCat === 'all' 
-        ? allPhotos 
-        : allPhotos.filter(function(p) { return p.category === currentCat; });
+  function goCarousel(idx){
+    var slides = track.querySelectorAll('.carousel-slide');
+    var dotEls = dots.querySelectorAll('.c-dot');
+    if(idx<0||idx>=slides.length) return;
+    slides.forEach(function(s){s.classList.remove('active');});
+    dotEls.forEach(function(d){d.classList.remove('active');d.style.width='';});
+    slides[idx].classList.add('active');
+    dotEls[idx].classList.add('active');
+    dotEls[idx].style.width='40px';
+    carouselIdx = idx;
+    resetTimer();
+  }
 
-      // 空状态
-      if (visiblePhotos.length === 0) {
-        grid.innerHTML = '<p class="no-photos">暂无该分类作品</p>';
-        return;
-      }
+  function startTimer(){
+    clearInterval(carouselTimer);
+    carouselTimer = setInterval(function(){
+      goCarousel((carouselIdx+1)%allPhotos.length);
+    },4000);
+  }
+  function resetTimer(){startTimer();}
 
-      // 生成 HTML
-      var html = '';
-      for (var i = 0; i < visiblePhotos.length; i++) {
-        var p = visiblePhotos[i];
-        var imgUrl = IMG_BASE + '/' + p.filename + '?v=20260416';
-        var title = p.titleZh + ' · ' + p.titleEn;
-        var meta = (p.location || '') + (p.year ? ' · ' + p.year : '');
-        
-        html += '<div class="photo-item" data-index="' + i + '">' +
-          '<img src="' + imgUrl + '" ' +
-            'alt="' + title + '" ' +
-            'width="' + p.width + '" ' +
-            'height="' + p.height + '" ' +
-            'loading="lazy" ' +
-            'onload="this.classList.add(\'loaded\')">' +
-          '<div class="photo-overlay">' +
-            '<div class="photo-info">' +
-              '<p class="photo-title">' + title + '</p>' +
-              (meta ? '<p class="photo-meta">' + meta + '</p>' : '') +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      }
-      grid.innerHTML = html;
-
-      // 绑定点击事件
-      var items = grid.querySelectorAll('.photo-item');
-      for (var j = 0; j < items.length; j++) {
-        items[j].addEventListener('click', (function(idx) {
-          return function() { openLightbox(idx); };
-        })(j));
-      }
+  /* ── Grid ── */
+  function render(){
+    visiblePhotos = currentCat==='all'?allPhotos:allPhotos.filter(function(p){return p.category===currentCat;});
+    if(visiblePhotos.length===0){
+      grid.innerHTML='<p class="no-result">暂无该分类作品</p>';
+      return;
     }
-
-    /* ========== 分类筛选 ========== */
-    function setCategory(cat) {
-      if (currentCat === cat) return;
-      currentCat = cat;
-      
-      // URL 同步
-      var url = new URL(window.location);
-      if (cat === 'all') url.searchParams.delete('cat');
-      else url.searchParams.set('cat', cat);
-      history.replaceState({}, '', url);
-
-      updateFilterUI();
-      
-      // 淡入过渡
-      grid.style.opacity = '0';
-      setTimeout(function() {
-        render();
-        grid.style.opacity = '1';
-      }, 150);
-    }
-
-    function updateFilterUI() {
-      for (var i = 0; i < filterBtns.length; i++) {
-        var btn = filterBtns[i];
-        btn.classList.toggle('active', btn.dataset.cat === currentCat);
-      }
-    }
-
-    /* ========== 灯箱 ========== */
-    function openLightbox(idx) {
-      currentIndex = idx;
-      updateLightbox();
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    function lbNav(dir) {
-      currentIndex = (currentIndex + dir + visiblePhotos.length) % visiblePhotos.length;
-      updateLightbox();
-    }
-
-    function updateLightbox() {
-      var p = visiblePhotos[currentIndex];
-      lbImg.src = IMG_BASE + '/' + p.filename + '?v=20260416';
-      lbTitle.textContent = p.titleZh + ' · ' + p.titleEn;
-      lbMeta.textContent = (p.location || '') + (p.year ? ' · ' + p.year : '');
-      lbCurrent.textContent = currentIndex + 1;
-      lbTotal.textContent = visiblePhotos.length;
-    }
-
-    /* ========== 触摸滑动 ========== */
-    var touchStartX = 0;
-    lightbox.addEventListener('touchstart', function(e) {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    lightbox.addEventListener('touchend', function(e) {
-      var dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) > 50) {
-        lbNav(dx > 0 ? -1 : 1);
-      }
-    }, { passive: true });
-
-    /* ========== 事件绑定 ========== */
-    function bindEvents() {
-      // 筛选按钮
-      for (var i = 0; i < filterBtns.length; i++) {
-        filterBtns[i].addEventListener('click', (function(btn) {
-          return function() { setCategory(btn.dataset.cat); };
-        })(filterBtns[i]));
-      }
-
-      // 灯箱关闭
-      document.querySelector('.lb-close').addEventListener('click', closeLightbox);
-      
-      // 灯箱导航
-      document.querySelector('.lb-nav.prev').addEventListener('click', function() { lbNav(-1); });
-      document.querySelector('.lb-nav.next').addEventListener('click', function() { lbNav(1); });
-
-      // 点击背景关闭
-      lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) closeLightbox();
+    grid.innerHTML='';
+    visiblePhotos.forEach(function(p,i){
+      var card = document.createElement('div');
+      card.className='p-card';
+      card.style.transitionDelay=(i*55)+'ms';
+      card.innerHTML=
+        '<img src="'+IMG+'/'+p.filename+'?v=20260416" alt="'+p.titleZh+'" '+
+        'loading="lazy" width="1600" height="1067">'+
+        '<div class="p-info">'+
+        '<p class="p-ttl">'+p.titleZh+'</p>'+
+        '<p class="p-sub">'+(p.location||'')+(p.year?' · '+p.year:'')+'</p></div>';
+      card.onclick=(function(idx){return function(){openLbx(idx);};})(i);
+      grid.appendChild(card);
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){card.classList.add('visible');});
       });
+    });
+  }
 
-      // 键盘导航
-      document.addEventListener('keydown', function(e) {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft') lbNav(-1);
-        if (e.key === 'ArrowRight') lbNav(1);
-      });
+  /* ── Filter ── */
+  $('filterBar').onclick = function(e){
+    if(!e.target.classList.contains('f-btn')) return;
+    var cat = e.target.dataset.cat;
+    currentCat = cat;
+    [].forEach.call(document.querySelectorAll('.f-btn'),function(b){
+      b.classList.toggle('active',b===e.target);
+    });
+    grid.style.opacity='0';
+    setTimeout(function(){render();grid.style.opacity='1';},180);
+  };
 
-      // 滚动进度条
-      window.addEventListener('scroll', function() {
-        var st = window.scrollY;
-        var docH = document.documentElement.scrollHeight - window.innerHeight;
-        var pct = docH > 0 ? (st / docH * 100) : 0;
-        document.getElementById('progressBar').style.width = pct + '%';
-      }, { passive: true });
+  /* ── Lightbox ── */
+  function openLbx(idx){
+    lbPhotos = visiblePhotos; lbIdx = idx; updateLbx();
+    lb.classList.add('active');
+    document.body.style.overflow='hidden';
+  }
 
-      // 导航栏隐藏
-      var lastScroll = 0;
-      window.addEventListener('scroll', function() {
-        var st = window.scrollY;
-        var header = document.getElementById('siteHeader');
-        if (st > lastScroll && st > 120) {
-          header.classList.add('hidden');
-        } else {
-          header.classList.remove('hidden');
-        }
-        lastScroll = st;
-      }, { passive: true });
-    }
+  function openLbxFromAll(idx){
+    lbPhotos = allPhotos; lbIdx = idx; updateLbx();
+    lb.classList.add('active');
+    document.body.style.overflow='hidden';
+  }
 
-    // 启动
-    init();
-  </script>
+  function updateLbx(){
+    var p = lbPhotos[lbIdx];
+    lbImgEl.classList.remove('loaded');
+    lbImgEl.src = IMG+'/'+p.filename+'?v=20260416';
+    lbImgEl.onload = function(){lbImgEl.classList.add('loaded');};
+    $('lbTitle').textContent = p.titleZh+' · '+p.titleEn;
+    $('lbMeta').textContent = (p.location||'')+(p.year?' · '+p.year:'');
+  }
+
+  function lbNav(dir){
+    lbIdx = (lbIdx+dir+lbPhotos.length)%lbPhotos.length;
+    updateLbx();
+  }
+
+  function closeLbx(){
+    lb.classList.remove('active');
+    document.body.style.overflow='';
+  }
+
+  /* ── Events ── */
+  function bindEvents(){
+    $('cPrev').onclick = function(e){e.stopPropagation(); goCarousel((carouselIdx-1+allPhotos.length)%allPhotos.length);};
+    $('cNext').onclick = function(e){e.stopPropagation(); goCarousel((carouselIdx+1)%allPhotos.length);};
+    $('lbPrevBtn').onclick = function(){lbNav(-1);};
+    $('lbNextBtn').onclick = function(){lbNav(1);};
+    $('lbClose').onclick = closeLbx;
+    lb.onclick = function(e){
+      if(e.target===lb||e.target===$('lbImgWrap')) closeLbx();
+    };
+    document.onkeydown = function(e){
+      if(!lb.classList.contains('active')) return;
+      if(e.key==='Escape') closeLbx();
+      if(e.key==='ArrowLeft') lbNav(-1);
+      if(e.key==='ArrowRight') lbNav(1);
+    };
+    // Touch swipe on lightbox
+    var tx=0;
+    lb.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+    lb.addEventListener('touchend',function(e){
+      var d=e.changedTouches[0].clientX-tx;
+      if(Math.abs(d)>50) lbNav(d>0?-1:1);
+    },{passive:true});
+    // Progress bar
+    window.addEventListener('scroll',function(){
+      var st=window.scrollY;
+      var docH=document.documentElement.scrollHeight-window.innerHeight;
+      $('progressBar').style.width=(docH>0?(st/docH*100):0)+'%';
+    },{passive:true});
+    // Nav shadow
+    var lastS=0;
+    var nav=$('siteNav');
+    window.addEventListener('scroll',function(){
+      var s=window.scrollY;
+      nav.classList.toggle('shadowed',s>4);
+      nav.classList.toggle('hidden',s>lastS&&s>180);
+      lastS=s;
+    },{passive:true});
+    // IntersectionObserver for grid cards
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){if(e.isIntersecting&&e.target.classList)e.target.classList.add('visible');});
+    },{threshold:0.05,rootMargin:'0px 0px -40px 0px'});
+    var mo=new MutationObserver(function(){
+      [].forEach.call(grid.querySelectorAll('.p-card:not(.visible)'),function(c){obs.observe(c);});
+    });
+    mo.observe(grid,{childList:true,subtree:false});
+  }
+})();
+</script>
 </body>
 </html>
