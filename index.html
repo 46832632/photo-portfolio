@@ -133,43 +133,8 @@
       .page-indicator { display: none; }
     }
   
-    /* Hero overlay title */
-    .hero-overlay {
-      position: fixed;
-      bottom: 4.5rem; left: 0; right: 0;
-      z-index: 150;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 0.6rem;
-      padding: 2.5rem 2rem;
-      background: linear-gradient(transparent, rgba(255,255,255,0.7));
-      transition: opacity 0.6s ease;
-      pointer-events: none;
-    }
-    .hero-overlay[style], #heroOverlay[style] { transition: none !important; }
-    .hero-title {
-      font-family: 'Noto Serif SC', serif;
-      font-size: clamp(1.6rem, 5vw, 2.8rem);
-      font-weight: 300;
-      color: #111;
-      letter-spacing: 0.2em;
-      text-indent: 0.2em;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.8);
-    }
-    .hero-sub {
-      font-size: 0.8rem;
-      color: #999;
-      letter-spacing: 0.25em;
-    }
-    .hero-scroll-hint {
-      position: fixed;
-      bottom: 2rem; left: 50%; transform: translateX(-50%);
-      font-size: 0.65rem;
-      color: var(--light);
-      letter-spacing: 0.25em;
-      text-transform: lowercase;
-      transition: opacity 0.6s ease;
-    }
-    .hero-scroll-hint::before {
+    /*
+.hero-scroll-hint::before {
       content: '';
       display: block;
       width: 1px; height: 2rem;
@@ -182,6 +147,30 @@
       .hero-scroll-hint { bottom: 1.5rem; }
     }
 
+
+    /* Blank cover page */
+    .cover-page {
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 2.5rem;
+      background: #fff;
+    }
+    .cover-arrow {
+      color: #ccc;
+      cursor: pointer;
+      animation: float-down 2s ease-in-out infinite;
+      transition: color 0.3s;
+    }
+    .cover-arrow:hover { color: #999; }
+    @keyframes float-down {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    @media (max-width: 768px) {
+      .cover-page { padding-bottom: 2rem; }
+    }
 </style>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
 </head>
@@ -195,18 +184,19 @@
     <li><a href="#" onclick="scrollToPage(0);return false;">Home</a></li>
   </ul>
 </header>
-  <div class="hero-overlay" id="heroOverlay">
-    <div class="hero-text">
-      <h1 class="hero-title">人闲桂花落</h1>
-      <p class="hero-sub">夜静春山空</p>
-    </div>
-    <div class="hero-scroll-hint" id="heroHint">
-      <span>scroll</span>
-    </div>
-  </div>
 
 <div id="photoContainer">
-    <section class="photo-page" id="page0" data-index="0">
+
+    <!-- 空白封面 -->
+    <div class="cover-page" id="page0">
+      <div class="cover-arrow" id="coverArrow">
+        <svg width="20" height="28" viewBox="0 0 20 28" fill="none">
+          <path d="M10 2 L10 22 M3 15 L10 22 L17 15" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <section class="photo-page" id="page1" data-index="1">
       <div class="photo-wrap">
         <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/hero-01.jpg" alt="Stillness" loading="eager"
              onerror="this.parentElement.style.display='none'">
@@ -215,7 +205,7 @@
         <span class="photo-title-en">Stillness</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
       </div>
     </section>
-    <section class="photo-page" id="page1" data-index="1">
+    <section class="photo-page" id="page2" data-index="2">
       <div class="photo-wrap">
         <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-02.jpg" alt="Trace" loading="eager"
              onerror="this.parentElement.style.display='none'">
@@ -224,7 +214,7 @@
         <span class="photo-title-en">Trace</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
       </div>
     </section>
-    <section class="photo-page" id="page2" data-index="2">
+    <section class="photo-page" id="page3" data-index="3">
       <div class="photo-wrap">
         <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-03.jpg" alt="Warmth" loading="lazy"
              onerror="this.parentElement.style.display='none'">
@@ -233,7 +223,7 @@
         <span class="photo-title-en">Warmth</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
       </div>
     </section>
-    <section class="photo-page" id="page3" data-index="3">
+    <section class="photo-page" id="page4" data-index="4">
       <div class="photo-wrap">
         <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/01.jpg" alt="Remain" loading="lazy"
              onerror="this.parentElement.style.display='none'">
@@ -242,7 +232,7 @@
         <span class="photo-title-en">Remain</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
       </div>
     </section>
-    <section class="photo-page" id="page4" data-index="4">
+    <section class="photo-page" id="page5" data-index="5">
       <div class="photo-wrap">
         <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/02.jpg" alt="Memories" loading="lazy"
              onerror="this.parentElement.style.display='none'">
@@ -253,7 +243,7 @@
     </section>
 </div>
 
-<div class="page-indicator" id="pageIndicator"><div class="dot active" onclick="scrollToPage(0)"></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div> id="pageIndicator"><div class="dot active" onclick="scrollToPage(0)"></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div>
+<div class="page-indicator" id="pageIndicator"><div class="dot active" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div><div class="dot" onclick="scrollToPage(5)"></div></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div> id="pageIndicator"><div class="dot active" onclick="scrollToPage(0)"></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div>
 
 <section class="site-footer">
   <p class="footer-title">人闲桂花落</p>
@@ -269,55 +259,23 @@
   var scrollTimeout = null;
   var totalPages = 0;
 
-  function getPages(){
-    return document.querySelectorAll('.photo-page');
-  }
-  function getDots(){
-    return document.querySelectorAll('.dot');
-  }
-  function getFooter(){
-    return document.querySelector('.site-footer');
-  }
-  function getOverlay(){
-    return document.getElementById('heroOverlay');
-  }
-  function getHint(){
-    return document.getElementById('heroHint');
-  }
-  function getBar(){
-    return document.getElementById('progressBar');
-  }
+  function getPages(){ return document.querySelectorAll('.photo-page'); }
+  function getDots(){ return document.querySelectorAll('.dot'); }
+  function getBar(){ return document.getElementById('progressBar'); }
 
   function updateUI(idx){
     var pages = getPages();
     var dots = getDots();
     var n = pages.length;
     if(n === 0) return;
-    if(idx < 0) idx = 0;
-    if(idx >= n) idx = n - 1;
+    idx = Math.max(0, Math.min(idx, n-1));
     currentPage = idx;
-
-    for(var j=0;j<dots.length;j++){
-      dots[j].classList.toggle('active', j===currentPage);
-    }
-
-    // Progress bar
+    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active', j===currentPage);
     var bar = getBar();
-    if(bar) bar.style.width = (n>0 ? (currentPage/(n-1)*100) : 0) + '%';
-
-    // Hide hero overlay once scrolled past page 0
-    var overlay = getOverlay();
-    var hint = getHint();
-    if(overlay){
-      overlay.style.opacity = (currentPage === 0) ? '1' : '0';
-      overlay.style.pointerEvents = (currentPage === 0) ? 'auto' : 'none';
-    }
-    if(hint){
-      hint.style.opacity = (currentPage === 0) ? '1' : '0';
-    }
+    if(bar) bar.style.width = (n>1 ? ((currentPage-1)/(n-2)*100) : 0) + '%';
   }
 
-  // ---- IntersectionObserver for reliable snap ----
+  // IntersectionObserver — snap to whichever section is most visible
   var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if(entry.isIntersecting && entry.intersectionRatio >= 0.5){
@@ -325,99 +283,72 @@
         updateUI(idx);
       }
     });
-  },{
-    root: null,
-    threshold: 0.5
-  });
+  }, {root:null, threshold:0.5});
 
   function observePages(){
     var pages = getPages();
     totalPages = pages.length;
     observer.disconnect();
-    for(var i=0;i<pages.length;i++){
-      observer.observe(pages[i]);
-    }
+    for(var i=0;i<pages.length;i++) observer.observe(pages[i]);
     updateUI(0);
   }
 
-  // ---- Wheel snap (prevent over-scroll from going too far) ----
+  // Wheel snap
   var lastWheelTime = 0;
-  var wheelBusy = false;
-
   document.addEventListener('wheel', function(e){
     var now = Date.now();
-    if(now - lastWheelTime < 900) return; // debounce 900ms
+    if(now - lastWheelTime < 900) return;
     var pages = getPages();
-    if(pages.length === 0) return;
-
     var direction = e.deltaY > 0 ? 1 : -1;
     var nextIdx = currentPage + direction;
     if(nextIdx < 0 || nextIdx >= pages.length) return;
-
     e.preventDefault();
     lastWheelTime = now;
-    wheelBusy = true;
-    pages[nextIdx].scrollIntoView({behavior: 'smooth', block: 'start'});
+    pages[nextIdx].scrollIntoView({behavior:'smooth', block:'start'});
+  }, {passive:false});
 
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(function(){
-      wheelBusy = false;
-    }, 900);
-  }, {passive: false});
-
-  // ---- Touch swipe support ----
+  // Touch swipe
   var touchStartY = 0;
-  document.addEventListener('touchstart', function(e){
-    touchStartY = e.touches[0].clientY;
-  }, {passive: true});
-
+  document.addEventListener('touchstart', function(e){ touchStartY = e.touches[0].clientY; }, {passive:true});
   document.addEventListener('touchend', function(e){
     var pages = getPages();
-    if(pages.length === 0) return;
     var delta = touchStartY - e.changedTouches[0].clientY;
     if(Math.abs(delta) < 50) return;
     var nextIdx = currentPage + (delta > 0 ? 1 : -1);
-    nextIdx = Math.max(0, Math.min(nextIdx, pages.length - 1));
-    if(nextIdx !== currentPage){
-      pages[nextIdx].scrollIntoView({behavior: 'smooth', block: 'start'});
-    }
-  }, {passive: true});
+    nextIdx = Math.max(0, Math.min(nextIdx, pages.length-1));
+    if(nextIdx !== currentPage) pages[nextIdx].scrollIntoView({behavior:'smooth', block:'start'});
+  }, {passive:true});
 
-  // ---- Scroll to page (for dots) ----
+  // Cover arrow → scroll to page 1
+  var coverArrow = document.getElementById('coverArrow');
+  if(coverArrow){
+    coverArrow.addEventListener('click', function(){
+      var pages = getPages();
+      if(pages[1]) pages[1].scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  }
+
   window.scrollToPage = function(idx){
     var pages = getPages();
-    if(!pages[idx]) return;
-    pages[idx].scrollIntoView({behavior: 'smooth', block: 'start'});
+    if(pages[idx]) pages[idx].scrollIntoView({behavior:'smooth', block:'start'});
   };
 
-  // ---- Initial setup ----
   window.addEventListener('scroll', function(){
-    if(wheelBusy) return;
     var st = window.scrollY;
     var pages = getPages();
     var n = pages.length;
     if(n === 0) return;
     var docH = document.documentElement.scrollHeight - window.innerHeight;
     var bar = getBar();
-    if(bar) bar.style.width = (docH > 0 ? (st/docH*100) : 0) + '%';
-    // Also sync dot
+    if(bar) bar.style.width = (docH>0 ? (st/docH*100) : 0) + '%';
     var active = 0;
-    for(var i=0;i<n;i++){
-      if(pages[i].offsetTop <= st + 5) active = i;
-    }
+    for(var i=0;i<n;i++) if(pages[i].offsetTop <= st+5) active = i;
     var dots = getDots();
-    for(var j=0;j<dots.length;j++){
-      dots[j].classList.toggle('active', j===active);
-    }
-  }, {passive: true});
+    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active', j===active);
+  }, {passive:true});
 
-  // Observe when DOM changes
   observePages();
-  var mutationObs = new MutationObserver(function(){
-    observePages();
-  });
-  mutationObs.observe(document.getElementById('photoContainer') || document.body, {childList: true, subtree: true});
-
+  new MutationObserver(observePages).observe(document.getElementById('photoContainer') || document.body, {childList:true, subtree:true});
   updateUI(0);
 })();</script>
 </body>
