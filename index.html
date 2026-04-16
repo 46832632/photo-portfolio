@@ -162,87 +162,56 @@
 </section>
 
 <script>
-var CONTAINER = document.getElementById('photoContainer');
-var PROGRESS = document.getElementById('progressBar');
-var INDICATOR = document.getElementById('pageIndicator');
-var FOOTER_COUNT = document.getElementById('footerCount');
-var allPhotos = [];
+var allPhotos = [{"id": "v2-001", "filename": "hero-01.jpg", "titleZh": "静", "titleEn": "Stillness", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 1, "desc": ""}, {"id": "v2-002", "filename": "gallery-02.jpg", "titleZh": "痕", "titleEn": "Trace", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 2, "desc": ""}, {"id": "v2-003", "filename": "gallery-03.jpg", "titleZh": "暖", "titleEn": "Warmth", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 3, "desc": ""}, {"id": "v2-004", "filename": "01.jpg", "titleZh": "留", "titleEn": "Remain", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 4, "desc": ""}, {"id": "v2-005", "filename": "02.jpg", "titleZh": "念", "titleEn": "Memories", "category": "people", "catLabel": "人物", "location": "", "year": "2026", "seq": 5, "desc": ""}];
 var pageCount = 0;
-
-async function loadPhotos() {
-  console.log('[LOBSTER] loadPhotos called');
-  try {
-    console.log('[LOBSTER] fetching photos.json...');
-    var r = await fetch('data/photos.json');
-    console.log('[LOBSTER] fetch status:', r.status);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    var data = await r.json();
-    console.log('[LOBSTER] photos loaded:', data.photos ? data.photos.length : 0);
-    allPhotos = (data.photos || []).sort(function(a,b){ return (a.seq||999)-(b.seq||999); });
-    FOOTER_COUNT.textContent = allPhotos.length + ' works';
-    console.log('[LOBSTER] calling renderPages...');
-    renderPages();
-    console.log('[LOBSTER] done');
-  } catch(e) {
-    console.error('[LOBSTER] loadPhotos error:', e);
-    CONTAINER.innerHTML = '<div class="loading-screen"><p>Load failed: ' + e.message + '<br><small>Try refreshing</small></p></div>';
-  }
+function init(){
+  allPhotos=allPhotos.sort(function(a,b){return (a.seq||999)-(b.seq||999);});
+  document.getElementById('footerCount').textContent=allPhotos.length+' works';
+  renderPages();
 }
-}
-
-function renderPages() {
-  var i, p, title, location, year, metaParts, pageHTML;
-  var dotsHTML = '';
-  var pagesHTML = '';
-  for (i = 0; i < allPhotos.length; i++) {
-    dotsHTML += '<div class="dot' + (i === 0 ? ' active' : '') + '" onclick="scrollToPage(' + i + ')"></div>';
-    p = allPhotos[i];
-    title = p.titleEn || p.titleZh || '';
-    location = p.location || '';
-    year = p.year || '';
-    metaParts = [location, year].filter(Boolean);
-    pagesHTML += '<section class="photo-page" id="page' + i + '">' +
-      '<div class="photo-wrap">' +
-        '<img src="images/' + p.filename + '?t=' + Date.now() + '" alt="' + title + '" loading="' + (i < 2 ? 'eager' : 'lazy') + '" onerror="this.style.display='none'">' +
-      '</div>' +
-      '<div class="photo-meta">' +
-        '<span class="photo-title-en">' + title + '</span>' +
-        (metaParts.length ? '<span class="photo-sep">&#183;</span>' : '') +
-        (location ? '<span class="photo-location">' + location + '</span>' : '') +
-        (location && year ? '<span class="photo-sep">&#183;</span>' : '') +
-        (year ? '<span class="photo-year">' + year + '</span>' : '') +
-      '</div>' +
+function renderPages(){
+  var dotsHTML='',pagesHTML='';
+  for(var i=0;i<allPhotos.length;i++){
+    dotsHTML+='<div class="dot'+(i===0?' active':'')+'" onclick="scrollToPage('+i+')"></div>';
+    var p=allPhotos[i];
+    var title=(p.titleEn||p.titleZh||'');
+    var location=p.location||'';
+    var year=p.year||'';
+    var metaHTML='<span class="photo-title-en">'+title+'</span>';
+    if(location||year) metaHTML+='<span class="photo-sep">&#183;</span>';
+    if(location) metaHTML+='<span class="photo-location">'+location+'</span>';
+    if(location&&year) metaHTML+='<span class="photo-sep">&#183;</span>';
+    if(year) metaHTML+='<span class="photo-year">'+year+'</span>';
+    pagesHTML+='<section class="photo-page" id="page'+i+'">'+
+      '<div class="photo-wrap">'+
+        '<img src="https://cdn.jsdelivr.net/gh/46832632/photo-portfolio@4966812/images/'+p.filename+'" alt="'+title+'" loading="'+(i<2?'eager':'lazy')+'">'+
+      '</div>'+
+      '<div class="photo-meta">'+metaHTML+'</div>'+
     '</section>';
   }
-  INDICATOR.innerHTML = dotsHTML;
-  CONTAINER.innerHTML = pagesHTML;
-  pageCount = allPhotos.length;
+  document.getElementById('pageIndicator').innerHTML=dotsHTML;
+  document.getElementById('photoContainer').innerHTML=pagesHTML;
+  pageCount=allPhotos.length;
   setupScroll();
 }
-
-function setupScroll() {
-  var pages = document.querySelectorAll('.photo-page');
-  var dots = document.querySelectorAll('.dot');
-  window.addEventListener('scroll', function() {
-    var scrollTop = window.scrollY;
-    var docH = document.documentElement.scrollHeight - window.innerHeight;
-    PROGRESS.style.width = (scrollTop / docH * 100) + '%';
-    var activePage = 0;
-    for (var i = 0; i < pages.length; i++) {
-      if (pages[i].offsetTop <= scrollTop + 10) activePage = i;
-    }
-    for (var j = 0; j < dots.length; j++) {
-      dots[j].classList.toggle('active', j === activePage);
-    }
-  }, { passive: true });
+function setupScroll(){
+  var pages=document.querySelectorAll('.photo-page');
+  var dots=document.querySelectorAll('.dot');
+  window.addEventListener('scroll',function(){
+    var st=window.scrollY;
+    var docH=document.documentElement.scrollHeight-window.innerHeight;
+    document.getElementById('progressBar').style.width=(st/docH*100)+'%';
+    var active=0;
+    for(var i=0;i<pages.length;i++) if(pages[i].offsetTop<=st+10) active=i;
+    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active',j===active);
+  },{passive:true});
 }
-
-function scrollToPage(index) {
-  var target = document.getElementById('page' + index) || document.querySelector('.site-footer');
-  if (target) target.scrollIntoView({ behavior: 'smooth' });
+function scrollToPage(index){
+  var t=document.getElementById('page'+index)||document.querySelector('.site-footer');
+  if(t) t.scrollIntoView({behavior:'smooth'});
 }
+init();
 
-loadPhotos();
 </script>
 </body>
 </html>
