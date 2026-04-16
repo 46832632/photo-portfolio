@@ -35,6 +35,30 @@
       "year": "2026",
       "seq": 3,
       "desc": ""
+    },
+    {
+      "id": "v2-004",
+      "filename": "01.jpg",
+      "titleZh": "留",
+      "titleEn": "Remain",
+      "category": "city",
+      "catLabel": "城市",
+      "location": "",
+      "year": "2026",
+      "seq": 4,
+      "desc": ""
+    },
+    {
+      "id": "v2-005",
+      "filename": "02.jpg",
+      "titleZh": "念",
+      "titleEn": "Memories",
+      "category": "people",
+      "catLabel": "人物",
+      "location": "",
+      "year": "2026",
+      "seq": 5,
+      "desc": ""
     }
   ]
 }
