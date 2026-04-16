@@ -1,616 +1,461 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lanc="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
-  <meta name="description" content="个人摄影作品集，人闲桂花落，夜静春山空">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光影集 | Photography Portfolio</title>
+  <meta name="description" content="个人摄影作品集，记录城市光影与自然之美">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg: #ffffff;
-      --bg-cream: #fafaf8;
-      --text: #1a1a1a;
+      --bg: #0a0a0a;
+      --bg-soft: #141414;
+      --text: #f5f5f5;
       --text-dim: #888;
-      --text-light: #aaa;
       --accent: #c9a84c;
-      --border: rgba(0,0,0,0.06);
-      --shadow: 0 8px 40px rgba(0,0,0,0.08);
-      --shadow-hover: 0 16px 60px rgba(0,0,0,0.12);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html { scroll-behavior: smooth; }
+    
+    * {}
+      { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    
     body {
-      font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
+      line-height: 1.6;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
     }
-    header {
+    
+    /* Navigation */
+    nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.5rem 2.5rem;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 3rem;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      transition: opacity 0.4s;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, 
+        rgba(10,10,10,0.9), transparent);
+      backdrop-filter: blur(10px);
     }
+    
     .logo {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.15rem;
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.2rem;
       color: var(--text);
       text-decoration: none;
-      letter-spacing: 0.2em;
     }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
+    
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 2.5rem;
       list-style: none;
     }
+    
     .nav-links a {
-      font-size: 0.78rem;
       color: var(--text-dim);
       text-decoration: none;
-      letter-spacing: 0.12em;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a.active { color: var(--accent); }
-    .admin-link {
-      font-size: 0.72rem;
-      color: var(--text-light);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      padding: 0.35rem 0.8rem;
-      border-radius: 20px;
-      transition: all 0.2s;
+      font-size: 0.85rem;
+      font-weight: 300;
       letter-spacing: 0.1em;
+      transition: color 0.3s;
     }
-    .admin-link:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* Hero */
+    
+    .nav-links a:hover {
+      color: var(--text);
+    }
+    
+    /* Hero Section */
     .hero {
       height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 0 2rem;
       position: relative;
+      overflow: hidden;
     }
-    .hero::after {
-      content: '';
+    
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      background: url('images/hero-01.jpg') center/cover;
+      filter: brightness(0.7);
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, 
+        rgba(10,10,10,0.3) 0%, 
+        rgba(10,10,10,0.1) 50%, 
+        rgba(10,10,10,0.8) 100%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+    
+    .hero-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+    
+    .scroll-hint {
       position: absolute;
       bottom: 3rem;
       left: 50%;
       transform: translateX(-50%);
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--text-light), transparent);
-      animation: scrollHint 2s ease-in-out infinite;
-    }
-    @keyframes scrollHint {
-      0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
-      50% { opacity: 1; transform: translateX(-50%) translateY(8px); }
-    }
-    .hero-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      color: var(--text);
-      letter-spacing: 0.4em;
-      margin-bottom: 0.5rem;
-      text-indent: 0.4em;
-    }
-    .hero-sub {
-      font-size: 0.85rem;
-      color: var(--text-light);
-      letter-spacing: 0.3em;
-      text-indent: 0.3em;
-    }
-    .hero-count {
-      margin-top: 2rem;
-      font-size: 0.75rem;
-      color: var(--text-light);
-      letter-spacing: 0.2em;
-    }
-
-    /* Category filter */
-    .filter-bar {
-      position: sticky;
-      top: 60px;
-      z-index: 90;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px);
-      padding: 0.8rem 2.5rem;
-      display: flex;
-      gap: 0.4rem;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-    }
-    .filter-btn {
-      padding: 0.35rem 1rem;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-dim);
-      font-family: 'Noto Serif SC', serif;
-      font-size: 0.75rem;
-      border-radius: 20px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-      letter-spacing: 0.08em;
-    }
-    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .filter-btn.active { background: var(--text); color: white; border-color: var(--text); }
-
-    /* Photo grid - CSS masonry */
-    .photo-grid {
-      padding: 3rem 2rem 6rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-    .photo-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 4px;
-      cursor: pointer;
-      background: var(--bg-cream);
-      display: block;
-      margin-bottom: 1rem;
-    }
-    .photo-card img {
-      width: 100%;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .photo-card:hover img { transform: scale(1.03); }
-    .photo-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
-      opacity: 0;
-      transition: opacity 0.3s;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-dim);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      animation: bounce 2s infinite;
     }
-    .photo-card:hover .photo-overlay { opacity: 1; }
-    .photo-overlay-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.3rem;
-      color: white;
-      letter-spacing: 0.15em;
-      margin-bottom: 0.3rem;
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
     }
-    .photo-overlay-meta {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.7);
+    
+    /* Gallery Section */
+    .gallery {
+      padding: 8rem 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .section-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 2rem;
+      font-weight: 300;
       letter-spacing: 0.1em;
     }
-    .photo-overlay-cat {
+    
+    /* Masonry Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--bg-soft);
+    }
+    
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease, filter 0.3s;
+    }
+    
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+    
+    .gallery-item::after {
+      content: '';
       position: absolute;
-      top: 1rem;
-      right: 1rem;
-      font-size: 0.65rem;
-      color: white;
-      background: rgba(0,0,0,0.4);
-      padding: 0.2rem 0.6rem;
-      border-radius: 20px;
-      letter-spacing: 0.08em;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
-    .empty-state {
-      text-align: center;
-      padding: 6rem 2rem;
-      color: var(--text-light);
+    
+    .gallery-item:hover::after {
+      opacity: 1;
     }
-    .empty-state-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.5rem;
-      letter-spacing: 0.2em;
-      margin-bottom: 0.5rem;
+    
+    .gallery-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      z-index: 2;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s;
     }
-    .loading-state {
-      text-align: center;
-      padding: 6rem 2rem;
-      color: var(--text-light);
-      font-size: 0.85rem;
+    
+    .gallery-item:hover .gallery-info {
+      transform: translateY(0);
+      opacity: 1;
     }
-
+    
+    .gallery-title {
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+    
+    .gallery-meta {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    
     /* Lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
+      background: rgba(0,0,0,0.95);
       z-index: 1000;
-      background: rgba(255,255,255,0.97);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
-    .lightbox.active { display: flex; }
+    
+    .lightbox.active {
+      display: flex;
+      opacity: 1;
+    }
+    
     .lightbox img {
-      max-width: 100%;
+      max-width: 90vw;
       max-height: 90vh;
       object-fit: contain;
-      border-radius: 2px;
     }
+    
     .lightbox-close {
       position: absolute;
-      top: 1.5rem;
+      top: 2rem;
       right: 2rem;
-      font-size: 2rem;
-      color: var(--text-dim);
-      background: none;
-      border: none;
+      width: 50px;
+      height: 50px;
+      background: transparent;
+      border: 1px solid var(--text-dim);
+      color: var(--text);
+      font-size: 1.5rem;
       cursor: pointer;
-      width: 44px;
-      height: 44px;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 50%;
-      transition: background 0.2s;
     }
-    .lightbox-close:hover { background: var(--bg-cream); }
-    .lightbox-info {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
+    
+    .lightbox-close:hover {
+      border-color: var(--text);
+      background: rgba(255,255,255,0.1);
+    }
+    
+    /* About Section */
+    .about {
+      padding: 8rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
       text-align: center;
-      white-space: nowrap;
     }
-    .lightbox-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.5rem;
-      color: var(--text);
-      letter-spacing: 0.2em;
-    }
-    .lightbox-meta {
-      font-size: 0.75rem;
+    
+    .about-text {
+      font-size: 1.1rem;
       color: var(--text-dim);
-      margin-top: 0.3rem;
+      line-height: 2;
+      font-weight: 300;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .footer-text {
+      font-size: 0.8rem;
+      color: var(--text-dim);
       letter-spacing: 0.1em;
     }
-    .lightbox-prev, .lightbox-next {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: 1px solid var(--border);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: var(--text-dim);
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .lightbox-prev { left: 1.5rem; }
-    .lightbox-next { right: 1.5rem; }
-    .lightbox-prev:hover, .lightbox-next:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 4rem 2rem;
-      border-top: 1px solid var(--border);
-    }
-    .footer-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 1.2rem;
-      color: var(--text);
-      letter-spacing: 0.3em;
-      margin-bottom: 0.5rem;
-    }
-    .footer-sub {
-      font-size: 0.72rem;
-      color: var(--text-light);
-      letter-spacing: 0.15em;
-    }
-
-    /* Scroll fade-in */
-    .fade-section {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .fade-section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
+    
     /* Responsive */
     @media (max-width: 768px) {
-      header { padding: 1rem 1.5rem; }
-      .nav-links { display: none; }
-      .filter-bar { padding: 0.7rem 1rem; }
-      .photo-grid { padding: 2rem 1rem 4rem; }
-      .lightbox-prev { left: 0.5rem; }
-      .lightbox-next { right: 0.5rem; }
+      nav {
+        padding: 1rem 1.5rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .gallery {
+        padding: 4rem 1rem;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
     }
-
-    /* Masonry layout */
-    .photo-grid {
-      columns: 3;
-      column-gap: 0.8rem;
-    }
-    @media (max-width: 1024px) { .photo-grid { columns: 2; } }
-    @media (max-width: 600px) { .photo-grid { columns: 1; } }
-    .photo-card { break-inside: avoid; }
-
-    /* Hamburger menu */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      width: 36px;
-    }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: var(--text);
-      transition: all 0.3s;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-    .mobile-nav {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0; right: 0;
-      background: white;
-      border-bottom: 1px solid var(--border);
-      flex-direction: column;
-      padding: 1rem 2rem;
-      gap: 0;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      padding: 0.8rem 0;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.9rem;
-      border-bottom: 1px solid var(--border);
-      letter-spacing: 0.1em;
-    }
-    .mobile-nav a:last-child { border-bottom: none; }
-    .mobile-nav a:hover { color: var(--accent); }
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .header-right { position: relative; }
-    }
-
   </style>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
 </head>
 <body>
-
-<header id="siteHeader">
-  <a href="admin.html" class="logo">桂花落</a>
-  <div class="header-right">
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="logo">光影集</a>
     <ul class="nav-links">
-      <li><a href="#work">作品</a></li>
-      <li><a href="index.html">春山空</a></li>
-      <li><a href="admin.html">春涧中</a></li>
+      <li><a href="#gallery">作品</a></li>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#contact">联系</a></li>
     </ul>
-</div>
-</header>
+  </nav>
 
-<!-- Hero -->
-<section class="hero fade-section" id="heroSection">
-  <h1 class="hero-title">人闲桂花落</h1>
-  <p class="hero-sub">夜静春山空</p>
-  <p class="hero-count" id="photoCount">加载中...</p>
-</section>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Photography Portfolio</p>
+      <h1 class="hero-title">光影集</h1>
+      <p class="hero-subtitle">捕捉瞬间，留存永恒</p>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <span>↓</span>
+    </div>
+  </section>
 
-<!-- Filter -->
-<div class="filter-bar" id="filterBar" style="display:none;">
-  <button class="filter-btn active" data-cat="all">全部</button>
-  <button class="filter-btn" data-cat="city">城市</button>
-  <button class="filter-btn" data-cat="nature">自然</button>
-  <button class="filter-btn" data-cat="people">人物</button>
-  <button class="filter-btn" data-cat="arch">建筑</button>
-  <button class="filter-btn" data-cat="food">饮食</button>
-</div>
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <div class="section-header">
+      <p class="section-tag">Selected Works</p>
+      <h2 class="section-title">精选作品</h2>
+    </div>
+    
+    <div class="gallery-grid">
+      <!-- Placeholder items - will be populated with your photos -->
+      <div class="gallery-item" onclick="openLightbox('images/hero-01.jpg')">
+        <img src="images/hero-01.jpg" alt="城市夜景" loading="lazy">
+        <div class="gallery-info">
+          <h3 class="gallery-title">城市脉搏</h3>
+          <p class="gallery-meta">建睑 · 夜景</p>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-dim);">
+          <span style="font-size:0.8rem;letter-spacing:0.2em;">等待上传...</span>
+        </div>
+      </div>
+      
+      <div class="gallery-item">
+        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--text-dim);">
+          <span style="font-size:0.8rem;letter-spacing:0.2em;">等待上传...</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- Photo grid -->
-<div class="photo-grid" id="photoGrid">
-  <div class="loading-state">正在加载作品...</div>
-</div>
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="section-header">
+      <p class="section-tag">About</p>
+      <h2 class="section-title">关于</h2>
+    </div>
+    <p class="about-text">
+      用镜娴记录世界的光影变化，<br>
+      在平凡中发现不平凡的美。<br>
+      每一次快门，都是与时间的对话。
+    </p>
+  </section>
 
-<!-- Footer -->
-<section class="footer">
-  <p class="footer-title">人闲桂花落</p>
-  <p class="footer-sub">夜静春山空 · 月出惊山鸟</p>
-</section>
+  <!-- Footer -->
+  <footer id="contact">
+    <p class="footer-text">© 2025 光影集 · Photography Portfolio</p>
+  </footer>
 
-<!-- Lightbox -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-  <button class="lightbox-prev" id="lbPrev" onclick="lbNav(-1)">&#8592;</button>
-  <img id="lbImg" src="" alt="">
-  <button class="lightbox-next" id="lbNext" onclick="lbNav(1)">&#8594;</button>
-  <div class="lightbox-info">
-    <div class="lightbox-title" id="lbTitle"></div>
-    <div class="lightbox-meta" id="lbMeta"></div>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="event.stopPropagation(); closeLightbox()">×</button>
+    <img src="" alt="" id="lightbox-img">
   </div>
-</div>
 
-<script>
-// ============ Photo System ============
-const GRID = document.getElementById('photoGrid');
-const FILTER_BAR = document.getElementById('filterBar');
-const PHOTO_COUNT = document.getElementById('photoCount');
-const LIGHTBOX = document.getElementById('lightbox');
-const LB_IMG = document.getElementById('lbImg');
-const LB_TITLE = document.getElementById('lbTitle');
-const LB_META = document.getElementById('lbMeta');
-
-let allPhotos = [];
-let currentCat = 'all';
-let currentIndex = 0;
-let visiblePhotos = [];
-
-// Load photos from GitHub data/photos.json
-async function loadPhotos() {
-  try {
-    const r = await fetch('data/photos.json?' + Date.now(), {
-      cache: 'no-store'
+  <script>
+    // Lightbox functionality
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
     });
-    if (!r.ok) throw new Error('加载失败');
-    const data = await r.json();
-    allPhotos = (data.photos || []).sort((a, b) => (a.seq || 999) - (b.seq || 999));
-    render();
-  } catch (e) {
-    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
-    PHOTO_COUNT.textContent = '0 张作品';
-  }
-}
-
-function getVisible() {
-  if (currentCat === 'all') return allPhotos;
-  return allPhotos.filter(p => p.category === currentCat);
-}
-
-function render() {
-  visiblePhotos = getVisible();
-  PHOTO_COUNT.textContent = allPhotos.length + ' 张作品';
-
-  if (visiblePhotos.length === 0) {
-    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">该分类暂无照片</p></div>';
-    FILTER_BAR.style.display = allPhotos.length > 0 ? 'flex' : 'none';
-    return;
-  }
-
-  FILTER_BAR.style.display = 'flex';
-  GRID.innerHTML = visiblePhotos.map((p, i) => {
-    const title = p.titleZh || p.titleEn || '';
-    const catLabel = { city:'城市', nature:'自然', people:'人物', arch:'建筑', food:'饮食' }[p.category] || '';
-    const meta = [p.location, p.year].filter(Boolean).join(' · ');
-    return '<div class="photo-card fade-section" data-index="' + i + '" onclick="openLightbox(' + i + ')">' +
-      '<img src="images/' + p.filename + '?v=' + Date.now() + '" alt="' + title + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">' +
-      '<div class="photo-overlay">' +
-        (catLabel ? '<span class="photo-overlay-cat">' + catLabel + '</span>' : '') +
-        (title ? '<div class="photo-overlay-title">' + title + '</div>' : '') +
-        (meta ? '<div class="photo-overlay-meta">' + meta + '</div>' : '') +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  // Trigger fade-in
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.photo-card').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), i * 80);
-    });
-  });
-}
-
-// Filter
-FILTER_BAR.addEventListener('click', e => {
-  if (!e.target.classList.contains('filter-btn')) return;
-  currentCat = e.target.dataset.cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === e.target));
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.classList.toggle('active', a.dataset.cat === currentCat);
-  });
-  render();
-  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
-});
-
-document.querySelector('.nav-links').addEventListener('click', e => {
-  if (!e.target.dataset.cat) return;
-  currentCat = e.target.dataset.cat;
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a === e.target));
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === currentCat));
-  render();
-  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
-});
-
-// Lightbox
-function openLightbox(index) {
-  currentIndex = index;
-  const p = visiblePhotos[index];
-  LB_IMG.src = 'images/' + p.filename;
-  LB_TITLE.textContent = p.titleZh || p.titleEn || '';
-  const catLabel = { city:'城市', nature:'自然', people:'人物', arch:'建筑', food:'饮食' }[p.category] || '';
-  const metaParts = [catLabel, p.location, p.year].filter(Boolean);
-  LB_META.textContent = metaParts.join(' · ');
-  LIGHTBOX.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  LIGHTBOX.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-function lbNav(dir) {
-  currentIndex = (currentIndex + dir + visiblePhotos.length) % visiblePhotos.length;
-  openLightbox(currentIndex);
-}
-
-document.addEventListener('keydown', e => {
-  if (!LIGHTBOX.classList.contains('active')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lbNav(-1);
-  if (e.key === 'ArrowRight') lbNav(1);
-});
-
-LIGHTBOX.addEventListener('click', e => {
-  if (e.target === LIGHTBOX) closeLightbox();
-});
-
-// Hero fade
-const heroObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-section').forEach(el => heroObs.observe(el));
-
-// Header hide/show on scroll
-let lastScroll = 0;
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  const h = document.getElementById('siteHeader');
-  h.style.opacity = y > 80 ? '0' : '1';
-  lastScroll = y;
-}, { passive: true });
-
-loadPhotos();
-
-function toggleMenu() {
-  const nav = document.getElementById("mobileNav");
-  const btn = document.getElementById("hamburgerBtn");
-  nav.classList.toggle("open");
-  btn.classList.toggle("open");
-}
-
-</script>
+    
+    // Smooth scroll for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+      });
+  </script>
 </body>
 </html>
+
