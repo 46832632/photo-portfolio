@@ -373,7 +373,7 @@
       <li><a href="#" data-cat="arch">建筑</a></li>
       <li><a href="#" data-cat="food">饮食</a></li>
     </ul>
-    <a href="admin.html" class="admin-link">管理</a>
+    <a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/admin.html" class="admin-link">管理</a>
   </div>
 </header>
 
@@ -443,7 +443,7 @@ async function loadPhotos() {
     allPhotos = (data.photos || []).sort((a, b) => (a.seq || 999) - (b.seq || 999));
     render();
   } catch (e) {
-    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
+    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="https://d101d1f4.photo-portfolio-ip6.pages.dev/admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
     PHOTO_COUNT.textContent = '0 张作品';
   }
 }
