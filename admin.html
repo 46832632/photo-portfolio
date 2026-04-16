@@ -1221,36 +1221,52 @@
       return ghApi('PUT', '/repos/' + getConfig().owner + '/' + getConfig().repo + '/contents/' + path, payload);
     }
 
-    async function ghUploadImage(filename, blob) {
+async function ghUploadImage(filename, blob) {
       const config = getConfig();
-      const base64 = await blobToBase64(blob);
-      
+      const base64Data = await blobToBase64(blob);
+      const contentBase64 = base64Data.includes(',') ? base64Data.split(',')[1] : base64Data;
+
+      // Check if file already exists → get SHA (required for updates)
+      let sha = null;
+      try {
+        const existing = await ghApi('GET', '/repos/' + config.owner + '/' + config.repo + '/contents/images/' + filename);
+        sha = existing.sha;
+      } catch (e) {
+        if (!e.message.includes('404')) throw e; // only ignore 404
+      }
+
+      const payload = {
+        message: 'Add photo: ' + filename,
+        content: contentBase64,
+        branch: 'main'
+      };
+      if (sha) payload.sha = sha; // include SHA if file already exists
+
       const response = await fetch('https://api.github.com/repos/' + config.owner + '/' + config.repo + '/contents/images/' + filename, {
         method: 'PUT',
         headers: {
           'Authorization': 'token ' + config.token,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          message: '📷 Upload image: ' + filename,
-          content: base64.split(',')[1],
-          branch: 'main'
-        })
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.message || '上传图片失败 (' + response.status + ')');
+        const errData = await response.json().catch(() => ({}));
+        throw new Error('[GitHub] ' + (errData.message || 'Upload failed (' + response.status + ')'));
       }
 
       return response.json();
     }
 
-    function blobToBase64(blob) {
+function blobToBase64(blob) {
+      if (blob.size > 10 * 1024 * 1024) {
+        showToast('File > 10MB — may fail. Compress first.', 'error');
+      }
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
+        reader.onerror = () => reject(new Error('FileReader error'));
         reader.readAsDataURL(blob);
       });
     }
@@ -1540,7 +1556,14 @@
     function handleFiles(files) {
       const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
       
+function handleFiles(files) {
+      const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+      const skipped = files.length - validFiles.length;
       if (validFiles.length === 0) {
+        showToast('No image files selected', 'error');
+        return;
+      }
+      if (skipped > 0) showToast('Skipped ' + skipped + ' non-image file(s)', 'info');
         showToast('请选择图片文件', 'error');
         return;
       }
@@ -1583,18 +1606,17 @@
       });
     }
 
-    function generateFilename(photo) {
-      if (!photo.filename || photo.filename.trim() === '') {
-        const id = photo.id.substr(-6);
-        const cat = photo.category || 'IMG';
-        return 'IMG_' + cat.toUpperCase() + '_' + id + '.jpg';
+function generateFilename(photo) {
+      const raw = (photo.filename || '').trim();
+      // Prefer user-provided name if it looks like a real filename
+      if (raw && raw.includes('.')) {
+        return raw;
       }
-      // 确保有扩展名
-      const ext = photo.filename.split('.').pop();
-      if (!ext || ext.length > 5) {
-        return photo.filename + '.jpg';
-      }
-      return photo.filename;
+      // Derive from titleZh or titleEn for a meaningful, readable filename
+      const title = photo.titleZh || photo.titleEn || '';
+      const clean = title.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '').trim() ||
+        ('photo_' + Date.now().toString(36));
+      return clean + '.jpg';
     }
 
     function renderPreviews() {
