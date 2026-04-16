@@ -6,11 +6,9 @@
   <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
   <meta name="description" content="个人摄影作品集，人闲桂花落，夜静春山空">
   <meta name="theme-color" content="#ffffff">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-  
   <style>
     :root {
       --bg: #ffffff;
@@ -23,19 +21,8 @@
       --shadow: 0 8px 40px rgba(0,0,0,0.08);
       --shadow-hover: 0 16px 60px rgba(0,0,0,0.12);
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
       background: var(--bg);
@@ -44,653 +31,532 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
-    
     header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 1.2rem 2.5rem;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem 2.5rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      z-index: 1000;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      justify-content: space-between;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      transition: opacity 0.4s;
     }
-    
     .logo {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 1rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.15rem;
       color: var(--text);
       text-decoration: none;
-      transition: opacity 0.3s;
+      letter-spacing: 0.2em;
     }
-    
-    .logo:hover { opacity: 0.6; }
-    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 1.5rem;
       list-style: none;
     }
-    
     .nav-links a {
+      font-size: 0.78rem;
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      transition: color 0.3s;
+      letter-spacing: 0.12em;
+      transition: color 0.2s;
     }
-    
-    .nav-links a:hover { color: var(--text); }
-    
-    .menu-btn {
-      display: none;
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a.active { color: var(--accent); }
+    .admin-link {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      transition: all 0.2s;
+      letter-spacing: 0.1em;
+    }
+    .admin-link:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      width: 40px;
-      height: 40px;
+      justify-content: center;
+      text-align: center;
+      padding: 0 2rem;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--text-light), transparent);
+      animation: scrollHint 2s ease-in-out infinite;
+    }
+    @keyframes scrollHint {
+      0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(8px); }
+    }
+    .hero-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--text);
+      letter-spacing: 0.4em;
+      margin-bottom: 0.5rem;
+      text-indent: 0.4em;
+    }
+    .hero-sub {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      letter-spacing: 0.3em;
+      text-indent: 0.3em;
+    }
+    .hero-count {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.2em;
+    }
+
+    /* Category filter */
+    .filter-bar {
+      position: sticky;
+      top: 60px;
+      z-index: 90;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      padding: 0.8rem 2.5rem;
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .filter-btn {
+      padding: 0.35rem 1rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.75rem;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      letter-spacing: 0.08em;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--text); color: white; border-color: var(--text); }
+
+    /* Photo grid - CSS masonry */
+    .photo-grid {
+      padding: 3rem 2rem 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--bg-cream);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .photo-card img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .photo-card:hover img { transform: scale(1.03); }
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
+    .photo-card:hover .photo-overlay { opacity: 1; }
+    .photo-overlay-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.3rem;
+      color: white;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.3rem;
+    }
+    .photo-overlay-meta {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.1em;
+    }
+    .photo-overlay-cat {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.65rem;
+      color: white;
+      background: rgba(0,0,0,0.4);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 6rem 2rem;
+      color: var(--text-light);
+    }
+    .empty-state-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+    .loading-state {
+      text-align: center;
+      padding: 6rem 2rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-size: 2rem;
+      color: var(--text-dim);
       background: none;
       border: none;
       cursor: pointer;
-      gap: 6px;
-      padding: 0;
-    }
-    
-    .menu-btn span {
-      display: block;
-      width: 22px;
-      height: 1.5px;
-      background: var(--text);
-      transition: all 0.3s;
-    }
-    
-    .menu-btn.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .menu-btn.active span:nth-child(2) { opacity: 0; }
-    
-    .menu-btn.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
-    }
-    
-    .mobile-nav {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      right: 0;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 1rem;
-      transform: translateY(-100%);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-      z-index: 999;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .mobile-nav.active {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .mobile-nav a {
-      display: block;
-      padding: 1rem;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.3s;
-    }
-    
-    .mobile-nav a:last-child { border-bottom: none; }
-    .mobile-nav a:hover { color: var(--text); }
-    
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 6rem 2rem 4rem;
-      scroll-snap-align: start;
-      background: var(--bg);
-    }
-    
-    .hero-tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.4em;
-      color: var(--text-light);
-      margin-bottom: 2rem;
-      text-transform: uppercase;
-    }
-    
-    .hero-title {
-      font-family: 'ZCOOL XiaoWei', 'Noto Serif SC', serif;
-      font-size: clamp(2.5rem, 8vw, 5rem);
-      font-weight: 400;
-      letter-spacing: 0.3em;
-      margin-bottom: 1rem;
-      color: var(--text);
-      line-height: 1.3;
-    }
-    
-    .hero-subtitle {
-      font-family: 'Noto Serif SC', serif;
-      font-size: clamp(1rem, 3vw, 1.4rem);
-      color: var(--text-dim);
-      font-weight: 300;
-      letter-spacing: 0.4em;
-    }
-    
-    .scroll-hint {
-      position: absolute;
-      bottom: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--text-light);
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      animation: bounce 2.5s ease-in-out infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); opacity: 0.6; }
-      50% { transform: translateY(8px); opacity: 1; }
-    }
-    
-    .photo-section {
-      min-height: 100vh;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 5rem 3rem;
-      scroll-snap-align: start;
-      background: var(--bg);
-    }
-    
-    .photo-container {
-      display: flex;
-      align-items: center;
-      gap: 5rem;
-      max-width: 1400px;
-      width: 100%;
-    }
-    
-    .photo-wrapper {
-      flex: 1.2;
-      position: relative;
-    }
-    
-    .photo-wrapper img {
-      width: 100%;
-      max-height: 75vh;
-      object-fit: contain;
-      box-shadow: var(--shadow);
-      transition: box-shadow 0.4s, transform 0.4s;
-      cursor: zoom-in;
-    }
-    
-    .photo-wrapper img:hover {
-      box-shadow: var(--shadow-hover);
-      transform: translateY(-4px);
-    }
-    
-    .photo-info {
-      flex: 0.5;
-      max-width: 320px;
-    }
-    
-    .photo-number {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      color: var(--text-light);
-      margin-bottom: 1.2rem;
-    }
-    
-    .camera-info {
-      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-      text-align: right;
-      margin-bottom: 0.6rem;
-      font-weight: 400;
-    }
-    
-    .camera-info span {
-      margin-left: 0.6rem;
-      padding: 0.15rem 0.4rem;
-      background: rgba(0,0,0,0.03);
-      border-radius: 2px;
-    }
-    
-    .photo-title {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 2.2rem;
-      font-weight: 400;
-      margin-bottom: 0.3rem;
-      letter-spacing: 0.08em;
-    }
-    
-    .photo-subtitle {
-      font-size: 0.9rem;
-      color: var(--accent);
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.15em;
-      font-style: italic;
-    }
-    
-    .photo-desc {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      line-height: 2;
-      font-weight: 300;
-    }
-    
-    .lightbox {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.95);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-      cursor: zoom-out;
-    }
-    
-    .lightbox.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      object-fit: contain;
-    }
-    
-    .lightbox-close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
-      background: none;
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
+      transition: background 0.2s;
     }
-    
-    .lightbox-close:hover {
-      background: rgba(255,255,255,0.1);
-      border-color: rgba(255,255,255,0.6);
-    }
-    
-    .footer {
-      min-height: 70vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .lightbox-close:hover { background: var(--bg-cream); }
+    .lightbox-info {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
       text-align: center;
-      padding: 4rem 2rem;
-      scroll-snap-align: start;
-      background: var(--bg-cream);
+      white-space: nowrap;
     }
-    
-    .footer-tag {
-      font-size: 0.65rem;
-      letter-spacing: 0.4em;
-      color: var(--text-light);
-      margin-bottom: 2rem;
-      text-transform: uppercase;
+    .lightbox-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      letter-spacing: 0.2em;
     }
-    
-    .footer-text {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 1.1rem;
-      color: var(--text-dim);
-      line-height: 2.5;
-      font-weight: 300;
-      max-width: 500px;
-    }
-    
-    .footer-divider {
-      width: 60px;
-      height: 1px;
-      background: var(--border);
-      margin: 2.5rem auto;
-    }
-    
-    .footer-copy {
+    .lightbox-meta {
       font-size: 0.75rem;
-      color: var(--text-light);
-      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+      letter-spacing: 0.1em;
     }
-    
-    .progress-bar {
-      position: fixed;
-      top: 60px;
-      left: 0;
-      height: 2px;
-      background: var(--accent);
-      z-index: 999;
-      width: 0%;
-      transition: width 0.1s;
-    }
-    
-    .page-dots {
-      position: fixed;
-      right: 2rem;
+    .lightbox-prev, .lightbox-next {
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      z-index: 99;
-    }
-    
-    .dot {
-      width: 6px;
-      height: 6px;
+      background: none;
+      border: 1px solid var(--border);
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
-      background: rgba(0,0,0,0.15);
+      font-size: 1.2rem;
       cursor: pointer;
-      transition: all 0.3s;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    
-    .dot:hover { background: rgba(0,0,0,0.35); }
-    .dot.active { 
-      background: var(--text); 
-      transform: scale(1.4);
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+    .lightbox-prev:hover, .lightbox-next:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      border-top: 1px solid var(--border);
     }
-    
-    @media (max-width: 1024px) {
-      .photo-container {
-        flex-direction: column;
-        gap: 2rem;
-        text-align: center;
-      }
-      
-      .photo-wrapper {
-        width: 100%;
-        flex: none;
-      }
-      
-      .photo-wrapper img {
-        max-height: 55vh;
-      }
-      
-      .photo-info {
-        flex: none;
-        max-width: 100%;
-      }
+    .footer-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
     }
-    
-    @media (max-width: 768px) {
-      header {
-        padding: 1rem 1.5rem;
-      }
-      
-      .nav-links { display: none; }
-      .menu-btn { display: flex; }
-      
-      .hero {
-        padding: 5rem 1.5rem 3rem;
-      }
-      
-      .hero-tag { font-size: 0.6rem; letter-spacing: 0.3em; }
-      .hero-title { letter-spacing: 0.15em; }
-      .hero-subtitle { font-size: 0.9rem; letter-spacing: 0.2em; }
-      
-      .photo-section {
-        padding: 4rem 1.2rem;
-        min-height: auto;
-      }
-      
-      .photo-wrapper img {
-        max-height: 45vh;
-      }
-      
-      .photo-title { font-size: 1.6rem; }
-      .photo-subtitle { font-size: 0.85rem; }
-      .photo-desc { font-size: 0.85rem; }
-      
-      .page-dots { display: none; }
-      
-      .scroll-hint { bottom: 2rem; }
-      
-      .footer { padding: 3rem 1.5rem; }
-      .footer-text { font-size: 1rem; }
+    .footer-sub {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      letter-spacing: 0.15em;
     }
-    
-    .fade-in {
+
+    /* Scroll fade-in */
+    .fade-section {
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    
-    .fade-in.visible {
+    .fade-section.visible {
       opacity: 1;
       transform: translateY(0);
     }
-    
-    ::-webkit-scrollbar {
-      width: 6px;
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .filter-bar { padding: 0.7rem 1rem; }
+      .photo-grid { padding: 2rem 1rem 4rem; }
+      .lightbox-prev { left: 0.5rem; }
+      .lightbox-next { right: 0.5rem; }
     }
-    
-    ::-webkit-scrollbar-track {
-      background: transparent;
+
+    /* Masonry layout */
+    .photo-grid {
+      columns: 3;
+      column-gap: 0.8rem;
     }
-    
-    ::-webkit-scrollbar-thumb {
-      background: rgba(0,0,0,0.1);
-      border-radius: 3px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(0,0,0,0.2);
-    }
+    @media (max-width: 1024px) { .photo-grid { columns: 2; } }
+    @media (max-width: 600px) { .photo-grid { columns: 1; } }
+    .photo-card { break-inside: avoid; }
   </style>
 </head>
 <body>
-  
-  <div class="progress-bar" id="progressBar"></div>
-  
-  <header>
-    <a href="#hero" class="logo">桂花落</a>
+
+<header id="siteHeader">
+  <a href="#" class="logo">桂花落</a>
+  <div class="header-right">
     <ul class="nav-links">
-      <li><a href="#photo1">作品</a></li>
-      <li><a href="#about">关于</a></li>
+      <li><a href="#" class="active" data-cat="all">全部</a></li>
+      <li><a href="#" data-cat="city">城市</a></li>
+      <li><a href="#" data-cat="nature">自然</a></li>
+      <li><a href="#" data-cat="people">人物</a></li>
+      <li><a href="#" data-cat="arch">建筑</a></li>
+      <li><a href="#" data-cat="food">饮食</a></li>
     </ul>
-    <button class="menu-btn" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </header>
-  
-  <nav class="mobile-nav" id="mobileNav">
-    <a href="#hero" onclick="toggleMenu()">首页</a>
-    <a href="#photo1" onclick="toggleMenu()">作品</a>
-    <a href="#about" onclick="toggleMenu()">关于</a>
-  </nav>
-  
-  <div class="page-dots" id="pageDots"></div>
-  
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <img src="" alt="" id="lightboxImg">
+    <a href="admin.html" class="admin-link">管理</a>
   </div>
-  
-  <section class="hero" id="hero">
-    <p class="hero-tag">Photography Portfolio</p>
-    <h1 class="hero-title">人闲桂花落</h1>
-    <p class="hero-subtitle">夜静春山空</p>
-    <div class="scroll-hint">
-      <span>SCROLL</span>
-      <span>↓</span>
-    </div>
-  </section>
-  
-  <!-- Photo 1 -->
-  <section class="photo-section fade-in" id="photo1">
-    <div class="photo-container">
-      <div class="photo-wrapper">
-        <img src="images/hero-01.jpg" alt="静" loading="lazy" onclick="openLightbox(this.src)">
-      </div>
-      <div class="photo-info">
-        <p class="camera-info"><span>Sony A7R IV</span><span>35mm</span><span>f/11</span><span>ISO 200</span></p>
-        <p class="photo-number">壹 / 叁</p>
-        <h2 class="photo-title">静</h2>
-        <p class="photo-subtitle">Stillness</p>
-        <p class="photo-desc">万籁俱寂，唯有灯火未眠。</p>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Photo 2 -->
-  <section class="photo-section fade-in" id="photo2">
-    <div class="photo-container">
-      <div class="photo-wrapper">
-        <img src="images/gallery-02.jpg" alt="痕" loading="lazy" onclick="openLightbox(this.src)">
-      </div>
-      <div class="photo-info">
-        <p class="camera-info"><span>Sony A7R IV</span><span>50mm</span><span>f/2.0</span><span>ISO 800</span></p>
-        <p class="photo-number">贰 / 叁</p>
-        <h2 class="photo-title">痕</h2>
-        <p class="photo-subtitle">Trace</p>
-        <p class="photo-desc">线过留痕，痕即永恒。</p>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Photo 3 -->
-  <section class="photo-section fade-in" id="photo3">
-    <div class="photo-container">
-      <div class="photo-wrapper">
-        <img src="images/gallery-03.jpg" alt="暖" loading="lazy" onclick="openLightbox(this.src)">
-      </div>
-      <div class="photo-info">
-        <p class="camera-info"><span>Sony A7R IV</span><span>28mm</span><span>f/4</span><span>ISO 400</span></p>
-        <p class="photo-number">叁 / 叁</p>
-        <h2 class="photo-title">暖</h2>
-        <p class="photo-subtitle">Warmth</p>
-        <p class="photo-desc">一点微光，温暖人间。</p>
-      </div>
-    </div>
-  </section>
-  
-  <section class="footer" id="about">
-    <p class="footer-tag">About</p>
-    <p class="footer-text">
-      人闲桂花落，夜静春山空。<br>
-      月出惊山鸟，时鸣春涧中。<br><br>
-      用镜头捕捉静谧中的诗意，<br>
-      在光影间寻找内心的宁静。
-    </p>
-    <div class="footer-divider"></div>
-    <p class="footer-copy">© 2025 桂花落 · Photography Portfolio</p>
-  </section>
-  
-  <script>
-    function toggleMenu() {
-      document.querySelector('.menu-btn').classList.toggle('active');
-      document.getElementById('mobileNav').classList.toggle('active');
-    }
-    
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrollTop / docHeight) * 100;
-      document.getElementById('progressBar').style.width = progress + '%';
+</header>
+
+<!-- Hero -->
+<section class="hero fade-section" id="heroSection">
+  <h1 class="hero-title">人闲桂花落</h1>
+  <p class="hero-sub">夜静春山空</p>
+  <p class="hero-count" id="photoCount">加载中...</p>
+</section>
+
+<!-- Filter -->
+<div class="filter-bar" id="filterBar" style="display:none;">
+  <button class="filter-btn active" data-cat="all">全部</button>
+  <button class="filter-btn" data-cat="city">城市</button>
+  <button class="filter-btn" data-cat="nature">自然</button>
+  <button class="filter-btn" data-cat="people">人物</button>
+  <button class="filter-btn" data-cat="arch">建筑</button>
+  <button class="filter-btn" data-cat="food">饮食</button>
+</div>
+
+<!-- Photo grid -->
+<div class="photo-grid" id="photoGrid">
+  <div class="loading-state">正在加载作品...</div>
+</div>
+
+<!-- Footer -->
+<section class="footer">
+  <p class="footer-title">人闲桂花落</p>
+  <p class="footer-sub">夜静春山空 · 月出惊山鸟</p>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-prev" id="lbPrev" onclick="lbNav(-1)">&#8592;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lightbox-next" id="lbNext" onclick="lbNav(1)">&#8594;</button>
+  <div class="lightbox-info">
+    <div class="lightbox-title" id="lbTitle"></div>
+    <div class="lightbox-meta" id="lbMeta"></div>
+  </div>
+</div>
+
+<script>
+// ============ Photo System ============
+const GRID = document.getElementById('photoGrid');
+const FILTER_BAR = document.getElementById('filterBar');
+const PHOTO_COUNT = document.getElementById('photoCount');
+const LIGHTBOX = document.getElementById('lightbox');
+const LB_IMG = document.getElementById('lbImg');
+const LB_TITLE = document.getElementById('lbTitle');
+const LB_META = document.getElementById('lbMeta');
+
+let allPhotos = [];
+let currentCat = 'all';
+let currentIndex = 0;
+let visiblePhotos = [];
+
+// Load photos from GitHub data/photos.json
+async function loadPhotos() {
+  try {
+    const r = await fetch('data/photos.json?' + Date.now(), {
+      cache: 'no-store'
     });
-    
-    const sections = document.querySelectorAll('.hero, .photo-section, .footer');
-    const dotsContainer = document.getElementById('pageDots');
-    
-    sections.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.onclick = () => sections[i].scrollIntoView({ behavior: 'smooth' });
-      dotsContainer.appendChild(dot);
+    if (!r.ok) throw new Error('加载失败');
+    const data = await r.json();
+    allPhotos = (data.photos || []).sort((a, b) => (a.seq || 999) - (b.seq || 999));
+    render();
+  } catch (e) {
+    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">前往 <a href="admin.html" style="color:var(--accent)">管理后台</a> 上传照片</p></div>';
+    PHOTO_COUNT.textContent = '0 张作品';
+  }
+}
+
+function getVisible() {
+  if (currentCat === 'all') return allPhotos;
+  return allPhotos.filter(p => p.category === currentCat);
+}
+
+function render() {
+  visiblePhotos = getVisible();
+  PHOTO_COUNT.textContent = allPhotos.length + ' 张作品';
+
+  if (visiblePhotos.length === 0) {
+    GRID.innerHTML = '<div class="empty-state"><div class="empty-state-title">暂无作品</div><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--text-light)">该分类暂无照片</p></div>';
+    FILTER_BAR.style.display = allPhotos.length > 0 ? 'flex' : 'none';
+    return;
+  }
+
+  FILTER_BAR.style.display = 'flex';
+  GRID.innerHTML = visiblePhotos.map((p, i) => {
+    const title = p.titleZh || p.titleEn || '';
+    const catLabel = { city:'城市', nature:'自然', people:'人物', arch:'建筑', food:'饮食' }[p.category] || '';
+    const meta = [p.location, p.year].filter(Boolean).join(' · ');
+    return '<div class="photo-card fade-section" data-index="' + i + '" onclick="openLightbox(' + i + ')">' +
+      '<img src="images/' + p.filename + '?v=' + Date.now() + '" alt="' + title + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">' +
+      '<div class="photo-overlay">' +
+        (catLabel ? '<span class="photo-overlay-cat">' + catLabel + '</span>' : '') +
+        (title ? '<div class="photo-overlay-title">' + title + '</div>' : '') +
+        (meta ? '<div class="photo-overlay-meta">' + meta + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Trigger fade-in
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.photo-card').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 80);
     });
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = Array.from(sections).indexOf(entry.target);
-          document.querySelectorAll('.dot').forEach((d, i) => {
-            d.classList.toggle('active', i === index);
-          });
-        }
-      });
-    }, { threshold: 0.5 });
-    
-    sections.forEach(s => observer.observe(s));
-    
-    const fadeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
-    
-    function openLightbox(src) {
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightbox').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-    
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
-  </script>
+  });
+}
+
+// Filter
+FILTER_BAR.addEventListener('click', e => {
+  if (!e.target.classList.contains('filter-btn')) return;
+  currentCat = e.target.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === e.target));
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.cat === currentCat);
+  });
+  render();
+  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
+});
+
+document.querySelector('.nav-links').addEventListener('click', e => {
+  if (!e.target.dataset.cat) return;
+  currentCat = e.target.dataset.cat;
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.toggle('active', a === e.target));
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === currentCat));
+  render();
+  window.scrollTo({ top: FILTER_BAR.offsetTop - 70, behavior: 'smooth' });
+});
+
+// Lightbox
+function openLightbox(index) {
+  currentIndex = index;
+  const p = visiblePhotos[index];
+  LB_IMG.src = 'images/' + p.filename;
+  LB_TITLE.textContent = p.titleZh || p.titleEn || '';
+  const catLabel = { city:'城市', nature:'自然', people:'人物', arch:'建筑', food:'饮食' }[p.category] || '';
+  const metaParts = [catLabel, p.location, p.year].filter(Boolean);
+  LB_META.textContent = metaParts.join(' · ');
+  LIGHTBOX.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  LIGHTBOX.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  currentIndex = (currentIndex + dir + visiblePhotos.length) % visiblePhotos.length;
+  openLightbox(currentIndex);
+}
+
+document.addEventListener('keydown', e => {
+  if (!LIGHTBOX.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
+
+LIGHTBOX.addEventListener('click', e => {
+  if (e.target === LIGHTBOX) closeLightbox();
+});
+
+// Hero fade
+const heroObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-section').forEach(el => heroObs.observe(el));
+
+// Header hide/show on scroll
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const h = document.getElementById('siteHeader');
+  h.style.opacity = y > 80 ? '0' : '1';
+  lastScroll = y;
+}, { passive: true });
+
+loadPhotos();
+</script>
 </body>
 </html>
