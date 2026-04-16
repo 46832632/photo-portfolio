@@ -147,71 +147,77 @@
 </header>
 
 <div id="photoContainer">
-  <div class="loading-screen">
-    <p>LOADING</p>
-  </div>
+    <section class="photo-page" id="page0">
+      <div class="photo-wrap">
+        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/hero-01.jpg" alt="Stillness" loading="eager" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="photo-meta">
+        <span class="photo-title-en">Stillness</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
+      </div>
+    </section>
+    <section class="photo-page" id="page1">
+      <div class="photo-wrap">
+        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-02.jpg" alt="Trace" loading="eager" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="photo-meta">
+        <span class="photo-title-en">Trace</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
+      </div>
+    </section>
+    <section class="photo-page" id="page2">
+      <div class="photo-wrap">
+        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/gallery-03.jpg" alt="Warmth" loading="lazy" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="photo-meta">
+        <span class="photo-title-en">Warmth</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
+      </div>
+    </section>
+    <section class="photo-page" id="page3">
+      <div class="photo-wrap">
+        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/01.jpg" alt="Remain" loading="lazy" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="photo-meta">
+        <span class="photo-title-en">Remain</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
+      </div>
+    </section>
+    <section class="photo-page" id="page4">
+      <div class="photo-wrap">
+        <img src="https://raw.githubusercontent.com/46832632/photo-portfolio/main/images/02.jpg" alt="Memories" loading="lazy" onerror="this.parentElement.style.display='none'">
+      </div>
+      <div class="photo-meta">
+        <span class="photo-title-en">Memories</span><span class="photo-sep">&#183;</span><span class="photo-year">2026</span>
+      </div>
+    </section>
 </div>
 
-<div class="page-indicator" id="pageIndicator"></div>
+<div class="page-indicator" id="pageIndicator"><div class="dot active" onclick="scrollToPage(0)"></div><div class="dot" onclick="scrollToPage(1)"></div><div class="dot" onclick="scrollToPage(2)"></div><div class="dot" onclick="scrollToPage(3)"></div><div class="dot" onclick="scrollToPage(4)"></div></div>
 
 <section class="site-footer">
   <p class="footer-title">人闲桂花落</p>
   <p class="footer-verse">夜静春山空 · 月出惊山鸟</p>
-  <p class="footer-count" id="footerCount"></p>
+  <p class="footer-count" id="footerCount">5 works</p>
   <a href="admin.html" class="footer-admin">Admin →</a>
 </section>
 
+
 <script>
-var allPhotos = [{"id": "v2-001", "filename": "hero-01.jpg", "titleZh": "静", "titleEn": "Stillness", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 1, "desc": ""}, {"id": "v2-002", "filename": "gallery-02.jpg", "titleZh": "痕", "titleEn": "Trace", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 2, "desc": ""}, {"id": "v2-003", "filename": "gallery-03.jpg", "titleZh": "暖", "titleEn": "Warmth", "category": "nature", "catLabel": "自然", "location": "", "year": "2026", "seq": 3, "desc": ""}, {"id": "v2-004", "filename": "01.jpg", "titleZh": "留", "titleEn": "Remain", "category": "city", "catLabel": "城市", "location": "", "year": "2026", "seq": 4, "desc": ""}, {"id": "v2-005", "filename": "02.jpg", "titleZh": "念", "titleEn": "Memories", "category": "people", "catLabel": "人物", "location": "", "year": "2026", "seq": 5, "desc": ""}];
-var pageCount = 0;
-function init(){
-  allPhotos=allPhotos.sort(function(a,b){return (a.seq||999)-(b.seq||999);});
-  document.getElementById('footerCount').textContent=allPhotos.length+' works';
-  renderPages();
-}
-function renderPages(){
-  var dotsHTML='',pagesHTML='';
-  for(var i=0;i<allPhotos.length;i++){
-    dotsHTML+='<div class="dot'+(i===0?' active':'')+'" onclick="scrollToPage('+i+')"></div>';
-    var p=allPhotos[i];
-    var title=(p.titleEn||p.titleZh||'');
-    var location=p.location||'';
-    var year=p.year||'';
-    var metaHTML='<span class="photo-title-en">'+title+'</span>';
-    if(location||year) metaHTML+='<span class="photo-sep">&#183;</span>';
-    if(location) metaHTML+='<span class="photo-location">'+location+'</span>';
-    if(location&&year) metaHTML+='<span class="photo-sep">&#183;</span>';
-    if(year) metaHTML+='<span class="photo-year">'+year+'</span>';
-    pagesHTML+='<section class="photo-page" id="page'+i+'">'+
-      '<div class="photo-wrap">'+
-        '<img src="https://cdn.jsdelivr.net/gh/46832632/photo-portfolio@4966812/images/'+p.filename+'" alt="'+title+'" loading="'+(i<2?'eager':'lazy')+'">'+
-      '</div>'+
-      '<div class="photo-meta">'+metaHTML+'</div>'+
-    '</section>';
-  }
-  document.getElementById('pageIndicator').innerHTML=dotsHTML;
-  document.getElementById('photoContainer').innerHTML=pagesHTML;
-  pageCount=allPhotos.length;
-  setupScroll();
-}
-function setupScroll(){
+(function(){
   var pages=document.querySelectorAll('.photo-page');
   var dots=document.querySelectorAll('.dot');
-  window.addEventListener('scroll',function(){
+  function updateBar(){
     var st=window.scrollY;
     var docH=document.documentElement.scrollHeight-window.innerHeight;
-    document.getElementById('progressBar').style.width=(st/docH*100)+'%';
+    document.getElementById('progressBar').style.width=(docH>0?(st/docH*100):0)+'%';
     var active=0;
-    for(var i=0;i<pages.length;i++) if(pages[i].offsetTop<=st+10) active=i;
-    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active',j===active);
-  },{passive:true});
-}
-function scrollToPage(index){
-  var t=document.getElementById('page'+index)||document.querySelector('.site-footer');
-  if(t) t.scrollIntoView({behavior:'smooth'});
-}
-init();
-
+    for(var i=0;i<pages.length;i++){if(pages[i].offsetTop<=st+10)active=i;}
+    for(var j=0;j<dots.length;j++){dots[j].classList.toggle('active',j===active);}
+  }
+  window.addEventListener('scroll',updateBar,{passive:true});
+  window.scrollToPage=function(idx){
+    var t=document.getElementById('page'+idx)||document.querySelector('.site-footer');
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  };
+  updateBar();
+})();
 </script>
 </body>
 </html>
