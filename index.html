@@ -163,11 +163,6 @@
       transform: scale(1.02);
     }
     .photo-info { flex: 0.7; }
-    .camera-params {
-      font-size: 0.7rem; color: var(--text-dim); margin-bottom: 1rem;
-      letter-spacing: 0.05em; text-align: right;
-    }
-    .camera-params span { margin-left: 1rem; font-family: monospace; }
     .photo-number {
       font-size: 0.7rem; color: var(--text-light); letter-spacing: 0.2em; margin-bottom: 0.5rem;
     }
@@ -178,9 +173,8 @@
     .photo-subtitle {
       font-size: 0.85rem; color: var(--text-dim); letter-spacing: 0.15em; margin-bottom: 1.5rem;
     }
-    .photo-desc {
-      font-size: 0.9rem; color: var(--text-dim); font-weight: 300;
-      line-height: 2; letter-spacing: 0.05em;
+    .photo-meta {
+      font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.1em; font-weight: 300;
     }
 
     /* ── Lightbox ── */
@@ -297,7 +291,6 @@
       .photo-wrapper { width: 100%; flex: none; }
       .photo-wrapper img { max-height: 55vh; }
       .photo-info { flex: none; max-width: 100%; }
-      .camera-params { text-align: center; }
       .lightbox-nav { display: none; }
     }
     @media (max-width: 768px) {
@@ -313,8 +306,6 @@
       .photo-title { font-size: 1.6rem; }
       .photo-subtitle { font-size: 0.85rem; }
       .photo-desc { font-size: 0.85rem; }
-      .camera-params { margin-bottom: 0.8rem; font-size: 0.65rem; letter-spacing: 0.05em; text-align: center; }
-      .camera-params span { margin: 0 0.3rem; }
       .scroll-hint { bottom: 2rem; }
       .footer { padding: 3rem 1.5rem; }
       .footer-text { font-size: 1rem; }
@@ -366,11 +357,10 @@
         <img src="images/photo-new-01.jpg?v=2" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 400</span></div>
-        <p class="photo-number">壹 / 捌</p>
+        <p class="photo-number">壹 / 贰</p>
         <h2 class="photo-title">谧</h2>
         <p class="photo-subtitle">Serenity</p>
-        <p class="photo-desc">夜色如水，万籁归寂。</p>
+        <p class="photo-meta">中国 · 2025</p>
       </div>
     </div>
   </section>
@@ -382,107 +372,10 @@
         <img src="images/photo-02-new.jpg?v=1" alt="跃" loading="lazy" onclick="openLightbox(1)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
       </div>
       <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/1000s</span> <span>ISO 200</span></div>
-        <p class="photo-number">贰 / 捌</p>
+        <p class="photo-number">贰 / 贰</p>
         <h2 class="photo-title">跃</h2>
         <p class="photo-subtitle">Leap</p>
-        <p class="photo-desc">纵身一跃，拥抱碧蓝。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 3 -->
-  <section class="photo-section fade-in" id="photo3">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/gallery-02.jpg?v=2" alt="痕" loading="lazy" onclick="openLightbox(2)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/2.0</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">叁 / 捌</p>
-        <h2 class="photo-title">痕</h2>
-        <p class="photo-subtitle">Trace</p>
-        <p class="photo-desc">线过留痕，痕即永恒。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 4 -->
-  <section class="photo-section fade-in" id="photo4">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-05.jpg?v=2" alt="烁" loading="lazy" onclick="openLightbox(3)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>35mm</span> <span>f/2.8</span> <span>1/60s</span> <span>ISO 800</span></div>
-        <p class="photo-number">肆 / 捌</p>
-        <h2 class="photo-title">烁</h2>
-        <p class="photo-subtitle">Shimmer</p>
-        <p class="photo-desc">霓虹闪烁，城市不眠。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 5 -->
-  <section class="photo-section fade-in" id="photo5">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-06.jpg?v=2" alt="构" loading="lazy" onclick="openLightbox(4)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>24mm</span> <span>f/8</span> <span>1/125s</span> <span>ISO 200</span></div>
-        <p class="photo-number">伍 / 捌</p>
-        <h2 class="photo-title">构</h2>
-        <p class="photo-subtitle">Structure</p>
-        <p class="photo-desc">线条交错，几何之美。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 6 -->
-  <section class="photo-section fade-in" id="photo6">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-07.jpg?v=2" alt="隅" loading="lazy" onclick="openLightbox(5)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/1.8</span> <span>1/80s</span> <span>ISO 400</span></div>
-        <p class="photo-number">陆 / 捌</p>
-        <h2 class="photo-title">隅</h2>
-        <p class="photo-subtitle">Corner</p>
-        <p class="photo-desc">一隅静谧，光影温柔。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 7 -->
-  <section class="photo-section fade-in" id="photo7">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-08.jpg?v=2" alt="尘" loading="lazy" onclick="openLightbox(6)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>85mm</span> <span>f/2</span> <span>1/100s</span> <span>ISO 640</span></div>
-        <p class="photo-number">柒 / 捌</p>
-        <h2 class="photo-title">尘</h2>
-        <p class="photo-subtitle">Dust</p>
-        <p class="photo-desc">人间烟火，尘世浮华。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Photo 8 -->
-  <section class="photo-section fade-in" id="photo8">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-new-08.jpg?v=2" alt="澜" loading="lazy" onclick="openLightbox(7)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
-      </div>
-      <div class="photo-info">
-        <div class="camera-params">Sony A7R IV <span>50mm</span> <span>f/2.8</span> <span>1/80s</span> <span>ISO 500</span></div>
-        <p class="photo-number">捌 / 捌</p>
-        <h2 class="photo-title">澜</h2>
-        <p class="photo-subtitle">Ripple</p>
-        <p class="photo-desc">波澜不惊，深流无声。</p>
+        <p class="photo-meta">中国 · 2025</p>
       </div>
     </div>
   </section>
@@ -503,13 +396,7 @@
     // Photo data for lightbox navigation
     const photos = [
       { src: 'images/photo-new-01.jpg?v=2', title: '谧' },
-      { src: 'images/photo-02-new.jpg?v=1', title: '跃' },
-      { src: 'images/gallery-02.jpg?v=2', title: '痕' },
-      { src: 'images/photo-05.jpg?v=2', title: '烁' },
-      { src: 'images/photo-06.jpg?v=2', title: '构' },
-      { src: 'images/photo-07.jpg?v=2', title: '隅' },
-      { src: 'images/photo-08.jpg?v=2', title: '尘' },
-      { src: 'images/photo-new-08.jpg?v=2', title: '澜' }
+      { src: 'images/photo-02-new.jpg?v=1', title: '跃' }
     ];
     let currentPhotoIndex = 0;
 
