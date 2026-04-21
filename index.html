@@ -6,6 +6,7 @@
   <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
   <meta name="description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
   <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%231a1a1a' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%231a1a1a'/%3E%3C/svg%3E">
   <!-- 使用国内 CDN 加速字体加载 -->
   <link rel="preconnect" href="https://fonts.loli.net">
   <link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
@@ -24,7 +25,6 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { 
-      scroll-behavior: smooth; 
       overflow: hidden;
       height: 100%;
     }
@@ -227,19 +227,18 @@
       width: 50px; height: 80px; background: rgba(255,255,255,0.1);
       border: 1px solid rgba(255,255,255,0.2); color: white;
       font-size: 1.5rem; cursor: pointer; display: flex;
-      align-items: center; justify-content: center; opacity: 0;
-      transition: all 0.3s; z-index: 1001;
+      align-items: center; justify-content: center;
+      opacity: 0.25; transition: opacity 0.3s, background 0.2s;
+      z-index: 1001;
     }
-    .lightbox:hover .lightbox-nav { opacity: 1; }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.2); opacity: 1; }
     .lightbox-nav:hover { background: rgba(255,255,255,0.2); }
     .lightbox-nav.prev { left: 1rem; border-radius: 0 4px 4px 0; }
     .lightbox-nav.next { right: 1rem; border-radius: 4px 0 0 4px; }
     .lightbox-counter {
       position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.6); font-size: 0.75rem; letter-spacing: 0.2em;
-      opacity: 0; transition: opacity 0.3s;
+      color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 0.2em;
     }
-    .lightbox:hover .lightbox-counter { opacity: 1; }
 
     /* ── Footer ── */
     .footer {
@@ -271,11 +270,13 @@
     .parallax-img {
       transform: translateY(20px);
       opacity: 0.8;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .parallax-img.visible {
       transform: translateY(0);
       opacity: 1;
+      will-change: transform, opacity;
     }
 
     /* ── Scrollbar ── */
@@ -305,7 +306,6 @@
       .photo-wrapper img { max-height: 45vh; }
       .photo-title { font-size: 1.6rem; }
       .photo-subtitle { font-size: 0.85rem; }
-      .photo-desc { font-size: 0.85rem; }
       .scroll-hint { bottom: 2rem; }
       .footer { padding: 3rem 1.5rem; }
       .footer-text { font-size: 1rem; }
@@ -336,10 +336,10 @@
   </nav>
 
   <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-    <button class="lightbox-nav prev" onclick="navigateLightbox(-1)">&#8249;</button>
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="关闭">&times;</button>
+    <button class="lightbox-nav prev" onclick="navigateLightbox(-1)" aria-label="上一张">&#8249;</button>
     <img src="" alt="" id="lightboxImg">
-    <button class="lightbox-nav next" onclick="navigateLightbox(1)">&#8250;</button>
+    <button class="lightbox-nav next" onclick="navigateLightbox(1)" aria-label="下一张">&#8250;</button>
     <div class="lightbox-counter" id="lightboxCounter"></div>
   </div>
 
@@ -460,6 +460,7 @@
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
       updateLightboxCounter();
+      preloadImage(index - 1);
       preloadImage(index + 1);
     }
 
@@ -545,14 +546,7 @@
       img.parentElement.classList.remove('loading');
     }
     
-    // Force load all images on page load
-    window.addEventListener('load', function() {
-      document.querySelectorAll('img[loading="lazy"]').forEach(function(img) {
-        if (img.getBoundingClientRect().top < window.innerHeight * 2) {
-          img.loading = 'eager';
-        }
-      });
-    });
+
   </script>
 </body>
 </html>
