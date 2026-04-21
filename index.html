@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
   <meta name="description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
   <meta name="theme-color" content="#ffffff">
@@ -91,7 +91,7 @@
 
     /* ── Hero ── */
     .hero {
-      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column;
+      min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center;
       padding: 6rem 2rem 4rem; position: relative;
     }
@@ -119,7 +119,7 @@
 
     /* ── Photo Sections ── */
     .photo-section {
-      min-height: 100vh; scroll-snap-align: start;
+      min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; scroll-snap-stop: always;
       padding: 5rem 3rem; display: flex; justify-content: center;
     }
     .photo-container {
@@ -242,7 +242,7 @@
 
     /* ── Footer ── */
     .footer {
-      min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center;
       justify-content: center; text-align: center; padding: 4rem 2rem; background: var(--bg-cream);
     }
     .footer-tag { font-size: 0.65rem; letter-spacing: 0.4em; color: var(--text-light); margin-bottom: 2rem; text-transform: uppercase; }
@@ -260,7 +260,7 @@
     .fade-in { 
       opacity: 0; 
       transform: translateY(40px) scale(0.98); 
-      transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); 
+      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1); 
     }
     .fade-in.visible { 
       opacity: 1; 
@@ -276,11 +276,12 @@
     .parallax-img.visible {
       transform: translateY(0);
       opacity: 1;
-      will-change: transform, opacity;
     }
+    .photo-wrapper:hover img { will-change: transform; }
 
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
+    html { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
@@ -302,7 +303,7 @@
       .hero-tag { font-size: 0.6rem; letter-spacing: 0.3em; }
       .hero-title { letter-spacing: 0.15em; }
       .hero-subtitle { font-size: 0.9rem; letter-spacing: 0.2em; }
-      .photo-section { padding: 4rem 1.2rem; min-height: 100vh; scroll-snap-align: start; }
+      .photo-section { padding: 4rem 1.2rem; min-height: 100vh; min-height: 100dvh; scroll-snap-align: start; }
       .photo-wrapper img { max-height: 45vh; }
       .photo-title { font-size: 1.6rem; }
       .photo-subtitle { font-size: 0.85rem; }
@@ -316,7 +317,7 @@
 
   <div class="progress-bar" id="progressBar"></div>
 
-  <header id="mainHeader">
+  <header id="mainHeader" role="banner">
     <a href="#hero" class="logo">桂花落</a>
     <ul class="nav-links">
       <li><a href="#photo1">作品</a></li>
@@ -328,7 +329,7 @@
     </button>
   </header>
 
-  <nav class="mobile-nav" id="mobileNav">
+  <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
     <a href="#hero" onclick="toggleMenu()">首页</a>
     <a href="#photo1" onclick="toggleMenu()">作品</a>
     <a href="#about" onclick="toggleMenu()">春山空</a>
@@ -403,18 +404,18 @@
     // Mobile menu
     function toggleMenu() {
       document.getElementById('menuBtn').classList.toggle('active');
-      document.getElementById('mobileNav').classList.toggle('active');
+      const nav = document.getElementById('mobileNav'); nav.classList.toggle('active'); nav.setAttribute('aria-hidden', !nav.classList.contains('active'));
     }
     document.getElementById('menuBtn').addEventListener('click', toggleMenu);
 
     // Unified scroll handler for performance
     function handleScroll() {
-      var scrollTop = document.body.scrollTop;
-      var scrollHeight = document.body.scrollHeight - document.body.clientHeight;
-      var scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      const scrollTop = document.body.scrollTop;
+      const scrollHeight = document.body.scrollHeight - document.body.clientHeight;
+      const scrolled = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
       document.getElementById('progressBar').style.width = scrolled + '%';
       
-      var header = document.getElementById('mainHeader');
+      const header = document.getElementById('mainHeader');
       if (scrollTop > 50) {
         header.classList.add('scrolled');
       } else {
@@ -454,7 +455,7 @@
     function openLightbox(index) {
       currentPhotoIndex = index;
       var lightbox = document.getElementById('lightbox');
-      var img = document.getElementById('lightboxImg');
+      const img = document.getElementById('lightboxImg');
       img.src = photos[index].src;
       img.alt = photos[index].title;
       lightbox.classList.add('open');
@@ -471,11 +472,10 @@
     }
 
     function navigateLightbox(direction) {
-      var newIndex = currentPhotoIndex + direction;
+      const newIndex = currentPhotoIndex + direction;
       if (newIndex < 0 || newIndex >= photos.length) return;
       
-      updateLightboxCounter();  // 更新计数器立即响应
-      var img = document.getElementById('lightboxImg');
+      const img = document.getElementById('lightboxImg');
       img.classList.add(direction > 0 ? 'swipe-left' : 'swipe-right');
       
       setTimeout(function() {
@@ -483,6 +483,7 @@
         img.src = photos[newIndex].src;
         img.alt = photos[newIndex].title;
         img.classList.remove('swipe-left', 'swipe-right');
+        updateLightboxCounter();
         preloadImage(newIndex - 1);
         preloadImage(newIndex + 1);
       }, 200);
@@ -494,9 +495,9 @@
     }
 
     // Touch swipe support for lightbox
-    var touchStartX = 0;
-    var touchEndX = 0;
-    var lightboxEl = document.getElementById('lightbox');
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lightboxEl = document.getElementById('lightbox');
     
     lightboxEl.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
@@ -508,8 +509,8 @@
     }, { passive: true });
     
     function handleSwipe() {
-      var swipeThreshold = 50;
-      var diff = touchStartX - touchEndX;
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
       if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
           navigateLightbox(1);
