@@ -6,6 +6,16 @@
   <title>人闲桂花落 · 夜静春山空 | Photography Portfolio</title>
   <meta name="description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
   <meta name="theme-color" content="#ffffff">
+  
+  <!-- Open Graph / 社交分享 -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://46832632.github.io/photo-portfolio/">
+  <meta property="og:title" content="人闲桂花落 · 夜静春山空 | Photography Portfolio">
+  <meta property="og:description" content="个人摄影作品集，禅意摄影，用镜头捕捉静谧中的诗意。">
+  <meta property="og:image" content="https://46832632.github.io/photo-portfolio/images/photo-new-01.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%231a1a1a' stroke-width='8'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%231a1a1a'/%3E%3C/svg%3E">
   <!-- 使用国内 CDN 加速字体加载 -->
   <link rel="preconnect" href="https://fonts.loli.net">
@@ -37,6 +47,7 @@
       overflow-y: auto;
       scroll-snap-type: y mandatory;
     }
+    body.lightbox-open { overflow: hidden; }
 
     /* ── Header ── */
     header {
@@ -253,7 +264,7 @@
     /* ── Progress ── */
     .progress-bar {
       position: fixed; top: 60px; left: 0; height: 2px; background: var(--accent);
-      z-index: 999; width: 0%; transition: width 0.1s;
+      z-index: 99; width: 0%; transition: width 0.1s;
     }
 
     /* ── Enhanced Fade-in Animation ── */
@@ -277,7 +288,6 @@
       transform: translateY(0);
       opacity: 1;
     }
-    .photo-wrapper:hover img { will-change: transform; }
 
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
@@ -319,12 +329,14 @@
 
   <header id="mainHeader" role="banner">
     <a href="#hero" class="logo">桂花落</a>
-    <ul class="nav-links">
-      <li><a href="#photo1">作品</a></li>
-      <li><a href="#about">春山空</a></li>
-      <li><a href="upload-local.html" target="_blank">春涧中</a></li>
-    </ul>
-    <button class="menu-btn" id="menuBtn">
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#photo1">作品</a></li>
+        <li><a href="#about">春山空</a></li>
+        <li><a href="upload-local.html" target="_blank">春涧中</a></li>
+      </ul>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="打开菜单" aria-expanded="false" aria-controls="mobileNav">
       <span></span><span></span><span></span>
     </button>
   </header>
@@ -336,52 +348,54 @@
     <a href="upload-local.html" onclick="toggleMenu()" target="_blank">春涧中</a>
   </nav>
 
-  <div class="lightbox" id="lightbox">
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片查看器">
     <button class="lightbox-close" onclick="closeLightbox()" aria-label="关闭">&times;</button>
     <button class="lightbox-nav prev" onclick="navigateLightbox(-1)" aria-label="上一张">&#8249;</button>
-    <img src="" alt="" id="lightboxImg">
+    <img src="" alt="照片预览" id="lightboxImg">
     <button class="lightbox-nav next" onclick="navigateLightbox(1)" aria-label="下一张">&#8250;</button>
-    <div class="lightbox-counter" id="lightboxCounter"></div>
+    <div class="lightbox-counter" id="lightboxCounter" aria-live="polite"></div>
   </div>
 
-  <section class="hero" id="hero">
-    <p class="hero-tag">Photography Portfolio</p>
-    <h1 class="hero-title">人闲桂花落</h1>
-    <p class="hero-subtitle">夜静春山空</p>
-    <div class="scroll-hint"><span>SCROLL</span><span>&#8595;</span></div>
-  </section>
+  <main>
+    <section class="hero" id="hero">
+      <p class="hero-tag">Photography Portfolio</p>
+      <h1 class="hero-title">人闲桂花落</h1>
+      <p class="hero-subtitle">夜静春山空</p>
+      <div class="scroll-hint"><span>SCROLL</span><span>&#8595;</span></div>
+    </section>
 
-  <!-- Photo 1 -->
-  <section class="photo-section fade-in" id="photo1">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-new-01.jpg?v=2" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+    <!-- Photo 1 -->
+    <section class="photo-section fade-in" id="photo1">
+      <div class="photo-container">
+        <div class="photo-wrapper loading">
+          <img src="images/photo-new-01.jpg?v=2" alt="谧" loading="eager" onclick="openLightbox(0)" class="parallax-img" data-title="谧" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+        </div>
+        <div class="photo-info">
+          <p class="photo-number">壹 / 贰</p>
+          <h2 class="photo-title">谧</h2>
+          <p class="photo-subtitle">Serenity</p>
+          <p class="photo-meta">中国 · 2025</p>
+        </div>
       </div>
-      <div class="photo-info">
-        <p class="photo-number">壹 / 贰</p>
-        <h2 class="photo-title">谧</h2>
-        <p class="photo-subtitle">Serenity</p>
-        <p class="photo-meta">中国 · 2025</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Photo 2 -->
-  <section class="photo-section fade-in" id="photo2">
-    <div class="photo-container">
-      <div class="photo-wrapper loading">
-        <img src="images/photo-02-new.jpg?v=1" alt="跃" loading="lazy" onclick="openLightbox(1)" class="parallax-img" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+    <!-- Photo 2 -->
+    <section class="photo-section fade-in" id="photo2">
+      <div class="photo-container">
+        <div class="photo-wrapper loading">
+          <img src="images/photo-02-new.jpg?v=1" alt="跃" loading="lazy" onclick="openLightbox(1)" class="parallax-img" data-title="跃" onload="this.classList.add('loaded'); this.parentElement.classList.remove('loading')" onerror="handleImageError(this)">
+        </div>
+        <div class="photo-info">
+          <p class="photo-number">贰 / 贰</p>
+          <h2 class="photo-title">跃</h2>
+          <p class="photo-subtitle">Leap</p>
+          <p class="photo-meta">中国 · 2025</p>
+        </div>
       </div>
-      <div class="photo-info">
-        <p class="photo-number">贰 / 贰</p>
-        <h2 class="photo-title">跃</h2>
-        <p class="photo-subtitle">Leap</p>
-        <p class="photo-meta">中国 · 2025</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section class="footer" id="about">
+  <footer class="footer" id="about">
     <p class="footer-tag">About</p>
     <p class="footer-text">
       人闲桂花落，夜静春山空。<br>
@@ -390,21 +404,33 @@
       在光影间寻找内心的宁静。
     </p>
     <div class="footer-divider"></div>
-    <p class="footer-copy">© 2026 桂花落 · Photography Portfolio</p>
-  </section>
+    <p class="footer-copy" id="footerCopy"></p>
+  </footer>
 
   <script>
-    // Photo data for lightbox navigation
-    const photos = [
-      { src: 'images/photo-new-01.jpg?v=2', title: '谧' },
-      { src: 'images/photo-02-new.jpg?v=1', title: '跃' }
-    ];
+    // 动态生成年份
+    document.getElementById('footerCopy').textContent = '© ' + new Date().getFullYear() + ' 桂花落 · Photography Portfolio';
+    
+    // 从 DOM 自动提取照片数据
+    const photos = [];
+    document.querySelectorAll('.photo-wrapper img').forEach(function(img) {
+      photos.push({ src: img.src, title: img.getAttribute('data-title') || img.alt });
+    });
+    
     let currentPhotoIndex = 0;
+    let lastFocusedElement = null;
+    const lightboxEl = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
     // Mobile menu
     function toggleMenu() {
-      document.getElementById('menuBtn').classList.toggle('active');
-      const nav = document.getElementById('mobileNav'); nav.classList.toggle('active'); nav.setAttribute('aria-hidden', !nav.classList.contains('active'));
+      const btn = document.getElementById('menuBtn');
+      const nav = document.getElementById('mobileNav');
+      const isOpen = btn.classList.toggle('active');
+      nav.classList.toggle('active');
+      nav.setAttribute('aria-hidden', !isOpen);
+      btn.setAttribute('aria-expanded', isOpen);
     }
     document.getElementById('menuBtn').addEventListener('click', toggleMenu);
 
@@ -425,11 +451,11 @@
     document.body.addEventListener('scroll', handleScroll, { passive: true });
 
     // Enhanced fade-in on scroll with parallax
-    var observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          var img = entry.target.querySelector('.parallax-img');
+          const img = entry.target.querySelector('.parallax-img');
           if (img) {
             setTimeout(function() {
               img.classList.add('visible');
@@ -446,43 +472,71 @@
     // Preload next image
     function preloadImage(index) {
       if (index >= 0 && index < photos.length) {
-        var img = new Image();
+        const img = new Image();
         img.src = photos[index].src;
       }
+    }
+
+    // Focus trap for lightbox
+    function trapFocus(element) {
+      const focusableEls = element.querySelectorAll(focusableSelectors);
+      const firstFocusable = focusableEls[0];
+      const lastFocusable = focusableEls[focusableEls.length - 1];
+
+      function handleTab(e) {
+        if (e.key !== 'Tab') return;
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable.focus();
+          }
+        }
+      }
+      element.addEventListener('keydown', handleTab);
+      return handleTab;
     }
 
     // Lightbox with navigation
     function openLightbox(index) {
       currentPhotoIndex = index;
-      var lightbox = document.getElementById('lightbox');
-      const img = document.getElementById('lightboxImg');
-      img.src = photos[index].src;
-      img.alt = photos[index].title;
-      lightbox.classList.add('open');
-      document.body.style.overflow = 'hidden';
+      lastFocusedElement = document.activeElement;
+      lightboxImg.src = photos[index].src;
+      lightboxImg.alt = photos[index].title;
+      lightboxEl.classList.add('open');
+      document.body.classList.add('lightbox-open');
       updateLightboxCounter();
       preloadImage(index - 1);
       preloadImage(index + 1);
+      // Focus the close button
+      setTimeout(function() {
+        document.querySelector('.lightbox-close').focus();
+      }, 100);
     }
 
     function closeLightbox() {
-      var lightbox = document.getElementById('lightbox');
-      lightbox.classList.remove('open');
-      document.body.style.overflow = '';
+      lightboxEl.classList.remove('open');
+      document.body.classList.remove('lightbox-open');
+      if (lastFocusedElement) {
+        lastFocusedElement.focus();
+      }
     }
 
     function navigateLightbox(direction) {
       const newIndex = currentPhotoIndex + direction;
       if (newIndex < 0 || newIndex >= photos.length) return;
       
-      const img = document.getElementById('lightboxImg');
-      img.classList.add(direction > 0 ? 'swipe-left' : 'swipe-right');
+      lightboxImg.classList.add(direction > 0 ? 'swipe-left' : 'swipe-right');
       
       setTimeout(function() {
         currentPhotoIndex = newIndex;
-        img.src = photos[newIndex].src;
-        img.alt = photos[newIndex].title;
-        img.classList.remove('swipe-left', 'swipe-right');
+        lightboxImg.src = photos[newIndex].src;
+        lightboxImg.alt = photos[newIndex].title;
+        lightboxImg.classList.remove('swipe-left', 'swipe-right');
         updateLightboxCounter();
         preloadImage(newIndex - 1);
         preloadImage(newIndex + 1);
@@ -497,7 +551,6 @@
     // Touch swipe support for lightbox
     let touchStartX = 0;
     let touchEndX = 0;
-    const lightboxEl = document.getElementById('lightbox');
     
     lightboxEl.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
@@ -539,7 +592,7 @@
       // Try once more with cache-busting
       if (!img.dataset.retried) {
         img.dataset.retried = 'true';
-        var originalSrc = img.src;
+        const originalSrc = img.src;
         img.src = originalSrc + (originalSrc.indexOf('?') > -1 ? '&' : '?') + '_t=' + Date.now();
         return;
       }
@@ -547,6 +600,9 @@
       img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23f5f5f3" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23888" font-family="sans-serif" font-size="14"%3E图片加载失败%3C/text%3E%3C/svg%3E';
       img.parentElement.classList.remove('loading');
     }
+    
+    // Init focus trap
+    trapFocus(lightboxEl);
   </script>
 </body>
 </html>
