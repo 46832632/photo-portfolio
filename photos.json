@@ -29,26 +29,6 @@
     },
     {
       "id": "photo-002",
-      "src": "images/photo-02-new.jpg",
-      "title": "跃",
-      "subtitle": "Leap",
-      "category": "urban",
-      "description": "光影即临，瞬息永恒。",
-      "location": "中国",
-      "year": 2025,
-      "camera": {
-        "model": "Sony A7R IV",
-        "lens": "35mm",
-        "aperture": "f/2.8",
-        "shutter": "1/60s",
-        "iso": "ISO 400"
-      },
-      "order": 2,
-      "visible": true,
-      "createdAt": "2025-02-20"
-    },
-    {
-      "id": "photo-003",
       "src": "images/01.jpg",
       "title": "留白",
       "subtitle": "Stillness",
@@ -63,12 +43,12 @@
         "shutter": "1/125s",
         "iso": "ISO 200"
       },
-      "order": 3,
+      "order": 2,
       "visible": true,
       "createdAt": "2025-03-10"
     },
     {
-      "id": "photo-004",
+      "id": "photo-003",
       "src": "images/02.jpg",
       "title": "静",
       "subtitle": "Quiet",
@@ -83,89 +63,9 @@
         "shutter": "1/250s",
         "iso": "ISO 100"
       },
-      "order": 4,
+      "order": 3,
       "visible": true,
       "createdAt": "2025-03-15"
-    },
-    {
-      "id": "photo-005",
-      "src": "images/03.jpg",
-      "title": "暖",
-      "subtitle": "Warmth",
-      "category": "portrait",
-      "description": "温暖的光，是城市最后的温柔。",
-      "location": "中国",
-      "year": 2025,
-      "camera": {
-        "model": "Sony A7R IV",
-        "lens": "85mm",
-        "aperture": "f/1.4",
-        "shutter": "1/200s",
-        "iso": "ISO 320"
-      },
-      "order": 5,
-      "visible": true,
-      "createdAt": "2025-04-01"
-    },
-    {
-      "id": "photo-006",
-      "src": "images/04.jpg",
-      "title": "痕",
-      "subtitle": "Trace",
-      "category": "urban",
-      "description": "每一道痕迹，都是时间的笔迹。",
-      "location": "中国",
-      "year": 2025,
-      "camera": {
-        "model": "Sony A7R IV",
-        "lens": "24mm",
-        "aperture": "f/8",
-        "shutter": "1/30s",
-        "iso": "ISO 800"
-      },
-      "order": 6,
-      "visible": true,
-      "createdAt": "2025-04-10"
-    },
-    {
-      "id": "photo-007",
-      "src": "images/05.jpg",
-      "title": "涌",
-      "subtitle": "Surge",
-      "category": "landscape",
-      "description": "潮起潮落，生活终将继续。",
-      "location": "中国",
-      "year": 2025,
-      "camera": {
-        "model": "Sony A7R IV",
-        "lens": "14mm",
-        "aperture": "f/11",
-        "shutter": "1/15s",
-        "iso": "ISO 100"
-      },
-      "order": 7,
-      "visible": true,
-      "createdAt": "2025-05-01"
-    },
-    {
-      "id": "photo-008",
-      "src": "images/06.jpg",
-      "title": "念",
-      "subtitle": "Memory",
-      "category": "portrait",
-      "description": "回忆是时间的礼物，照片是记忆的容器。",
-      "location": "中国",
-      "year": 2025,
-      "camera": {
-        "model": "Sony A7R IV",
-        "lens": "50mm",
-        "aperture": "f/1.8",
-        "shutter": "1/160s",
-        "iso": "ISO 400"
-      },
-      "order": 8,
-      "visible": true,
-      "createdAt": "2025-05-15"
     }
   ]
 }
