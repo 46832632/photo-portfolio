@@ -61,6 +61,8 @@
       text-decoration: none; transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); font-weight: 500; }
+    .category-link { cursor: pointer; }
     .menu-btn {
       display: none; flex-direction: column; gap: 5px; background: none;
       border: none; cursor: pointer; padding: 5px;
@@ -78,6 +80,7 @@
       border-top: 1px solid var(--border);
     }
     .mobile-nav.active { display: flex; }
+    .mobile-category-divider { height: 1px; background: var(--border); width: 60%; margin: 0.5rem auto; }
     .mobile-nav a {
       font-size: 1rem; letter-spacing: 0.3em; color: var(--text-dim);
       text-decoration: none; transition: color 0.3s;
@@ -319,8 +322,11 @@
   <header id="mainHeader" role="banner">
     <a href="#hero" class="logo">桂花落</a>
     <ul class="nav-links">
-      <li><a href="#photo-0">作品</a></li>
-      <li><a href="#about">春山空</a></li>
+      <li><a href="#" class="category-link active" data-category="all">全部</a></li>
+      <li><a href="#" class="category-link" data-category="nature">自然</a></li>
+      <li><a href="#" class="category-link" data-category="urban">城市</a></li>
+      <li><a href="#" class="category-link" data-category="portrait">人物</a></li>
+      <li><a href="#about">关于</a></li>
       <li><a href="admin.html" target="_blank">管理</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn">
@@ -330,8 +336,13 @@
 
   <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
     <a href="#hero" onclick="toggleMenu()">首页</a>
-    <a href="#photo-0" onclick="toggleMenu()">作品</a>
-    <a href="#about" onclick="toggleMenu()">春山空</a>
+    <div class="mobile-category-divider"></div>
+    <a href="#" class="category-link" data-category="all" onclick="toggleMenu()">全部</a>
+    <a href="#" class="category-link" data-category="nature" onclick="toggleMenu()">自然</a>
+    <a href="#" class="category-link" data-category="urban" onclick="toggleMenu()">城市</a>
+    <a href="#" class="category-link" data-category="portrait" onclick="toggleMenu()">人物</a>
+    <div class="mobile-category-divider"></div>
+    <a href="#about" onclick="toggleMenu()">关于</a>
     <a href="admin.html" onclick="toggleMenu()" target="_blank">管理</a>
   </nav>
 
@@ -370,6 +381,7 @@
     let photos = [];
     let categories = [];
     let currentPhotoIndex = 0;
+    let currentCategory = 'all';
 
     // Chinese number mapping
     const chineseNumbers = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖', '拾',
@@ -399,13 +411,17 @@
       const gallery = document.getElementById('photoGallery');
       gallery.innerHTML = '';
 
-      photos.forEach((photo, index) => {
+      const filteredPhotos = currentCategory === 'all' 
+        ? photos 
+        : photos.filter(p => p.category === currentCategory);
+
+      filteredPhotos.forEach((photo, index) => {
         const section = document.createElement('section');
         section.className = 'photo-section fade-in';
         section.id = `photo-${index}`;
 
         const numberText = index < chineseNumbers.length ? chineseNumbers[index + 1] : (index + 1);
-        const totalText = photos.length < chineseNumbers.length ? chineseNumbers[photos.length] : photos.length;
+        const totalText = filteredPhotos.length < chineseNumbers.length ? chineseNumbers[filteredPhotos.length] : filteredPhotos.length;
 
         section.innerHTML = `
           <div class="photo-container">
@@ -477,25 +493,34 @@
     document.body.addEventListener('scroll', handleScroll, { passive: true });
 
     // Preload image
-    function preloadImage(index) {
-      if (index >= 0 && index < photos.length) {
+    function preloadImage(index, photosArray) {
+      const arr = photosArray || getFilteredPhotos();
+      if (index >= 0 && index < arr.length) {
         const img = new Image();
-        img.src = photos[index].src;
+        img.src = arr[index].src;
       }
+    }
+
+    // Get filtered photos
+    function getFilteredPhotos() {
+      return currentCategory === 'all' 
+        ? photos 
+        : photos.filter(p => p.category === currentCategory);
     }
 
     // Lightbox
     function openLightbox(index) {
       currentPhotoIndex = index;
+      const filteredPhotos = getFilteredPhotos();
       const lightbox = document.getElementById('lightbox');
       const img = document.getElementById('lightboxImg');
-      img.src = photos[index].src;
-      img.alt = photos[index].title;
+      img.src = filteredPhotos[index].src;
+      img.alt = filteredPhotos[index].title;
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden';
-      updateLightboxCounter();
-      preloadImage(index - 1);
-      preloadImage(index + 1);
+      updateLightboxCounter(filteredPhotos);
+      preloadImage(index - 1, filteredPhotos);
+      preloadImage(index + 1, filteredPhotos);
     }
 
     function closeLightbox() {
@@ -504,26 +529,28 @@
     }
 
     function navigateLightbox(direction) {
+      const filteredPhotos = getFilteredPhotos();
       const newIndex = currentPhotoIndex + direction;
-      if (newIndex < 0 || newIndex >= photos.length) return;
+      if (newIndex < 0 || newIndex >= filteredPhotos.length) return;
 
       const img = document.getElementById('lightboxImg');
       img.classList.add(direction > 0 ? 'swipe-left' : 'swipe-right');
 
       setTimeout(() => {
         currentPhotoIndex = newIndex;
-        img.src = photos[newIndex].src;
-        img.alt = photos[newIndex].title;
+        img.src = filteredPhotos[newIndex].src;
+        img.alt = filteredPhotos[newIndex].title;
         img.classList.remove('swipe-left', 'swipe-right');
-        updateLightboxCounter();
-        preloadImage(newIndex - 1);
-        preloadImage(newIndex + 1);
+        updateLightboxCounter(filteredPhotos);
+        preloadImage(newIndex - 1, filteredPhotos);
+        preloadImage(newIndex + 1, filteredPhotos);
       }, 200);
     }
 
-    function updateLightboxCounter() {
+    function updateLightboxCounter(filteredPhotos) {
+      const arr = filteredPhotos || getFilteredPhotos();
       document.getElementById('lightboxCounter').textContent =
-        `${currentPhotoIndex + 1} / ${photos.length}`;
+        `${currentPhotoIndex + 1} / ${arr.length}`;
     }
 
     // Touch swipe support
@@ -566,6 +593,24 @@
       img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23f5f5f3' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23888' font-family='sans-serif' font-size='14'%3E图片加载失败%3C/text%3E%3C/svg%3E";
       img.parentElement.classList.remove('loading');
     }
+
+    // Category filter
+    function setCategory(category) {
+      currentCategory = category;
+      document.querySelectorAll('.category-link').forEach(link => {
+        link.classList.toggle('active', link.dataset.category === category);
+      });
+      renderGallery();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Category click handlers
+    document.querySelectorAll('.category-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        setCategory(link.dataset.category);
+      });
+    });
 
     // Initialize
     loadPhotos();

@@ -1,10 +1,9 @@
 {
   "categories": [
-    { "id": "all", "name": "全部作品", "nameEn": "All Works" },
-    { "id": "landscape", "name": "风景", "nameEn": "Landscape" },
+    { "id": "all", "name": "全部", "nameEn": "All" },
+    { "id": "nature", "name": "自然", "nameEn": "Nature" },
     { "id": "urban", "name": "城市", "nameEn": "Urban" },
-    { "id": "portrait", "name": "人文", "nameEn": "Portrait" },
-    { "id": "abstract", "name": "抽象", "nameEn": "Abstract" }
+    { "id": "portrait", "name": "人物", "nameEn": "Portrait" }
   ],
   "photos": [
     {
@@ -12,7 +11,7 @@
       "src": "images/photo-new-01.jpg",
       "title": "谧",
       "subtitle": "Serenity",
-      "category": "landscape",
+      "category": "nature",
       "description": "万籁俱寂，心归处。",
       "location": "中国",
       "year": 2025,
@@ -32,7 +31,7 @@
       "src": "images/01.jpg",
       "title": "留白",
       "subtitle": "Stillness",
-      "category": "landscape",
+      "category": "nature",
       "description": "留白是一种艺术，也是一种人生态度。",
       "location": "中国",
       "year": 2025,
@@ -52,7 +51,7 @@
       "src": "images/02.jpg",
       "title": "静",
       "subtitle": "Quiet",
-      "category": "landscape",
+      "category": "nature",
       "description": "静不是无声，而是听见内心的声音。",
       "location": "中国",
       "year": 2025,
