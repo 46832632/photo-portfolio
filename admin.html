@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桂花落 · 管理</title>
+<link rel="preconnect" href="https://fonts.loli.net">
+<link rel="preconnect" href="https://gstatic.loli.net" crossorigin>
+<link href="https://fonts.loli.net/css2?family=Noto+Serif+SC:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafaf8;
+  --bg-card: #ffffff;
+  --bg-hover: #f5f5f3;
+  --text: #1a1a1a;
+  --text-dim: #666;
+  --text-light: #999;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
+  --accent: #c9a84c;
+  --accent-hover: #b8973b;
+  --green: #4a9a5a;
+  --red: #c05050;
+  --red-hover: #a84040;
+  --blue: #4a7ac0;
+  --sidebar-width: 240px;
+  --header-height: 56px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════
+   Sidebar
+═══════════════════════════════════════════ */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 100;
+}
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1rem; font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--text);
+}
+.sidebar-nav {
+  flex: 1; padding: 1rem 0;
+  overflow-y: auto;
+}
+.nav-section {
+  margin-bottom: 1.5rem;
+}
+.nav-section-title {
+  font-size: 0.65rem; font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.5rem 1.5rem;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  color: var(--text-dim);
+  text-decoration: none; font-size: 0.88rem;
+  transition: all 0.15s;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+.nav-item.active {
+  background: var(--bg-hover);
+  color: var(--text);
+  border-left-color: var(--accent);
+}
+.nav-item-icon { font-size: 1.1rem; opacity: 0.7; }
+.nav-item.active .nav-item-icon { opacity: 1; }
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.token-status {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.75rem; color: var(--text-light);
+}
+.token-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text-light);
+}
+.token-dot.ok { background: var(--green); }
+.token-dot.err { background: var(--red); }
+
+/* ═══════════════════════════════════════════
+   Main Content
+═══════════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+}
+.header {
+  position: sticky; top: 0; z-index: 50;
+  height: var(--header-height);
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+.header-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1rem; font-weight: 500;
+}
+.header-actions {
+  display: flex; gap: 0.75rem;
+}
+
+.content {
+  padding: 2rem;
+  max-width: 1400px;
+}
+
+/* ═══════════════════════════════════════════
+   Cards & Panels
+═══════════════════════════════════════════ */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.card-title {
+  font-size: 0.95rem; font-weight: 600;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.card-body { padding: 1.25rem; }
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+}
+.stat-value {
+  font-size: 2rem; font-weight: 600;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+}
+.stat-label {
+  font-size: 0.75rem; color: var(--text-light);
+  letter-spacing: 0.1em; margin-top: 0.25rem;
+}
+
+/* ═══════════════════════════════════════════
+   Photo Grid
+═══════════════════════════════════════════ */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.photo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.photo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.photo-card-image {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: var(--bg-hover);
+  overflow: hidden;
+}
+.photo-card-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.photo-card:hover .photo-card-image img {
+  transform: scale(1.05);
+}
+.photo-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  opacity: 0; transition: opacity 0.2s;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 1rem;
+}
+.photo-card:hover .photo-card-overlay { opacity: 1; }
+.photo-card-actions {
+  display: flex; gap: 0.5rem;
+}
+.photo-card-info {
+  padding: 1rem;
+}
+.photo-card-title {
+  font-size: 0.95rem; font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.photo-card-meta {
+  font-size: 0.75rem; color: var(--text-light);
+  display: flex; gap: 0.75rem;
+}
+.photo-card-badge {
+  display: inline-block;
+  font-size: 0.65rem; padding: 0.2rem 0.5rem;
+  background: var(--bg-hover);
+  border-radius: 3px;
+  color: var(--text-dim);
+}
+
+/* ═══════════════════════════════════════════
+   Buttons
+═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.85rem; font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-hover);
+}
+.btn-primary {
+  background: var(--text);
+  color: white;
+  border-color: var(--text);
+}
+.btn-primary:hover {
+  background: #333;
+  border-color: #333;
+}
+.btn-accent {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.btn-danger {
+  background: var(--red);
+  color: white;
+  border-color: var(--red);
+}
+.btn-danger:hover {
+  background: var(--red-hover);
+  border-color: var(--red-hover);
+}
+.btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+}
+.btn-icon {
+  width: 32px; height: 32px;
+  padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+
+/* ═══════════════════════════════════════════
+   Forms
+═══════════════════════════════════════════ */
+.form-group { margin-bottom: 1rem; }
+.form-label {
+  display: block;
+  font-size: 0.78rem; font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 0.9rem; font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+}
+.form-textarea { min-height: 80px; resize: vertical; }
+.form-row {
+  display: flex; gap: 1rem;
+}
+.form-row .form-group { flex: 1; }
+
+/* ═══════════════════════════════════════════
+   Modal
+═══════════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+  display: none;
+  animation: fadeIn 0.2s;
+}
+.modal-backdrop.active { display: flex; align-items: center; justify-content: center; }
+.modal {
+  background: var(--bg-card);
+  border-radius: 10px;
+  width: 90%; max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title {
+  font-size: 1.05rem; font-weight: 600;
+}
+.modal-close {
+  width: 32px; height: 32px;
+  border: none; background: none;
+  font-size: 1.4rem; color: var(--text-light);
+  cursor: pointer; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:hover { background: var(--bg-hover); color: var(--text); }
+.modal-body { padding: 1.5rem; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════
+   Upload Zone
+═══════════════════════════════════════════ */
+.upload-zone {
+  border: 2px dashed var(--border-strong);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-card);
+}
+.upload-zone:hover, .upload-zone.drag {
+  border-color: var(--accent);
+  background: rgba(201,168,76,0.03);
+}
+.upload-zone-icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.5; }
+.upload-zone-text { color: var(--text-dim); font-size: 0.9rem; }
+.upload-zone-hint { font-size: 0.78rem; color: var(--text-light); margin-top: 0.5rem; }
+
+/* ═══════════════════════════════════════════
+   Toast
+═══════════════════════════════════════════ */
+.toast-container {
+  position: fixed; top: 1rem; right: 1rem; z-index: 300;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.toast {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  animation: slideIn 0.3s ease;
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.88rem;
+}
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error { border-left: 3px solid var(--red); }
+.toast.info { border-left: 3px solid var(--blue); }
+
+/* ═══════════════════════════════════════════
+   Loading
+═══════════════════════════════════════════ */
+.loading-overlay {
+  position: fixed; inset: 0;
+  background: rgba(250,250,248,0.9);
+  z-index: 250;
+  display: none;
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 1rem;
+}
+.loading-overlay.active { display: flex; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { color: var(--text-dim); font-size: 0.9rem; }
+
+/* ═══════════════════════════════════════════
+   Responsive
+═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .content { padding: 1rem; }
+  .photo-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}
+
+/* ═══════════════════════════════════════════
+   Utilities
+═══════════════════════════════════════════ */
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.text-dim { color: var(--text-dim); }
+.text-light { color: var(--text-light); }
+.text-success { color: var(--green); }
+.text-danger { color: var(--red); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">桂花落</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-title">管理</div>
+      <div class="nav-item active" data-view="dashboard">
+        <span class="nav-item-icon">📊</span>
+        <span>概览</span>
+      </div>
+      <div class="nav-item" data-view="photos">
+        <span class="nav-item-icon">📷</span>
+        <span>照片管理</span>
+      </div>
+      <div class="nav-item" data-view="upload">
+        <span class="nav-item-icon">⬆️</span>
+        <span>批量上传</span>
+      </div>
+      <div class="nav-item" data-view="categories">
+        <span class="nav-item-icon">🏷️</span>
+        <span>分类管理</span>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">设置</div>
+      <div class="nav-item" data-view="token">
+        <span class="nav-item-icon">🔑</span>
+        <span>Token 配置</span>
+      </div>
+      <div class="nav-item" onclick="window.open('index.html', '_blank')">
+        <span class="nav-item-icon">🏠</span>
+        <span>访问网站</span>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="token-status">
+      <span class="token-dot" id="tokenDot"></span>
+      <span id="tokenStatusText">未配置 Token</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+  <header class="header">
+    <h1 class="header-title" id="pageTitle">概览</h1>
+    <div class="header-actions" id="headerActions"></div>
+  </header>
+
+  <div class="content" id="content">
+    <!-- Dynamic content here -->
+  </div>
+</main>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">标题</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">加载中...</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// Configuration
+// ═══════════════════════════════════════════════════
+const CONFIG = {
+  repo: '46832632/photo-portfolio',
+  branch: 'main',
+  photosJsonPath: 'photos.json',
+  imagesPath: 'images'
+};
+
+// ═══════════════════════════════════════════════════
+// State
+// ═══════════════════════════════════════════════════
+let state = {
+  token: sessionStorage.getItem('gh_token') || '',
+  photos: [],
+  categories: [],
+  currentView: 'dashboard',
+  editingPhoto: null
+};
+
+// ═══════════════════════════════════════════════════
+// API Helpers
+// ═══════════════════════════════════════════════════
+async function githubAPI(endpoint, options = {}) {
+  const url = endpoint.startsWith('http')
+    ? endpoint
+    : `https://api.github.com${endpoint}`;
+
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      'Authorization': `Bearer ${state.token}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      ...options.headers
+    }
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || `HTTP ${res.status}`);
+  }
+
+  return res;
+}
+
+async function getFile(path) {
+  const res = await githubAPI(`/repos/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`);
+  const data = await res.json();
+  const content = atob(data.content.replace(/\n/g, ''));
+  return { content: JSON.parse(content), sha: data.sha };
+}
+
+async function updateFile(path, content, sha, message) {
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2))));
+  await githubAPI(`/repos/${CONFIG.repo}/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message,
+      content: encoded,
+      sha,
+      branch: CONFIG.branch
+    })
+  });
+}
+
+async function deleteFile(path, sha, message) {
+  await githubAPI(`/repos/${CONFIG.repo}/contents/${path}`, {
+    method: 'DELETE',
+    body: JSON.stringify({
+      message,
+      sha,
+      branch: CONFIG.branch
+    })
+  });
+}
+
+async function uploadImage(file, filename) {
+  const base64 = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const path = `${CONFIG.imagesPath}/${filename}`;
+
+  // Check if file exists
+  let sha;
+  try {
+    const res = await githubAPI(`/repos/${CONFIG.repo}/contents/${path}?ref=${CONFIG.branch}`);
+    sha = (await res.json()).sha;
+  } catch (e) {}
+
+  await githubAPI(`/repos/${CONFIG.repo}/contents/${path}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      message: `feat: upload photo ${filename}`,
+      content: base64,
+      sha,
+      branch: CONFIG.branch
+    })
+  });
+
+  return path;
+}
+
+// ═══════════════════════════════════════════════════
+// UI Helpers
+// ═══════════════════════════════════════════════════
+function showLoading(text = '加载中...') {
+  document.getElementById('loadingText').textContent = text;
+  document.getElementById('loadingOverlay').classList.add('active');
+}
+
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('active');
+}
+
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 4000);
+}
+
+function openModal(title, body, footer = '') {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modalFooter').innerHTML = footer;
+  document.getElementById('modalBackdrop').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('active');
+  state.editingPhoto = null;
+}
+
+// ═══════════════════════════════════════════════════
+// Token Management
+// ═══════════════════════════════════════════════════
+async function checkToken() {
+  const dot = document.getElementById('tokenDot');
+  const text = document.getElementById('tokenStatusText');
+
+  if (!state.token) {
+    dot.className = 'token-dot';
+    text.textContent = '未配置 Token';
+    return false;
+  }
+
+  try {
+    const res = await githubAPI('/user');
+    const user = await res.json();
+    dot.className = 'token-dot ok';
+    text.textContent = `${user.login}`;
+    return true;
+  } catch (e) {
+    dot.className = 'token-dot err';
+    text.textContent = 'Token 无效';
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// Data Loading
+// ═══════════════════════════════════════════════════
+async function loadPhotos() {
+  showLoading('加载照片数据...');
+  try {
+    const { content } = await getFile(CONFIG.photosJsonPath);
+    state.photos = content.photos || [];
+    state.categories = content.categories || [];
+    hideLoading();
+    return true;
+  } catch (e) {
+    hideLoading();
+    showToast('加载失败: ' + e.message, 'error');
+    return false;
+  }
+}
+
+async function savePhotos(message = 'auto: update photos data') {
+  showLoading('保存中...');
+  try {
+    const { sha } = await getFile(CONFIG.photosJsonPath);
+    await updateFile(CONFIG.photosJsonPath, {
+      categories: state.categories,
+      photos: state.photos
+    }, sha, message);
+    hideLoading();
+    showToast('保存成功', 'success');
+    return true;
+  } catch (e) {
+    hideLoading();
+    showToast('保存失败: ' + e.message, 'error');
+    return false;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// View Renderers
+// ═══════════════════════════════════════════════════
+function renderDashboard() {
+  document.getElementById('pageTitle').textContent = '概览';
+  document.getElementById('headerActions').innerHTML = '';
+
+  const visiblePhotos = state.photos.filter(p => p.visible);
+  const categories = state.categories.filter(c => c.id !== 'all');
+
+  document.getElementById('content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">${state.photos.length}</div>
+        <div class="stat-label">总照片数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${visiblePhotos.length}</div>
+        <div class="stat-label">已发布</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${state.photos.length - visiblePhotos.length}</div>
+        <div class="stat-label">草稿</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">${categories.length}</div>
+        <div class="stat-label">分类数</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">最近添加</div>
+        <button class="btn btn-sm" onclick="switchView('photos')">查看全部</button>
+      </div>
+      <div class="card-body">
+        <div class="photo-grid">
+          ${state.photos.slice(-6).reverse().map(p => renderPhotoCard(p)).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPhotos() {
+  document.getElementById('pageTitle').textContent = '照片管理';
+  document.getElementById('headerActions').innerHTML = `
+    <button class="btn btn-primary" onclick="showAddPhotoModal()">
+      <span>+</span> 添加照片
+    </button>
+  `;
+
+  const categoryFilter = `
+    <div class="card">
+      <div class="card-body" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button class="btn btn-sm active" data-category="all">全部</button>
+        ${state.categories.filter(c => c.id !== 'all').map(c =>
+          `<button class="btn btn-sm" data-category="${c.id}">${c.name}</button>`
+        ).join('')}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('content').innerHTML = `
+    ${categoryFilter}
+    <div class="photo-grid" id="photoGrid">
+      ${state.photos.map(p => renderPhotoCard(p)).join('')}
+    </div>
+  `;
+
+  // Category filter handlers
+  document.querySelectorAll('[data-category]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[data-category]').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      filterPhotos(this.dataset.category);
+    });
+  });
+}
+
+function filterPhotos(categoryId) {
+  const grid = document.getElementById('photoGrid');
+  const photos = categoryId === 'all'
+    ? state.photos
+    : state.photos.filter(p => p.category === categoryId);
+  grid.innerHTML = photos.map(p => renderPhotoCard(p)).join('');
+}
+
+function renderPhotoCard(photo) {
+  const category = state.categories.find(c => c.id === photo.category);
+  return `
+    <div class="photo-card" data-id="${photo.id}">
+      <div class="photo-card-image">
+        <img src="${photo.src}" alt="${photo.title}" loading="lazy">
+        <div class="photo-card-overlay">
+          <div class="photo-card-actions">
+            <button class="btn btn-sm" onclick="editPhoto('${photo.id}')">编辑</button>
+            <button class="btn btn-sm btn-danger" onclick="deletePhoto('${photo.id}')">删除</button>
+          </div>
+        </div>
+      </div>
+      <div class="photo-card-info">
+        <div class="photo-card-title">${photo.title}</div>
+        <div class="photo-card-meta">
+          <span>${photo.subtitle}</span>
+          ${category ? `<span class="photo-card-badge">${category.name}</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderUpload() {
+  document.getElementById('pageTitle').textContent = '批量上传';
+  document.getElementById('headerActions').innerHTML = '';
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">上传照片</div>
+      </div>
+      <div class="card-body">
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-zone-icon">📁</div>
+          <div class="upload-zone-text">点击选择或拖拽照片至此</div>
+          <div class="upload-zone-hint">支持 JPG、PNG、WebP，单张最大 10MB</div>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple hidden>
+        </div>
+        <div id="uploadQueue" class="mt-2"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">批量设置</div>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">分类</label>
+          <select class="form-select" id="batchCategory">
+            ${state.categories.filter(c => c.id !== 'all').map(c =>
+              `<option value="${c.id}">${c.name}</option>`
+            ).join('')}
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">相机型号</label>
+            <input type="text" class="form-input" id="batchCamera" value="Sony A7R IV">
+          </div>
+          <div class="form-group">
+            <label class="form-label">镜头</label>
+            <input type="text" class="form-input" id="batchLens" value="35mm">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="processUploadQueue()">开始上传</button>
+      </div>
+    </div>
+  `;
+
+  setupUploadZone();
+}
+
+function renderCategories() {
+  document.getElementById('pageTitle').textContent = '分类管理';
+  document.getElementById('headerActions').innerHTML = `
+    <button class="btn btn-primary" onclick="showAddCategoryModal()">
+      <span>+</span> 添加分类
+    </button>
+  `;
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">分类列表</div>
+      </div>
+      <div class="card-body">
+        <table style="width:100%; border-collapse:collapse;">
+          <thead>
+            <tr style="text-align:left; border-bottom:1px solid var(--border);">
+              <th style="padding:0.75rem; font-size:0.78rem; color:var(--text-light);">名称</th>
+              <th style="padding:0.75rem; font-size:0.78rem; color:var(--text-light);">英文名</th>
+              <th style="padding:0.75rem; font-size:0.78rem; color:var(--text-light);">照片数</th>
+              <th style="padding:0.75rem; font-size:0.78rem; color:var(--text-light);">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${state.categories.filter(c => c.id !== 'all').map(c => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:0.75rem;">${c.name}</td>
+                <td style="padding:0.75rem; color:var(--text-dim);">${c.nameEn}</td>
+                <td style="padding:0.75rem;">${state.photos.filter(p => p.category === c.id).length}</td>
+                <td style="padding:0.75rem;">
+                  <button class="btn btn-sm" onclick="editCategory('${c.id}')">编辑</button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteCategory('${c.id}')">删除</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function renderToken() {
+  document.getElementById('pageTitle').textContent = 'Token 配置';
+  document.getElementById('headerActions').innerHTML = '';
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">GitHub Personal Access Token</div>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Token</label>
+          <input type="password" class="form-input" id="tokenInput"
+            value="${state.token}" placeholder="ghp_xxxxxxxxxxxx"
+            autocomplete="off">
+        </div>
+        <button class="btn btn-primary" onclick="saveToken()">保存并验证</button>
+        <p class="mt-2 text-dim" style="font-size:0.8rem;">
+          需要的权限: repo (完整控制私有仓库)
+        </p>
+        <p class="mt-1 text-dim" style="font-size:0.8rem;">
+          <a href="https://github.com/settings/tokens/new?description=Photo%20Portfolio%20Admin&scopes=repo"
+            target="_blank">创建新 Token →</a>
+        </p>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════
+// Photo CRUD
+// ═══════════════════════════════════════════════════
+function showAddPhotoModal() {
+  const body = `
+    <div class="form-group">
+      <label class="form-label">上传照片</label>
+      <input type="file" class="form-input" id="photoFile" accept="image/jpeg,image/png,image/webp">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">标题</label>
+        <input type="text" class="form-input" id="photoTitle" maxlength="4" placeholder="如：谧、临">
+      </div>
+      <div class="form-group">
+        <label class="form-label">英文副标题</label>
+        <input type="text" class="form-input" id="photoSubtitle" placeholder="Serenity">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">分类</label>
+      <select class="form-select" id="photoCategory">
+        ${state.categories.filter(c => c.id !== 'all').map(c =>
+          `<option value="${c.id}">${c.name}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">描述</label>
+      <textarea class="form-textarea" id="photoDesc" placeholder="照片描述..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">相机</label>
+        <input type="text" class="form-input" id="photoCamera" value="Sony A7R IV">
+      </div>
+      <div class="form-group">
+        <label class="form-label">镜头</label>
+        <input type="text" class="form-input" id="photoLens" value="35mm">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">光圈</label>
+        <input type="text" class="form-input" id="photoAperture" value="f/2.8">
+      </div>
+      <div class="form-group">
+        <label class="form-label">快门</label>
+        <input type="text" class="form-input" id="photoShutter" value="1/60s">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ISO</label>
+        <input type="text" class="form-input" id="photoIso" value="ISO 400">
+      </div>
+    </div>
+  `;
+
+  const footer = `
+    <button class="btn" onclick="closeModal()">取消</button>
+    <button class="btn btn-primary" onclick="addPhoto()">添加</button>
+  `;
+
+  openModal('添加照片', body, footer);
+}
+
+async function addPhoto() {
+  const file = document.getElementById('photoFile').files[0];
+  if (!file) {
+    showToast('请选择照片', 'error');
+    return;
+  }
+
+  const title = document.getElementById('photoTitle').value.trim();
+  const subtitle = document.getElementById('photoSubtitle').value.trim();
+  const category = document.getElementById('photoCategory').value;
+  const desc = document.getElementById('photoDesc').value.trim();
+
+  showLoading('上传中...');
+  closeModal();
+
+  try {
+    const filename = `photo-${Date.now()}.jpg`;
+    const imgPath = await uploadImage(file, filename);
+
+    const newPhoto = {
+      id: `photo-${Date.now()}`,
+      src: imgPath,
+      title: title || '未命名',
+      subtitle: subtitle || 'Untitled',
+      category,
+      description: desc || '此刻，即永恒。',
+      location: '中国',
+      year: new Date().getFullYear(),
+      camera: {
+        model: document.getElementById('photoCamera').value,
+        lens: document.getElementById('photoLens').value,
+        aperture: document.getElementById('photoAperture').value,
+        shutter: document.getElementById('photoShutter').value,
+        iso: document.getElementById('photoIso').value
+      },
+      order: state.photos.length + 1,
+      visible: true,
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+
+    state.photos.push(newPhoto);
+    await savePhotos(`feat: add photo ${newPhoto.title}`);
+    renderPhotos();
+  } catch (e) {
+    hideLoading();
+    showToast('添加失败: ' + e.message, 'error');
+  }
+}
+
+async function editPhoto(id) {
+  const photo = state.photos.find(p => p.id === id);
+  if (!photo) return;
+
+  state.editingPhoto = photo;
+
+  const body = `
+    <div class="form-group">
+      <label class="form-label">当前照片</label>
+      <img src="${photo.src}" style="max-width:100%; max-height:200px; border-radius:4px;">
+    </div>
+    <div class="form-group">
+      <label class="form-label">替换照片（可选）</label>
+      <input type="file" class="form-input" id="photoFile" accept="image/jpeg,image/png,image/webp">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">标题</label>
+        <input type="text" class="form-input" id="photoTitle" value="${photo.title}" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label class="form-label">英文副标题</label>
+        <input type="text" class="form-input" id="photoSubtitle" value="${photo.subtitle}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">分类</label>
+      <select class="form-select" id="photoCategory">
+        ${state.categories.filter(c => c.id !== 'all').map(c =>
+          `<option value="${c.id}" ${c.id === photo.category ? 'selected' : ''}>${c.name}</option>`
+        ).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">描述</label>
+      <textarea class="form-textarea" id="photoDesc">${photo.description}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">相机</label>
+        <input type="text" class="form-input" id="photoCamera" value="${photo.camera.model}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">镜头</label>
+        <input type="text" class="form-input" id="photoLens" value="${photo.camera.lens}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">光圈</label>
+        <input type="text" class="form-input" id="photoAperture" value="${photo.camera.aperture}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">快门</label>
+        <input type="text" class="form-input" id="photoShutter" value="${photo.camera.shutter}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">ISO</label>
+        <input type="text" class="form-input" id="photoIso" value="${photo.camera.iso}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">可见性</label>
+      <select class="form-select" id="photoVisible">
+        <option value="true" ${photo.visible ? 'selected' : ''}>已发布</option>
+        <option value="false" ${!photo.visible ? 'selected' : ''}>草稿</option>
+      </select>
+    </div>
+  `;
+
+  const footer = `
+    <button class="btn" onclick="closeModal()">取消</button>
+    <button class="btn btn-primary" onclick="updatePhoto()">保存</button>
+  `;
+
+  openModal('编辑照片', body, footer);
+}
+
+async function updatePhoto() {
+  const photo = state.editingPhoto;
+  if (!photo) return;
+
+  showLoading('保存中...');
+  closeModal();
+
+  try {
+    // Check if replacing image
+    const file = document.getElementById('photoFile').files[0];
+    if (file) {
+      const filename = photo.src.split('/').pop();
+      await uploadImage(file, filename);
+    }
+
+    // Update photo data
+    const idx = state.photos.findIndex(p => p.id === photo.id);
+    if (idx >= 0) {
+      state.photos[idx] = {
+        ...photo,
+        title: document.getElementById('photoTitle').value.trim() || photo.title,
+        subtitle: document.getElementById('photoSubtitle').value.trim() || photo.subtitle,
+        category: document.getElementById('photoCategory').value,
+        description: document.getElementById('photoDesc').value.trim() || photo.description,
+        camera: {
+          model: document.getElementById('photoCamera').value,
+          lens: document.getElementById('photoLens').value,
+          aperture: document.getElementById('photoAperture').value,
+          shutter: document.getElementById('photoShutter').value,
+          iso: document.getElementById('photoIso').value
+        },
+        visible: document.getElementById('photoVisible').value === 'true'
+      };
+    }
+
+    await savePhotos(`feat: update photo ${photo.title}`);
+    renderPhotos();
+  } catch (e) {
+    hideLoading();
+    showToast('保存失败: ' + e.message, 'error');
+  }
+}
+
+async function deletePhoto(id) {
+  if (!confirm('确定要删除这张照片吗？此操作不可恢复。')) return;
+
+  const photo = state.photos.find(p => p.id === id);
+  if (!photo) return;
+
+  showLoading('删除中...');
+
+  try {
+    // Delete image file from GitHub
+    try {
+      const res = await githubAPI(`/repos/${CONFIG.repo}/contents/${photo.src}?ref=${CONFIG.branch}`);
+      const { sha } = await res.json();
+      await deleteFile(photo.src, sha, `feat: delete photo ${photo.title}`);
+    } catch (e) {
+      // Image file may not exist, continue
+    }
+
+    // Remove from state
+    state.photos = state.photos.filter(p => p.id !== id);
+    await savePhotos(`feat: delete photo ${photo.title}`);
+    hideLoading();
+    renderPhotos();
+  } catch (e) {
+    hideLoading();
+    showToast('删除失败: ' + e.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// Category CRUD
+// ═══════════════════════════════════════════════════
+function showAddCategoryModal() {
+  const body = `
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">中文名称</label>
+        <input type="text" class="form-input" id="categoryName" placeholder="风景">
+      </div>
+      <div class="form-group">
+        <label class="form-label">英文名称</label>
+        <input type="text" class="form-input" id="categoryNameEn" placeholder="Landscape">
+      </div>
+    </div>
+  `;
+
+  const footer = `
+    <button class="btn" onclick="closeModal()">取消</button>
+    <button class="btn btn-primary" onclick="addCategory()">添加</button>
+  `;
+
+  openModal('添加分类', body, footer);
+}
+
+async function addCategory() {
+  const name = document.getElementById('categoryName').value.trim();
+  const nameEn = document.getElementById('categoryNameEn').value.trim();
+
+  if (!name || !nameEn) {
+    showToast('请填写完整信息', 'error');
+    return;
+  }
+
+  const id = nameEn.toLowerCase().replace(/\s+/g, '-');
+
+  state.categories.push({ id, name, nameEn });
+  await savePhotos(`feat: add category ${name}`);
+
+  closeModal();
+  renderCategories();
+}
+
+function editCategory(id) {
+  const category = state.categories.find(c => c.id === id);
+  if (!category) return;
+
+  const body = `
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">中文名称</label>
+        <input type="text" class="form-input" id="categoryName" value="${category.name}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">英文名称</label>
+        <input type="text" class="form-input" id="categoryNameEn" value="${category.nameEn}">
+      </div>
+    </div>
+  `;
+
+  const footer = `
+    <button class="btn" onclick="closeModal()">取消</button>
+    <button class="btn btn-primary" onclick="updateCategory('${id}')">保存</button>
+  `;
+
+  openModal('编辑分类', body, footer);
+}
+
+async function updateCategory(id) {
+  const idx = state.categories.findIndex(c => c.id === id);
+  if (idx >= 0) {
+    state.categories[idx].name = document.getElementById('categoryName').value.trim();
+    state.categories[idx].nameEn = document.getElementById('categoryNameEn').value.trim();
+  }
+
+  await savePhotos(`feat: update category ${id}`);
+  closeModal();
+  renderCategories();
+}
+
+async function deleteCategory(id) {
+  const photoCount = state.photos.filter(p => p.category === id).length;
+  if (photoCount > 0) {
+    showToast(`该分类下有 ${photoCount} 张照片，请先移动或删除`, 'error');
+    return;
+  }
+
+  if (!confirm('确定要删除这个分类吗？')) return;
+
+  state.categories = state.categories.filter(c => c.id !== id);
+  await savePhotos(`feat: delete category ${id}`);
+  renderCategories();
+}
+
+// ═══════════════════════════════════════════════════
+// Batch Upload
+// ═══════════════════════════════════════════════════
+let uploadQueue = [];
+
+function setupUploadZone() {
+  const zone = document.getElementById('uploadZone');
+  const input = document.getElementById('fileInput');
+
+  zone.addEventListener('click', () => input.click());
+
+  zone.addEventListener('dragover', e => {
+    e.preventDefault();
+    zone.classList.add('drag');
+  });
+
+  zone.addEventListener('dragleave', () => {
+    zone.classList.remove('drag');
+  });
+
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag');
+    addFilesToQueue(Array.from(e.dataTransfer.files));
+  });
+
+  input.addEventListener('change', e => {
+    addFilesToQueue(Array.from(e.target.files));
+  });
+}
+
+function addFilesToQueue(files) {
+  const valid = files.filter(f => ['image/jpeg', 'image/png', 'image/webp'].includes(f.type));
+
+  valid.forEach((file, i) => {
+    uploadQueue.push({
+      id: Date.now() + i,
+      file,
+      status: 'pending',
+      title: '',
+      subtitle: ''
+    });
+  });
+
+  renderUploadQueue();
+}
+
+function renderUploadQueue() {
+  const container = document.getElementById('uploadQueue');
+  if (uploadQueue.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="card" style="margin-top:1rem;">
+      <div class="card-header">
+        <div class="card-title">上传队列 (${uploadQueue.length} 张)</div>
+        <button class="btn btn-sm" onclick="clearUploadQueue()">清空</button>
+      </div>
+      <div class="card-body">
+        ${uploadQueue.map(item => `
+          <div style="display:flex; align-items:center; gap:1rem; padding:0.5rem 0; border-bottom:1px solid var(--border);">
+            <img src="${URL.createObjectURL(item.file)}" style="width:60px; height:60px; object-fit:cover; border-radius:4px;">
+            <div style="flex:1;">
+              <div style="font-size:0.85rem;">${item.file.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-light);">${(item.file.size / 1024 / 1024).toFixed(2)} MB</div>
+            </div>
+            <span class="text-${item.status === 'done' ? 'success' : item.status === 'error' ? 'danger' : 'dim'}">${item.status}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function clearUploadQueue() {
+  uploadQueue = [];
+  renderUploadQueue();
+}
+
+async function processUploadQueue() {
+  if (uploadQueue.length === 0) {
+    showToast('队列中没有照片', 'error');
+    return;
+  }
+
+  const category = document.getElementById('batchCategory').value;
+  const camera = document.getElementById('batchCamera').value;
+  const lens = document.getElementById('batchLens').value;
+
+  showLoading('上传中...');
+
+  for (let i = 0; i < uploadQueue.length; i++) {
+    const item = uploadQueue[i];
+    if (item.status === 'done') continue;
+
+    try {
+      item.status = 'uploading';
+      renderUploadQueue();
+
+      const filename = `photo-${Date.now()}-${i}.jpg`;
+      const imgPath = await uploadImage(item.file, filename);
+
+      const newPhoto = {
+        id: `photo-${Date.now()}-${i}`,
+        src: imgPath,
+        title: `未命名${i + 1}`,
+        subtitle: `Untitled ${i + 1}`,
+        category,
+        description: '此刻，即永恒。',
+        location: '中国',
+        year: new Date().getFullYear(),
+        camera: { model: camera, lens, aperture: 'f/2.8', shutter: '1/60s', iso: 'ISO 400' },
+        order: state.photos.length + 1 + i,
+        visible: true,
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      state.photos.push(newPhoto);
+      item.status = 'done';
+    } catch (e) {
+      item.status = 'error';
+    }
+
+    renderUploadQueue();
+  }
+
+  await savePhotos(`feat: batch upload ${uploadQueue.filter(i => i.status === 'done').length} photos`);
+  hideLoading();
+  uploadQueue = uploadQueue.filter(i => i.status === 'error');
+  renderUploadQueue();
+}
+
+// ═══════════════════════════════════════════════════
+// Token Save
+// ═══════════════════════════════════════════════════
+async function saveToken() {
+  const token = document.getElementById('tokenInput').value.trim();
+  state.token = token;
+  sessionStorage.setItem('gh_token', token);
+
+  const valid = await checkToken();
+  if (valid) {
+    showToast('Token 验证成功', 'success');
+    await loadPhotos();
+    renderDashboard();
+  } else {
+    showToast('Token 无效', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// View Switching
+// ═══════════════════════════════════════════════════
+function switchView(view) {
+  state.currentView = view;
+
+  // Update nav
+  document.querySelectorAll('.nav-item[data-view]').forEach(item => {
+    item.classList.toggle('active', item.dataset.view === view);
+  });
+
+  // Render view
+  switch (view) {
+    case 'dashboard': renderDashboard(); break;
+    case 'photos': renderPhotos(); break;
+    case 'upload': renderUpload(); break;
+    case 'categories': renderCategories(); break;
+    case 'token': renderToken(); break;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// Init
+// ═══════════════════════════════════════════════════
+async function init() {
+  // Nav click handlers
+  document.querySelectorAll('.nav-item[data-view]').forEach(item => {
+    item.addEventListener('click', () => switchView(item.dataset.view));
+  });
+
+  // Check token
+  const hasToken = await checkToken();
+
+  if (hasToken) {
+    await loadPhotos();
+    switchView('dashboard');
+  } else {
+    switchView('token');
+  }
+}
+
+init();
+</script>
+</body>
+</html>

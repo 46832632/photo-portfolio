@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>人闲桂花落 · 夜静春山空</title>
+  <meta name="description" content="个人摄影作品集">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Cover -->
+  <section class="cover">
+    <div class="cover-poem">
+      人闲桂花落<br>夜静春山空
+    </div>
+    <div class="cover-line"></div>
+    <div class="cover-sub">PHOTOGRAPHY · 2012 – 2021</div>
+    <div class="cover-scroll" id="coverScroll">▼ 浏览作品</div>
+  </section>
+
+  <!-- Filter Bar -->
+  <nav class="filter-bar">
+    <div class="filter-tabs" id="filterTabs"></div>
+    <div class="year-select-wrapper">
+      <select class="year-select" id="yearSelect"></select>
+      <span class="year-select-arrow">▼</span>
+    </div>
+  </nav>
+
+  <!-- Gallery -->
+  <main class="gallery">
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="loading-spinner">加载中</div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    © 2012 – 2021 Photography Portfolio
+  </footer>
+
+  <!-- Immersive Viewer -->
+  <div class="viewer" id="viewer">
+    <button class="viewer-close" id="viewerClose" aria-label="关闭">✕</button>
+    <button class="viewer-nav prev" id="viewerPrev" aria-label="上一张">‹</button>
+    <button class="viewer-nav next" id="viewerNext" aria-label="下一张">›</button>
+    <div class="viewer-content">
+      <img id="viewerImg" src="" alt="">
+      <div class="viewer-meta">
+        <div class="vm-year" id="viewerYear"></div>
+        <div class="vm-cat" id="viewerCat"></div>
+        <div class="vm-id" id="viewerId"></div>
+      </div>
+    </div>
+    <div class="viewer-counter" id="viewerCounter"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>photoPortfolio.init();</script>
+</body>
+</html>
