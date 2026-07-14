@@ -1,27 +1,41 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>桂落春山 · 摄影作品集</title>
     <meta name="description" content="人闲桂花落，夜静春山空 — 一个关于光影与时间的摄影手记">
+    <meta name="theme-color" content="#FAFAF8">
 
-    <!-- Google Fonts: Noto Serif SC + ZCOOL XiaoWei (via Chinese mirror) -->
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="桂落春山 · 摄影作品集">
+    <meta property="og:description" content="人闲桂花落，夜静春山空 — 一个关于光影与时间的摄影手记">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.loli.net" crossorigin>
     <link href="https://fonts.loli.net/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.json">
 </head>
 <body>
+
+    <!-- 阅读进度条 -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 跳过导航（无障碍） -->
+    <a href="#gallery" class="skip-link">跳转到作品</a>
 
     <!-- ========== 导航栏 ========== -->
     <nav id="navbar" class="navbar">
         <div class="navbar-inner">
-            <a href="#" class="navbar-brand">
+            <a href="#hero" class="navbar-brand">
                 <span class="brand-text">桂落春山</span>
             </a>
-            <button class="navbar-toggle" id="navToggle" aria-label="打开菜单">
+            <button class="navbar-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
                 <span class="hamburger"></span>
                 <span class="hamburger"></span>
                 <span class="hamburger"></span>
@@ -37,6 +51,7 @@
     <!-- ========== 首屏意境区 ========== -->
     <header id="hero" class="hero">
         <div class="hero-content">
+            <p class="hero-tag">Photography Portfolio</p>
             <p class="hero-poem">人闲桂花落</p>
             <p class="hero-poem">夜静春山空</p>
             <p class="hero-subtitle">一个关于光影与时间的摄影手记</p>
@@ -93,6 +108,14 @@
 
     <!-- ========== 页脚 ========== -->
     <footer id="footer" class="footer">
+        <p class="footer-tag">关于</p>
+        <p class="footer-text">
+            人闲桂花落，夜静春山空。<br>
+            月出惊山鸟，时鸣春涧中。<br><br>
+            用镜头捕捉静谧中的诗意，<br>
+            在光影间寻找内心的宁静。
+        </p>
+        <div class="footer-divider"></div>
         <p>&copy; 2026 桂落春山 &middot; All rights reserved</p>
     </footer>
 

@@ -1,0 +1,22 @@
+﻿{
+    "description":  "一个关于光影与时间的摄影手记",
+    "short_name":  "桂落春山",
+    "icons":  [
+                  {
+                      "type":  "image/svg+xml",
+                      "sizes":  "any",
+                      "src":  "data:image/svg+xml,%3Csvg xmlns=\u0027http://www.w3.org/2000/svg\u0027 viewBox=\u00270 0 100 100\u0027%3E%3Ccircle cx=\u002750\u0027 cy=\u002750\u0027 r=\u002740\u0027 fill=\u0027none\u0027 stroke=\u0027%231a1a1a\u0027 stroke-width=\u00278\u0027/%3E%3Ccircle cx=\u002750\u0027 cy=\u002750\u0027 r=\u002715\u0027 fill=\u0027%231a1a1a\u0027/%3E%3C/svg%3E"
+                  }
+              ],
+    "lang":  "zh-CN",
+    "theme_color":  "#FAFAF8",
+    "display":  "standalone",
+    "name":  "桂落春山 · 摄影作品集",
+    "categories":  [
+                       "photography",
+                       "portfolio"
+                   ],
+    "background_color":  "#FAFAF8",
+    "start_url":  "/",
+    "orientation":  "any"
+}

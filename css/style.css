@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    桂落春山 — 样式表 v2.0
    浅色背景 · 大量留白 · 白色字体
    ============================================================ */
@@ -752,4 +752,66 @@ ul { list-style: none; }
     .navbar-inner {
         padding: 0 var(--space-sm);
     }
+}
+
+/* ========== 阅读进度条 ========== */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--color-accent);
+    z-index: 1100;
+    width: 0%;
+    transition: width 0.1s;
+}
+
+/* ========== 跳过导航（无障碍） ========== */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-text-dark);
+    color: #fff;
+    padding: 8px 16px;
+    z-index: 3000;
+    font-size: 0.875rem;
+    transition: top 0.2s;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* ========== 首屏标签 ========== */
+.hero-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin-bottom: var(--space-lg);
+    opacity: 0;
+    animation: fadeUp 1s var(--ease) forwards;
+}
+
+/* ========== 页脚增强 ========== */
+.footer-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+}
+.footer-text {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: 2.5;
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0 auto var(--space-md);
+}
+.footer-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--color-border);
+    margin: var(--space-md) auto;
 }

@@ -1,0 +1,70 @@
+{
+  "categories": [
+    { "id": "all", "name": "全部", "nameEn": "All" },
+    { "id": "nature", "name": "自然", "nameEn": "Nature" },
+    { "id": "urban", "name": "城市", "nameEn": "Urban" },
+    { "id": "portrait", "name": "人物", "nameEn": "Portrait" }
+  ],
+  "photos": [
+    {
+      "id": "photo-001",
+      "src": "images/photo-new-01.jpg",
+      "title": "谧",
+      "subtitle": "Serenity",
+      "category": "nature",
+      "description": "万籁俱寂，心归处。",
+      "location": "中国",
+      "year": 2025,
+      "camera": {
+        "model": "Sony A7R IV",
+        "lens": "35mm",
+        "aperture": "f/2.8",
+        "shutter": "1/60s",
+        "iso": "ISO 400"
+      },
+      "order": 1,
+      "visible": true,
+      "createdAt": "2025-01-15"
+    },
+    {
+      "id": "photo-002",
+      "src": "images/01.jpg",
+      "title": "留白",
+      "subtitle": "Stillness",
+      "category": "nature",
+      "description": "留白是一种艺术，也是一种人生态度。",
+      "location": "中国",
+      "year": 2025,
+      "camera": {
+        "model": "Sony A7R IV",
+        "lens": "35mm",
+        "aperture": "f/2.8",
+        "shutter": "1/125s",
+        "iso": "ISO 200"
+      },
+      "order": 2,
+      "visible": true,
+      "createdAt": "2025-03-10"
+    },
+    {
+      "id": "photo-003",
+      "src": "images/02.jpg",
+      "title": "静",
+      "subtitle": "Quiet",
+      "category": "nature",
+      "description": "静不是无声，而是听见内心的声音。",
+      "location": "中国",
+      "year": 2025,
+      "camera": {
+        "model": "Sony A7R IV",
+        "lens": "50mm",
+        "aperture": "f/1.8",
+        "shutter": "1/250s",
+        "iso": "ISO 100"
+      },
+      "order": 3,
+      "visible": true,
+      "createdAt": "2025-03-15"
+    }
+  ]
+}
