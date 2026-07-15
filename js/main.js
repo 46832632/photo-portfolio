@@ -113,7 +113,8 @@
         var imgWrap = el('div', 'card-image-wrap');
 
         var skeleton = el('div', 'skeleton');
-        var heightPx = Math.round(300 * (work.aspectRatio || 0.75));
+        var baseH = window.innerWidth <= 767 ? 180 : (window.innerWidth <= 1199 ? 220 : 300);
+        var heightPx = Math.round(baseH * (work.aspectRatio || 0.75));
         skeleton.style.height = heightPx + 'px';
         skeleton.style.aspectRatio = work.aspectRatio || '0.75';
         imgWrap.appendChild(skeleton);
@@ -142,7 +143,7 @@
             }
             img.style.display = 'none';
             var fallback = el('div', 'card-fallback', '');
-            fallback.style.cssText = 'height:' + heightPx + 'px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:12px;';
+            fallback.style.cssText = 'height:'+baseH+'px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:12px;';
             fallback.textContent = '图片加载失败';
             imgWrap.appendChild(fallback);
         });

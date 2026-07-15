@@ -294,7 +294,7 @@ ul { list-style: none; }
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 56px;
+    gap: 32px;
 }
 
 /* ========== 作品卡片 ========== */
@@ -330,7 +330,7 @@ ul { list-style: none; }
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
-.card-image-wrap img {
+.card-image-wrap img {`r`n    height: 300px;`r`n    object-fit: cover;
     width: 100%;
     display: block;
     transition: filter var(--duration-fast) var(--ease),
@@ -619,7 +619,7 @@ ul { list-style: none; }
 @media (max-width: 1199px) {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
+        gap: 40px;`r`n    }`r`r`n    .card-image-wrap { max-height: 280px; }`r`n    .card-image-wrap img { height: 220px; }
     }
 
     .hero-poem {
@@ -692,12 +692,12 @@ ul { list-style: none; }
     }
 
     .gallery-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 
-    .gallery-grid .card-image-wrap .card-id-badge {
-        font-size: 10px;
+    .card-image-wrap { max-height: 240px; }
+    .card-image-wrap img {`r`n    height: 300px;`r`n    object-fit: cover; height: 180px; }
         bottom: 6px;
         left: 6px;
         padding: 2px 6px;
