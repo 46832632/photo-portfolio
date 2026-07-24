@@ -335,7 +335,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     object-fit: contain; border-radius: var(--radius);
     user-select: none;
     -webkit-user-drag: none;
-    transition: transform var(--duration) var(--ease);
+    transition: transform var(--duration) var(--ease), opacity 0.3s var(--ease);
+}
+.lb-img.fade-in {
+    animation: lbFadeIn 0.35s var(--ease) forwards;
+}
+@keyframes lbFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .lb-nav {

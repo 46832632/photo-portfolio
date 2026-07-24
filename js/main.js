@@ -194,9 +194,29 @@
         });
     }
 
-    /* ---- 灯箱 ---- */
+    /* ---- 灯箱 v4.0 — 防快速翻页卡顿优化 ---- */
     var lightboxIndex = -1;
     var visibleWorks = [];
+
+    // ===== 防卡优化：状态锁 + 节流 + 图片缓存 =====
+    var isUpdating = false;
+    var lastNavTime = 0;
+    var imageCache = {};
+    var CACHE_MAX = 5;
+
+    function cacheImage(url) {
+        if (imageCache[url]) return imageCache[url];
+        var entry = { ready: false };
+        var img = new Image();
+        img.onload = function() { entry.ready = true; };
+        img.onerror = function() { entry.ready = true; };
+        img.src = url;
+        imageCache[url] = entry;
+        while (Object.keys(imageCache).length > CACHE_MAX) {
+            delete imageCache[Object.keys(imageCache)[0]];
+        }
+        return entry;
+    }
 
     function getFilteredWorks() {
         var activeBtn = document.querySelector(".filter-btn.active");
@@ -219,14 +239,19 @@
         document.getElementById("lightbox").classList.remove("active");
         document.body.style.overflow = "";
         lightboxIndex = -1;
+        isUpdating = false;
     }
 
     function updateLightbox() {
         var work = visibleWorks[lightboxIndex];
-        if (!work) return;
+        if (!work || isUpdating) return;
+        isUpdating = true;
 
-        document.getElementById("lbImg").src = getImageUrl(work);
-        document.getElementById("lbImg").alt = work.title;
+        var lbImg = document.getElementById("lbImg");
+        var targetUrl = getImageUrl(work);
+
+        // 1. 文字信息先更新，不阻塞主线程
+        if (lbImg.alt !== work.title) lbImg.alt = work.title;
         document.getElementById("lbTitle").textContent = work.title;
         document.getElementById("lbId").textContent = padId(work.id);
         document.getElementById("lbCat").textContent = getLabel(work.category);
@@ -235,18 +260,44 @@
         document.getElementById("lbEquip").textContent = work.width
             ? (work.width + " × " + work.height)
             : "";
+
+        // 2. 预加载图片到内存缓存
+        cacheImage(targetUrl);
+
+        // 移除旧 class，强制重排重启 CSS transition
+        lbImg.classList.remove("fade-in");
+        void lbImg.offsetWidth;
+        lbImg.classList.add("fade-in");
+        lbImg.src = targetUrl;
+
+        // 3. 图片加载完成后解锁，兜底 5s
+        lbImg.onload = function() { isUpdating = false; };
+        lbImg.onerror = function() { isUpdating = false; };
+        setTimeout(function() { isUpdating = false; }, 5000);
+    }
+
+    function safeNavigate(fn) {
+        var now = Date.now();
+        if (now - lastNavTime < 150) return;     // 节流：至少 150ms
+        if (isUpdating) return;                   // 图片正在加载则等待
+        fn();
+        lastNavTime = now;
     }
 
     function prevWork() {
         if (!visibleWorks.length) return;
-        lightboxIndex = (lightboxIndex - 1 + visibleWorks.length) % visibleWorks.length;
-        updateLightbox();
+        safeNavigate(function() {
+            lightboxIndex = (lightboxIndex - 1 + visibleWorks.length) % visibleWorks.length;
+            updateLightbox();
+        });
     }
 
     function nextWork() {
         if (!visibleWorks.length) return;
-        lightboxIndex = (lightboxIndex + 1) % visibleWorks.length;
-        updateLightbox();
+        safeNavigate(function() {
+            lightboxIndex = (lightboxIndex + 1) % visibleWorks.length;
+            updateLightbox();
+        });
     }
 
     function initLightbox() {
@@ -284,6 +335,7 @@
             lastTap = now;
         });
     }
+
 
     /* ---- 导航栏 ---- */
     function initNavbar() {
