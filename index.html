@@ -2,123 +2,119 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>桂落春山 · 摄影作品集</title>
     <meta name="description" content="人闲桂花落，夜静春山空 — 一个关于光影与时间的摄影手记">
     <meta name="theme-color" content="#FAFAF8">
-
-    <!-- Open Graph / Social -->
+    
     <meta property="og:type" content="website">
     <meta property="og:title" content="桂落春山 · 摄影作品集">
     <meta property="og:description" content="人闲桂花落，夜静春山空 — 一个关于光影与时间的摄影手记">
     <meta property="og:locale" content="zh_CN">
-
-    <!-- Google Fonts -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.loli.net" crossorigin>
     <link href="https://fonts.loli.net/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
-
+    
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/style.css">
-<link rel="manifest" href="manifest.json">
 </head>
 <body>
 
-    <!-- 阅读进度条 -->
+    <!-- 进度条 -->
     <div class="progress-bar" id="progressBar"></div>
-
-    <!-- 跳过导航（无障碍） -->
+    
+    <!-- 跳过导航 -->
     <a href="#gallery" class="skip-link">跳转到作品</a>
-
-    <!-- ========== 导航栏 ========== -->
+    
+    <!-- 导航栏 -->
     <nav id="navbar" class="navbar">
-        <div class="navbar-inner">
-            <a href="#hero" class="navbar-brand">
-                <span class="brand-text">桂落春山</span>
-            </a>
-            <button class="navbar-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
+        <div class="container navbar-inner">
+            <a href="#hero" class="brand">桂落春山</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="菜单">
+                <span></span><span></span><span></span>
             </button>
-            <ul class="navbar-links" id="navLinks">
-                <li><a href="#hero" class="nav-link">首页</a></li>
-                <li><a href="#gallery" class="nav-link">作品</a></li>
-                <li><a href="#footer" class="nav-link">关于</a></li>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">首页</a></li>
+                <li><a href="#stats">统计</a></li>
+                <li><a href="#gallery">作品</a></li>
+                <li><a href="#about">关于</a></li>
             </ul>
         </div>
     </nav>
-
-    <!-- ========== 首屏意境区 ========== -->
+    
+    <!-- 首屏 -->
     <header id="hero" class="hero">
+        <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-tag">Photography Portfolio</p>
             <p class="hero-poem">人闲桂花落</p>
             <p class="hero-poem">夜静春山空</p>
-            <p class="hero-subtitle">一个关于光影与时间的摄影手记</p>
+            <p class="hero-sub">一个关于光影与时间的摄影手记</p>
+            <a href="#gallery" class="scroll-hint">↓</a>
         </div>
     </header>
-
-    <!-- ========== 分类筛选栏 ========== -->
-    <section id="filter-bar" class="filter-bar">
-        <div class="filter-bar-inner">
-            <button class="filter-btn active" data-category="all">全部</button>
+    
+    <!-- 统计概览 -->
+    <section id="stats" class="stats">
+        <div class="container">
+            <div class="stats-grid" id="statsGrid"></div>
         </div>
     </section>
-
-    <!-- ========== 摄影作品展示区 ========== -->
+    
+    <!-- 分类筛选 -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-bar" id="filterBar">
+                <button class="filter-btn active" data-category="all">全部</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 作品画廊 -->
     <main id="gallery" class="gallery">
-        <div class="gallery-grid" id="galleryGrid">
-            <!-- 作品卡片由 JS 动态渲染 -->
+        <div class="container">
+            <div class="gallery-grid" id="galleryGrid"></div>
         </div>
     </main>
-
-    <!-- ========== 灯箱 ========== -->
+    
+    <!-- 灯箱 -->
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="图片预览">
-        <div class="lightbox-mask" id="lightboxMask"></div>
-        <div class="lightbox-content">
-            <button class="lightbox-close" id="lightboxClose" aria-label="关闭">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            </button>
-            <button class="lightbox-prev" id="lightboxPrev" aria-label="上一张">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <polyline points="15 18 9 12 15 6"/>
-                </svg>
-            </button>
-            <button class="lightbox-next" id="lightboxNext" aria-label="下一张">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <polyline points="9 6 15 12 9 18"/>
-                </svg>
-            </button>
-            <div class="lightbox-image-wrap">
-                <img src="" alt="" id="lightboxImg">
+        <div class="lb-mask" id="lbMask"></div>
+        <div class="lb-content">
+            <button class="lb-close" id="lbClose" aria-label="关闭">✕</button>
+            <div class="lb-left">
+                <img src="" alt="" id="lbImg" class="lb-img">
+                <button class="lb-nav lb-prev" id="lbPrev" aria-label="上一张">‹</button>
+                <button class="lb-nav lb-next" id="lbNext" aria-label="下一张">›</button>
             </div>
-            <div class="lightbox-info">
-                <h3 class="lightbox-title" id="lightboxTitle"></h3>
-                <p class="lightbox-meta">
-                    <span class="lightbox-id" id="lightboxId"></span>
-                    <span class="lightbox-category" id="lightboxCategory"></span>
-                    <span class="lightbox-date" id="lightboxDate"></span>
-                </p>
-                <p class="lightbox-desc" id="lightboxDesc"></p>
+            <div class="lb-right">
+                <h3 class="lb-title" id="lbTitle"></h3>
+                <div class="lb-meta">
+                    <span class="lb-id" id="lbId"></span>
+                    <span class="lb-cat" id="lbCat"></span>
+                    <span class="lb-date" id="lbDate"></span>
+                </div>
+                <p class="lb-desc" id="lbDesc"></p>
+                <p class="lb-equip" id="lbEquip"></p>
             </div>
         </div>
     </div>
-
-    <!-- ========== 页脚 ========== -->
-    <footer id="footer" class="footer">
-        <p class="footer-tag">关于</p>
-        <p class="footer-text">
-            人闲桂花落，夜静春山空。<br>
-            月出惊山鸟，时鸣春涧中。<br><br>
-            用镜头捕捉静谧中的诗意，<br>
-            在光影间寻找内心的宁静。
-        </p>
-        <div class="footer-divider"></div>
-        <p>&copy; 2026 桂落春山 &middot; All rights reserved</p>
+    
+    <!-- 关于页脚 -->
+    <footer id="about" class="footer">
+        <div class="container">
+            <div class="poem-block">
+                <p>人闲桂花落，</p>
+                <p>夜静春山空。</p>
+                <p>月出惊山鸟，</p>
+                <p>时鸣春涧中。</p>
+            </div>
+            <p class="footer-text">用镜头捕捉静谧中的诗意，在光影间寻找内心的宁静。</p>
+            <div class="divider"></div>
+            <p class="copyright">© 2026 桂落春山 · All rights reserved</p>
+        </div>
     </footer>
-
+    
     <script src="js/main.js"></script>
 </body>
 </html>
