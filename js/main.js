@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    桂落春山 — 主交互逻辑 v3.0
    数据: data/photos.json | R2图床 | 分类筛选 | 灯箱 | 统计 | 进度条
    ============================================================ */
@@ -194,29 +194,11 @@
         });
     }
 
-    /* ---- 灯箱 v4.0 — 防快速翻页卡顿优化 ---- */
+    
+    /* ---- 灯箱 v5.0 — 非阻塞轻量翻页 ---- */
     var lightboxIndex = -1;
     var visibleWorks = [];
-
-    // ===== 防卡优化：状态锁 + 节流 + 图片缓存 =====
-    var isUpdating = false;
     var lastNavTime = 0;
-    var imageCache = {};
-    var CACHE_MAX = 5;
-
-    function cacheImage(url) {
-        if (imageCache[url]) return imageCache[url];
-        var entry = { ready: false };
-        var img = new Image();
-        img.onload = function() { entry.ready = true; };
-        img.onerror = function() { entry.ready = true; };
-        img.src = url;
-        imageCache[url] = entry;
-        while (Object.keys(imageCache).length > CACHE_MAX) {
-            delete imageCache[Object.keys(imageCache)[0]];
-        }
-        return entry;
-    }
 
     function getFilteredWorks() {
         var activeBtn = document.querySelector(".filter-btn.active");
@@ -226,90 +208,83 @@
             : CONFIG.WORKS.filter(function(w) { return w.category === cat; });
     }
 
-    function openLightbox(workId) {
-        visibleWorks = getFilteredWorks();
-        lightboxIndex = visibleWorks.findIndex(function(w) { return w.id === workId; });
-        if (lightboxIndex < 0) lightboxIndex = 0;
-        updateLightbox();
-        document.getElementById("lightbox").classList.add("active");
-        document.body.style.overflow = "hidden";
+    function getImageUrl(work) {
+        return work.url || ("https://pub-35907bd241b3427e9a8302fe37d12c06.r2.dev/" + (work.filename || work.id));
     }
 
-    function closeLightbox() {
-        document.getElementById("lightbox").classList.remove("active");
-        document.body.style.overflow = "";
-        lightboxIndex = -1;
-        isUpdating = false;
-    }
+    var lbImg = document.getElementById("lbImg");
 
-    function updateLightbox() {
+    function showLightbox() {
         var work = visibleWorks[lightboxIndex];
-        if (!work || isUpdating) return;
-        isUpdating = true;
-
-        var lbImg = document.getElementById("lbImg");
+        if (!work) return;
         var targetUrl = getImageUrl(work);
-
-        // 1. 文字信息先更新，不阻塞主线程
+        var elMap = [
+            ["lbTitle", work.title || ""],
+            ["lbId", padId(work.id)],
+            ["lbCat", getLabel(work.category)],
+            ["lbDate", work.date || ""],
+            ["lbDesc", work.camera || "未知设备"],
+            ["lbEquip", work.width ? (work.width + " x " + work.height) : ""]
+        ];
+        elMap.forEach(function(pair) {
+            var el = document.getElementById(pair[0]);
+            if (el) el.textContent = pair[1];
+        });
         if (lbImg.alt !== work.title) lbImg.alt = work.title;
-        document.getElementById("lbTitle").textContent = work.title;
-        document.getElementById("lbId").textContent = padId(work.id);
-        document.getElementById("lbCat").textContent = getLabel(work.category);
-        document.getElementById("lbDate").textContent = work.date || "";
-        document.getElementById("lbDesc").textContent = work.camera || "未知设备";
-        document.getElementById("lbEquip").textContent = work.width
-            ? (work.width + " × " + work.height)
-            : "";
-
-        // 2. 预加载图片到内存缓存
-        cacheImage(targetUrl);
-
-        // 移除旧 class，强制重排重启 CSS transition
         lbImg.classList.remove("fade-in");
         void lbImg.offsetWidth;
         lbImg.classList.add("fade-in");
         lbImg.src = targetUrl;
-
-        // 3. 图片加载完成后解锁，兜底 5s
-        lbImg.onload = function() { isUpdating = false; };
-        lbImg.onerror = function() { isUpdating = false; };
-        setTimeout(function() { isUpdating = false; }, 5000);
+        preloadNeighbors(targetUrl);
     }
 
-    function safeNavigate(fn) {
+    function preloadNeighbors(currentUrl) {
+        if (visibleWorks.length < 3) return;
+        var before = Math.max(0, lightboxIndex - 1);
+        var after = Math.min(visibleWorks.length - 1, lightboxIndex + 1);
+        var urls = [];
+        if (before !== lightboxIndex) urls.push(getImageUrl(visibleWorks[before]));
+        if (after !== lightboxIndex) urls.push(getImageUrl(visibleWorks[after]));
+        urls.forEach(function(url) {
+            if (url === currentUrl) return;
+            new Image().src = url;
+        });
+    }
+
+    function canNavigate() {
         var now = Date.now();
-        if (now - lastNavTime < 150) return;     // 节流：至少 150ms
-        if (isUpdating) return;                   // 图片正在加载则等待
-        fn();
+        if (now - lastNavTime < 80) return false;
         lastNavTime = now;
+        return true;
     }
 
     function prevWork() {
-        if (!visibleWorks.length) return;
-        safeNavigate(function() {
-            lightboxIndex = (lightboxIndex - 1 + visibleWorks.length) % visibleWorks.length;
-            updateLightbox();
-        });
+        if (!visibleWorks.length || !canNavigate()) return;
+        lightboxIndex = (lightboxIndex - 1 + visibleWorks.length) % visibleWorks.length;
+        showLightbox();
     }
 
     function nextWork() {
-        if (!visibleWorks.length) return;
-        safeNavigate(function() {
-            lightboxIndex = (lightboxIndex + 1) % visibleWorks.length;
-            updateLightbox();
-        });
+        if (!visibleWorks.length || !canNavigate()) return;
+        lightboxIndex = (lightboxIndex + 1) % visibleWorks.length;
+        showLightbox();
     }
 
     function initLightbox() {
         var lb = document.getElementById("lightbox");
-        document.getElementById("lbMask").addEventListener("click", closeLightbox);
-        document.getElementById("lbClose").addEventListener("click", closeLightbox);
+        var onMaskClose = function() {
+            lightboxIndex = -1;
+            lb.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+        document.getElementById("lbMask").addEventListener("click", onMaskClose);
+        document.getElementById("lbClose").addEventListener("click", onMaskClose);
         document.getElementById("lbPrev").addEventListener("click", function(e) { e.stopPropagation(); prevWork(); });
         document.getElementById("lbNext").addEventListener("click", function(e) { e.stopPropagation(); nextWork(); });
 
         document.addEventListener("keydown", function(e) {
             if (lightboxIndex < 0) return;
-            if (e.key === "Escape") closeLightbox();
+            if (e.key === "Escape") onMaskClose();
             if (e.key === "ArrowLeft") prevWork();
             if (e.key === "ArrowRight") nextWork();
         });
@@ -324,20 +299,18 @@
         }, { passive: true });
 
         var lastTap = 0;
-        var lbImg = document.getElementById("lbImg");
-        lbImg.addEventListener("touchend", function(e) {
+        var imgEl = document.getElementById("lbImg");
+        imgEl.addEventListener("touchend", function(e) {
             var now = Date.now();
             if (now - lastTap < 300) {
-                var cur = parseFloat(lbImg.style.transform.replace("scale(", "") || 1);
-                lbImg.style.transform = "scale(" + (cur >= 2 ? 1 : 2.5) + ")";
+                var cur = parseFloat(imgEl.style.transform.replace("scale(", "") || 1);
+                imgEl.style.transform = "scale(" + (cur >= 2 ? 1 : 2.5) + ")";
                 e.preventDefault();
             }
             lastTap = now;
         });
     }
-
-
-    /* ---- 导航栏 ---- */
+/* ---- 导航栏 ---- */
     function initNavbar() {
         var nav = document.getElementById("navbar");
         var toggle = document.getElementById("menuToggle");
