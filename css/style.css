@@ -337,13 +337,6 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     -webkit-user-drag: none;
     transition: transform var(--duration) var(--ease), opacity 0.3s var(--ease);
 }
-.lb-img.fade-in {
-    animation: lbFadeIn 0.35s var(--ease) forwards;
-}
-@keyframes lbFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
 
 .lb-nav {
     position: absolute; top: 50%; transform: translateY(-50%);
@@ -396,6 +389,35 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.8; color: rgba(255,255,255,0.5);
 }
 
+
+/* Lightbox loading spinner */
+.lb-spinner {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    width: 28px; height: 28px;
+    display: none;
+}
+.lb-spinner.active { display: block; }
+.lb-spinner > div {
+    width: 100%; height: 100%;
+    border: 2.5px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: lb-spin 0.75s linear infinite;
+}
+@keyframes lb-spin { to { transform: rotate(360deg); } }
+
+.lb-img.loading-fade {
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+}
+
+.lb-nav.disabled {
+    pointer-events: none;
+    opacity: 0.35;
+}
 /* ===== Footer ===== */
 .footer {
     text-align: center;

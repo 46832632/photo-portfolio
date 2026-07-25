@@ -195,10 +195,12 @@
     }
 
     
-    /* ---- 灯箱 v5.0 — 非阻塞轻量翻页 ---- */
+    
+/* ---- 灯箱 v6.0 — 加载阻断翻页 + 进度圆圈 ---- */
     var lightboxIndex = -1;
     var visibleWorks = [];
     var lastNavTime = 0;
+    var isLoading = false;
 
     function getFilteredWorks() {
         var activeBtn = document.querySelector(".filter-btn.active");
@@ -213,12 +215,27 @@
     }
 
     var lbImg = document.getElementById("lbImg");
+    var lbSpinner = document.getElementById("lbSpinner");
+    var lbNext = document.getElementById("lbNext");
+    var lbPrev = document.getElementById("lbPrev");
 
-    function showLightbox() {
-        var work = visibleWorks[lightboxIndex];
+    function startLoading() {
+        isLoading = true;
+        if (lbSpinner) lbSpinner.classList.add("active");
+        if (lbNext) lbNext.classList.add("disabled");
+        if (lbImg) { lbImg.classList.remove("fade-in"); lbImg.classList.add("loading-fade"); }
+    }
+
+    function stopLoading() {
+        isLoading = false;
+        if (lbSpinner) lbSpinner.classList.remove("active");
+        if (lbNext) lbNext.classList.remove("disabled");
+        if (lbImg) { lbImg.classList.remove("loading-fade"); lbImg.classList.add("fade-in"); }
+    }
+
+    function updateTexts(work) {
         if (!work) return;
-        var targetUrl = getImageUrl(work);
-        var elMap = [
+        var els = [
             ["lbTitle", work.title || ""],
             ["lbId", padId(work.id)],
             ["lbCat", getLabel(work.category)],
@@ -226,29 +243,46 @@
             ["lbDesc", work.camera || "未知设备"],
             ["lbEquip", work.width ? (work.width + " x " + work.height) : ""]
         ];
-        elMap.forEach(function(pair) {
+        els.forEach(function(pair) {
             var el = document.getElementById(pair[0]);
             if (el) el.textContent = pair[1];
         });
-        if (lbImg.alt !== work.title) lbImg.alt = work.title;
-        lbImg.classList.remove("fade-in");
-        void lbImg.offsetWidth;
-        lbImg.classList.add("fade-in");
-        lbImg.src = targetUrl;
-        preloadNeighbors(targetUrl);
+        if (lbImg && lbImg.alt !== work.title) lbImg.alt = work.title;
     }
 
-    function preloadNeighbors(currentUrl) {
-        if (visibleWorks.length < 3) return;
-        var before = Math.max(0, lightboxIndex - 1);
-        var after = Math.min(visibleWorks.length - 1, lightboxIndex + 1);
-        var urls = [];
-        if (before !== lightboxIndex) urls.push(getImageUrl(visibleWorks[before]));
-        if (after !== lightboxIndex) urls.push(getImageUrl(visibleWorks[after]));
-        urls.forEach(function(url) {
-            if (url === currentUrl) return;
+    function openLightbox(workId) {
+        visibleWorks = getFilteredWorks();
+        lightboxIndex = visibleWorks.findIndex(function(w){return w.id===workId;});
+        if (lightboxIndex < 0) lightboxIndex = 0;
+        showLightbox();
+        document.getElementById("lightbox").classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+        var lb = document.getElementById("lightbox");
+        if (lb) lb.classList.remove("active");
+        document.body.style.overflow = "";
+        lightboxIndex = -1;
+        stopLoading();
+    }
+
+    function showLightbox() {
+        var work = visibleWorks[lightboxIndex];
+        if (!work) return;
+        var targetUrl = getImageUrl(work);
+        updateTexts(work);
+        startLoading();
+        if (lbImg) lbImg.src = targetUrl;
+        preloadAll(targetUrl);
+    }
+
+    function preloadAll(currentUrl) {
+        for (var i = 0; i < visibleWorks.length; i++) {
+            var url = getImageUrl(visibleWorks[i]);
+            if (url === currentUrl) continue;
             new Image().src = url;
-        });
+        }
     }
 
     function canNavigate() {
@@ -265,26 +299,28 @@
     }
 
     function nextWork() {
-        if (!visibleWorks.length || !canNavigate()) return;
+        if (!visibleWorks.length || isLoading || !canNavigate()) return;
         lightboxIndex = (lightboxIndex + 1) % visibleWorks.length;
         showLightbox();
     }
 
     function initLightbox() {
         var lb = document.getElementById("lightbox");
-        var onMaskClose = function() {
-            lightboxIndex = -1;
-            lb.classList.remove("active");
-            document.body.style.overflow = "";
-        };
-        document.getElementById("lbMask").addEventListener("click", onMaskClose);
-        document.getElementById("lbClose").addEventListener("click", onMaskClose);
+
+        document.getElementById("lbMask").addEventListener("click", closeLightbox);
+        document.getElementById("lbClose").addEventListener("click", closeLightbox);
         document.getElementById("lbPrev").addEventListener("click", function(e) { e.stopPropagation(); prevWork(); });
         document.getElementById("lbNext").addEventListener("click", function(e) { e.stopPropagation(); nextWork(); });
 
+        // Bind BEFORE setting src so fast navigations don't miss onload
+        if (lbImg) {
+            lbImg.onload = function() { stopLoading(); };
+            lbImg.onerror = function() { stopLoading(); };
+        }
+
         document.addEventListener("keydown", function(e) {
             if (lightboxIndex < 0) return;
-            if (e.key === "Escape") onMaskClose();
+            if (e.key === "Escape") closeLightbox();
             if (e.key === "ArrowLeft") prevWork();
             if (e.key === "ArrowRight") nextWork();
         });
@@ -299,17 +335,17 @@
         }, { passive: true });
 
         var lastTap = 0;
-        var imgEl = document.getElementById("lbImg");
-        imgEl.addEventListener("touchend", function(e) {
+        lbImg.addEventListener("touchend", function(e) {
             var now = Date.now();
             if (now - lastTap < 300) {
-                var cur = parseFloat(imgEl.style.transform.replace("scale(", "") || 1);
-                imgEl.style.transform = "scale(" + (cur >= 2 ? 1 : 2.5) + ")";
+                var cur = parseFloat(lbImg.style.transform.replace("scale(", "") || 1);
+                lbImg.style.transform = "scale(" + (cur >= 2 ? 1 : 2.5) + ")";
                 e.preventDefault();
             }
             lastTap = now;
         });
     }
+
 /* ---- 导航栏 ---- */
     function initNavbar() {
         var nav = document.getElementById("navbar");
