@@ -1,3 +1,4 @@
-﻿User-agent: *
+User-agent: *
 Allow: /
-Sitemap: https://yourdomain.github.io/sitemap.xml
+Disallow: /admin.html
+Sitemap: https://46832632.github.io/photo-portfolio/sitemap.xml

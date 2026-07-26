@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    桂落春山 — 主交互逻辑 v3.0
    数据: data/photos.json | R2图床 | 分类筛选 | 灯箱 | 统计 | 进度条
    ============================================================ */
@@ -19,7 +19,6 @@
 
     /* ---- 工具函数 ---- */
     function getLabel(cat) { return CONFIG.CATEGORY_LABELS[cat] || cat; }
-    function getImageUrl(work) { return CONFIG.R2_DOMAIN + "/" + work.filename; }
     function padId(n) { return "#" + String(n).padStart(3, "0"); }
 
     function el(tag, className, html) {
